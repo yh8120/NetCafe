@@ -28,7 +28,7 @@ public class UpdateRoomServlet extends HttpServlet {
 			Room room = roomDao.findById(id);
 			
 			request.setAttribute("name", room.getRoomName());
-			request.setAttribute("id", room.getRoomId());
+			request.setAttribute("id", room.getRoomNumber());
 			request.getRequestDispatcher("/WEB-INF/view/updateRoom.jsp")
 					.forward(request, response);
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class UpdateRoomServlet extends HttpServlet {
 		}
 
 		Room room = new Room();
-		room.setRoomId(id);
+		room.setRoomNumber(id);
 		room.setRoomName(name);
 		
 		try {

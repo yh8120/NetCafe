@@ -17,30 +17,35 @@
       <div class="col">
         <table class="table table-bordered">
           <tr>
-            <th>保管場所ID</th>
-            <th>保管場所名</th>
+            <th>部屋番号</th>
+            <th>名前</th>
+            <th>部屋タイプ</th>
             <th colspan="2">操作</th>
           </tr>
           <tr>
-            <c:forEach items="${locationList}" var="location">
+            <c:forEach items="${roomList}" var="room">
               <tr>
                 <td>
-                  <c:out value="${location.id }" />
+                  <c:out value="${room.roomNumber }" />
                 </td>
                 <td>
-                  <c:out value="${location.name }" />
+                  <c:out value="${room.roomName }" />
                 </td>
                 <td>
-                  <a href="updateLocation?id=<c:out value="${location.id }"/>">更新</a>
+                  <c:out value="${room.roomTypeName }" />
                 </td>
                 <td>
-                  <a href="deleteLocation?id=<c:out value="${location.id }"/>">削除</a>
+                  <a href="updateLocation?id=<c:out value="${room.roomNumber }"/>">更新</a>
+                </td>
+                <td>
+                  <a href="deleteLocation?id=<c:out value="${room.roomNumber }"/>">削除</a>
                 </td>
               </tr>
             </c:forEach>
           </tr>
         </table>
-        <a href="listItem" class="btn btn-primary">備品の確認</a> <a href="addLocation" class="btn btn-success">保管場所の追加</a>
+        <a href="addRoom" class="btn btn-success">ルーム作成</a>
+        <a href="setting" class="btn btn-light">戻る</a>
       </div>
     </div>
   </div>

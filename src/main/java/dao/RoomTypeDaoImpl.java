@@ -23,9 +23,8 @@ public class RoomTypeDaoImpl implements RoomTypeDao {
 		List<RoomType> roomTypeList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT"
-					+ " room_type.room_type_id, room_type.room_type_name"
-					+ " FROM room_type";
+			String sql = "SELECT *"
+					+ " FROM room_types";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -42,7 +41,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao {
 		RoomType roomType = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM room_type"
+					+ " FROM room_types"
 					+ " WHERE room_type_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, id, Types.INTEGER);
@@ -59,7 +58,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao {
 	@Override
 	public void insert(RoomType roomType) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO room_type"
+			String sql = "INSERT INTO room_types"
 					+ " (room_type_id,room_type_name)"
 					+ " VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -75,7 +74,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao {
 	@Override
 	public void update(RoomType roomType) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE roomTypes"
+			String sql = "UPDATE room_types"
 					+ " SET room_type_id = ?, room_type_name = ?"
 					+ " WHERE room_type_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -91,7 +90,7 @@ public class RoomTypeDaoImpl implements RoomTypeDao {
 	@Override
 	public void delete(RoomType roomType) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE FROM roomTypes"
+			String sql = "DELETE FROM room_types"
 					+ " Where room_type_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, roomType.getRoomTypeId(),Types.INTEGER);

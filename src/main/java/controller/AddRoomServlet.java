@@ -15,16 +15,10 @@ import dao.RoomTypeDao;
 import domain.Room;
 import domain.RoomType;
 
-/**
- * Servlet implementation class AddItemServlet
- */
 @WebServlet("/addRoom")
 public class AddRoomServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
@@ -44,14 +38,14 @@ public class AddRoomServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
 
 		try {
+//ルームタイプとルームのリストを作成してください
+			
+			
 			
 			String name = request.getParameter("name");
 			
