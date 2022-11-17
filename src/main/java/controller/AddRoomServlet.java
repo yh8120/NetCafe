@@ -26,10 +26,6 @@ public class AddRoomServlet extends HttpServlet {
 			List<RoomType> roomTypeList = roomTypeDao.findAll();
 			request.setAttribute("roomTypeList", roomTypeList);
 			
-			RoomDao roomDao = DaoFactory.createRoomDao();
-			List<Room> roomList = roomDao.findAll();
-			request.setAttribute("roomList", roomList);
-			
 			request.getRequestDispatcher("/WEB-INF/view/addRoom.jsp").forward(request, response);
 
 		} catch (Exception e) {
@@ -43,24 +39,25 @@ public class AddRoomServlet extends HttpServlet {
 		
 
 		try {
-//ルームタイプとルームのリストを作成してください
+			RoomTypeDao roomTypeDao = DaoFactory.createRoomTypeDao();
+			List<RoomType> roomTypeList = roomTypeDao.findAll();
+			request.setAttribute("roomTypeList", roomTypeList);
 			
+			String roomName = request.getParameter("roomName");
+			Integer roomTypeId =Integer.parseInt(request.getParameter("roomTypeId"));
 			
-			
-			String name = request.getParameter("name");
-			
-			
-			request.setAttribute("name", name);
+			request.setAttribute("roomName", roomName);
+			request.setAttribute("roomTypeId", roomTypeId);
 			
 			boolean isError = false;
-			if (name.isEmpty()) {
-				request.setAttribute("nameError", "品名が未入力です。");
+			if (roomName.isEmpty()) {
+				request.setAttribute("roomNameError", "名前が未入力です。");
 				isError = true;
 			}
-			if (name.length() > 50) {
-				request.setAttribute("nameError", "50文字以下で入力してください。");
+			if (roomName.length() > 20) {
+				request.setAttribute("roomNameError", "20文字以下で入力してください。");
 				isError = true;
-			}   
+			}
 			
 			
 			if (isError) {
@@ -70,7 +67,8 @@ public class AddRoomServlet extends HttpServlet {
 			}
 
 			Room room = new Room();
-			room.setRoomTypeName(name);
+			room.setRoomName(roomName);
+			room.setRoomTypeId(roomTypeId);
 
 			RoomDao roomDao = DaoFactory.createRoomDao();
 			roomDao.insert(room);

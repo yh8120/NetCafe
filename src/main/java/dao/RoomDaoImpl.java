@@ -46,7 +46,7 @@ public class RoomDaoImpl implements RoomDao {
 					+ " FROM rooms"
 					+ " JOIN room_types"
 					+ " ON rooms.room_type_id = room_types.room_type_id"
-					+ " WHERE room_number=?";
+					+ " WHERE room_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, id, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
@@ -63,12 +63,11 @@ public class RoomDaoImpl implements RoomDao {
 	public void insert(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO rooms"
-					+ " (room_number,room_name,room_type_id)"
-					+ " VALUES (?,?,?)";
+					+ " (room_name,room_type_id)"
+					+ " VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, room.getRoomNumber(),Types.INTEGER);
-			stmt.setString(2, room.getRoomName());
-			stmt.setObject(3, room.getRoomTypeId(), Types.INTEGER);
+			stmt.setString(1, room.getRoomName());
+			stmt.setObject(2, room.getRoomTypeId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -80,12 +79,12 @@ public class RoomDaoImpl implements RoomDao {
 	public void update(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
-					+ " SET room_number = ?,room_name = ?,room_type_id"
-					+ " WHERE room_number = ?";
+					+ " SET room_name = ?,room_type_id = ?"
+					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, room.getRoomNumber(), Types.INTEGER);
-			stmt.setString(2, room.getRoomName());
-			stmt.setObject(3, room.getRoomTypeId(), Types.INTEGER);
+			stmt.setString(1, room.getRoomName());
+			stmt.setObject(2, room.getRoomTypeId(), Types.INTEGER);
+			stmt.setObject(3, room.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -97,9 +96,9 @@ public class RoomDaoImpl implements RoomDao {
 	public void delete(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "DELETE FROM rooms"
-					+ " Where room_number = ?";
+					+ " Where room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, room.getRoomNumber(),Types.INTEGER);
+			stmt.setObject(1, room.getRoomId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -109,7 +108,7 @@ public class RoomDaoImpl implements RoomDao {
 
 	private Room mapToRoom(ResultSet rs) throws Exception {
 		Room room = new Room();
-		room.setRoomNumber((Integer) rs.getObject("room_number"));
+		room.setRoomId((Integer) rs.getObject("room_id"));
 		room.setRoomName(rs.getString("room_name"));
 		room.setRoomTypeId((Integer) rs.getObject("room_type_id"));
 		room.setRoomTypeName(rs.getString("room_type_name"));

@@ -26,7 +26,7 @@
             <c:forEach items="${roomList}" var="room">
               <tr>
                 <td>
-                  <c:out value="${room.roomNumber }" />
+                  <c:out value="${room.roomId }" />
                 </td>
                 <td>
                   <c:out value="${room.roomName }" />
@@ -35,10 +35,10 @@
                   <c:out value="${room.roomTypeName }" />
                 </td>
                 <td>
-                  <a href="updateLocation?id=<c:out value="${room.roomNumber }"/>">更新</a>
+                  <a href="updateRoom?roomId=<c:out value="${room.roomId }"/>">更新</a>
                 </td>
                 <td>
-                  <a href="deleteLocation?id=<c:out value="${room.roomNumber }"/>">削除</a>
+                  <a href="deleteRoom?roomId=<c:out value="${room.roomId }"/>">削除</a>
                 </td>
               </tr>
             </c:forEach>

@@ -1,7 +1,7 @@
 package domain;
 
 public class Room {
-	private Integer roomNumber;
+	private Integer roomId;
 	private String roomName;
 	private Integer roomTypeId;
 	private String roomTypeName;
@@ -21,13 +21,13 @@ public class Room {
 	}
 
 
-	public Integer getRoomNumber() {
-		return roomNumber;
+	public Integer getRoomId() {
+		return roomId;
 	}
 
 
-	public void setRoomNumber(Integer roomNumber) {
-		this.roomNumber = roomNumber;
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
 	}
 
 
