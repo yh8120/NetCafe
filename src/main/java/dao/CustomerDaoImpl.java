@@ -69,15 +69,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void insert(Customer customer) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO customers"
-					+ " (customer_id,customer_class_id)"
-					+ " (customer_name,customer_sex_id)"
-					+ " (customer_card_id,customer_card_number)"
-					+ " (customer_birthday,customer_zipcode)"
-					+ " (customer_address,customer_memo)"
-					+ " (customer_phone,customer_mail)"
-					+ " (customer_regetered,customer_updated)"
-					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
+			String sql = "INSERT INTO customers (customer_id, customer_class_id, customer_name, customer_sex_id, customer_card_id, customer_card_number, customer_birthday, customer_zipcode, customer_address, customer_memo, customer_phone, customer_mail, customer_regestered, customer_updated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
 			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);

@@ -49,10 +49,10 @@
           </div>
           <div class="mb-3">
             <label for="formSexId">性別</label>
-            <select name="SexId" id="formSexId" class="form-control">
+            <select name="customerSexId" id="formSexId" class="form-control">
               <c:forEach items="${sexList}" var="sex">
                 <option value="<c:out value="${sex.sexId}" />"
-                  <c:if test="${sex.sexId == sexId}">selected</c:if>>
+                  <c:if test="${sex.sexId == customerSexId}">selected</c:if>>
                   <c:out value="${sex.sexName}" />
                 </option>
               </c:forEach>
@@ -60,24 +60,24 @@
           </div>
           <div class="mb-3">
             <label for="formCard">身分証</label>
-            <select name="cardId" id="formCard" class="form-control">
+            <select name="customerCardId" id="formCard" class="form-control">
               <c:forEach items="${cardList}" var="card">
                 <option value="<c:out value="${card.cardId}" />"
-                  <c:if test="${card.cardId == cardId}">selected</c:if>>
+                  <c:if test="${card.cardId == customerCardId}">selected</c:if>>
                   <c:out value="${card.cardName}" />
                 </option>
               </c:forEach>
             </select>
           </div>
           <div class="mb-3">
-            <label for="formCardNumber">身分証番号</label>
-            <c:if test="${not empty cardNumberError }">
+            <label for="formCustomerCardNumber">身分証番号</label>
+            <c:if test="${not empty customerCardNumberError }">
               <div class="error-message">
-                <c:out value="${cardNumberError}"></c:out>
+                <c:out value="${customerCardNumberError}"></c:out>
               </div>
             </c:if>
-            <input type="text" name="cardNumber" id="formCardNumber" class="form-control"
-              value=<c:out value="${cardNumber }"/>>
+            <input type="text" name="customerCardNumber" id="formCustomerCardNumber" class="form-control"
+              value=<c:out value="${customerCardNumber }"/>>
           </div>
           <div class="mb-3">
             <label for="formCustomerBirthday">生年月日</label>
@@ -93,6 +93,11 @@
           </div>
           <div class="mb-3">
             <label for="formCustomerZipcode">郵便番号</label>
+            <c:if test="${not empty customerZipcodeError }">
+              <div class="error-message">
+                <c:out value="${customerZipcodeError}"></c:out>
+              </div>
+            </c:if>
             <input type="text" name="customerZipcode" id="formCustomerZipcode" class="form-control"
               value=<c:out value="${customerZipcode }"/>>
           </div>
@@ -108,17 +113,27 @@
           </div>
           <div class="mb-3">
             <label for="formCustomerPhone">電話番号</label>
+            <c:if test="${not empty customerPhoneError }">
+              <div class="error-message">
+                <c:out value="${customerPhoneError}"></c:out>
+              </div>
+            </c:if>
             <input type="text" name="customerPhone" id="formCustomerPhone" class="form-control"
               value=<c:out value="${customerPhone }"/>>
           </div>
           <div class="mb-3">
             <label for="formCustomerMail">メールアドレス</label>
+            <c:if test="${not empty customerMailError }">
+              <div class="error-message">
+                <c:out value="${customerMailError}"></c:out>
+              </div>
+            </c:if>
             <input type="text" name="customerMail" id="formCustomerMail"
               class="form-control" value=<c:out value="${customerMail }"/>>
           </div>
           <div class="mb-3">
             <input type="submit" class="btn btn-success" value="登録">
-            <a href="listUser" class="btn btn-light">キャンセル</a>
+            <a href="manager" class="btn btn-light">キャンセル</a>
           </div>
         </form>
       </div>
