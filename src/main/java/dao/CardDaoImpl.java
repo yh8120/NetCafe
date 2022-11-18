@@ -24,7 +24,7 @@ public class CardDaoImpl implements CardDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM cads";
+					+ " FROM cards";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {

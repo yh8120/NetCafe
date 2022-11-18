@@ -38,7 +38,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="formCustomerName">会員名</label>
+            <label for="formCustomerName">名前</label>
             <c:if test="${not empty customerNameError }">
               <div class="error-message">
                 <c:out value="${customerNameError}"></c:out>
@@ -80,32 +80,16 @@
               value=<c:out value="${cardNumber }"/>>
           </div>
           <div class="mb-3">
-            <label for="formName">ログインID</label>
-            <c:if test="${not empty newLoginIdError }">
-              <div class="error-message">
-                <c:out value="${newLoginIdError}"></c:out>
-              </div>
-            </c:if>
-            <input type="text" name="newLoginId" id="formName" class="form-control"
-              value=<c:out value="${newLoginId }"/>>
-          </div>
-          <div class="mb-3">
-            <label for="formCustomerBirthday">生年月日：西暦</label>
+            <label for="formCustomerBirthday">生年月日</label>
             <c:if test="${not empty customerBirthdayError }">
               <div class="error-message">
                 <c:out value="${customerBirthdayError}"></c:out>
               </div>
             </c:if>
-            <input type="text" name="customerBirthday" id="formCustomerBirthday" class="form-control"
-              value=<c:out value="${bdYear }"/>>年
-          </div>
-          <div class="mb-3">
-            <input type="text" name="customerBirthday" id="formCustomerBirthday" class="form-control"
-              value=<c:out value="${bdMonth }"/>>月
-          </div>
-          <div class="mb-3">
-            <input type="text" name="customerBirthday" id="formCustomerBirthday" class="form-control"
-              value=<c:out value="${bdDay }"/>>日
+            <div class="col-auto">
+              <input type="date" name="customerBirthday" id="formCustomerBirthday"
+                class="form-control" value=<c:out value="${customerBirthday }"/>>
+            </div>
           </div>
           <div class="mb-3">
             <label for="formCustomerZipcode">郵便番号</label>
@@ -118,29 +102,23 @@
               value=<c:out value="${customerAddress }"/>>
           </div>
           <div class="mb-3">
-            <label for="formCustomerMemo">住所</label>
+            <label for="formCustomerMemo">メモ</label>
             <input type="text" name="customerMemo" id="formCustomerMemo" class="form-control"
               value=<c:out value="${customerMemo }"/>>
           </div>
           <div class="mb-3">
-            <label for="formCustomerPhone">住所</label>
+            <label for="formCustomerPhone">電話番号</label>
             <input type="text" name="customerPhone" id="formCustomerPhone" class="form-control"
               value=<c:out value="${customerPhone }"/>>
           </div>
           <div class="mb-3">
-            <label for="formCustomerMailUser">住所</label>
-            <input type="text" name="customerMailUser" id="formCustomerMailUser" class="form-control"
-              value=<c:out value="${customerPhone }"/>>
+            <label for="formCustomerMail">メールアドレス</label>
+            <input type="text" name="customerMail" id="formCustomerMail"
+              class="form-control" value=<c:out value="${customerMail }"/>>
           </div>
           <div class="mb-3">
-            <label for="formCustomerMailDomain">住所</label>
-            <input type="text" name="customerMailDomain" id="formCustomerMailDomain" class="form-control"
-              value=<c:out value="${customerPhone }"/>>
-          </div>
-
-          <div class="mb-3">
-            <input type="submit" class="btn btn-success" value="登録"> <a href="listUser"
-              class="btn btn-light">キャンセル</a>
+            <input type="submit" class="btn btn-success" value="登録">
+            <a href="listUser" class="btn btn-light">キャンセル</a>
           </div>
         </form>
       </div>
