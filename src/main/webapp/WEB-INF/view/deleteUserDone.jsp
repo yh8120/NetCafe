@@ -13,7 +13,6 @@
 <body>
 <div class="container">
   <h1>ユーザー削除</h1>
-  <p><a href="logout">ログアウト</a></p>
   <div class="row">
     <div class="col">
       <p>ユーザーを削除しました。</p>

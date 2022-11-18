@@ -31,7 +31,8 @@ public class ListRoomServlet extends HttpServlet {
 			List<Room> roomList = roomDao.findAll();
 			request.setAttribute("roomList", roomList);
 			request.getRequestDispatcher("/WEB-INF/view/listRoom.jsp").forward(request, response);
-
+			
+			
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

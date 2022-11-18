@@ -13,7 +13,6 @@
 <body>
 <div class="container">
   <h1>ルーム更新</h1>
-  <p><a href="logout">ログアウト</a></p>
   <div class="row">
     <div class="col">
       <p>ルームの更新が完了しました。</p>

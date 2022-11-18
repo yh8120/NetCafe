@@ -25,7 +25,9 @@ public class CustomerDaoImpl implements CustomerDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ "FROM customers"
+					+ " sexes.sex_name as customer_sex_name"
+					+ " cards.card_name as customer_card_name"
+					+ " FROM customers"
 					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id"
 					+ " JOIN cards ON customers.customer_card_id = cards.card_id"
 					+ " JOIN sexes ON customers.customer_sex_id = sexes.sex_id";
@@ -45,7 +47,9 @@ public class CustomerDaoImpl implements CustomerDao {
 		Customer customer = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ "FROM customers"
+					+ " sexes.sex_name as customer_sex_name"
+					+ " cards.card_name as customer_card_name"
+					+ " FROM customers"
 					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id"
 					+ " JOIN cards ON customers.customer_card_id = cards.card_id"
 					+ " JOIN sexes ON customers.customer_sex_id = sexes.sex_id"
@@ -158,8 +162,8 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setCustomerRegestered((Date) rs.getObject("customer_regestered"));
 		customer.setCustomerUpdated((Date) rs.getObject("customer_updated"));
 		customer.setCustomerClassName(rs.getString("customer_class_name"));
-		customer.setCustomerSex(rs.getString("sex"));
-		customer.setCustomerCardName(rs.getString("card_name"));
+		customer.setCustomerSexName(rs.getString("customer_sex_name"));
+		customer.setCustomerCardName(rs.getString("customer_card_name"));
 		return customer;
 
 	}

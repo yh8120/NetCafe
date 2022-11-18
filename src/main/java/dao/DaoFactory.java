@@ -15,14 +15,34 @@ public class DaoFactory {
 		return new RoomDaoImpl(getDataSource());
 
 	}
+
+	public static RoomTypeDao createRoomTypeDao() {
+		return new RoomTypeDaoImpl(getDataSource());
+
+	}
 	
 	public static UserClassDao createUserClassDao() {
 		return new UserClassDaoImpl(getDataSource());
 
 	}
 	
-	public static RoomTypeDao createRoomTypeDao() {
-		return new RoomTypeDaoImpl(getDataSource());
+	public static CustomerDao createCustomerDao() {
+		return new CustomerDaoImpl(getDataSource());
+		
+	}
+	
+	public static CustomerClassDao createCustomerClassDao() {
+		return new CustomerClassDaoImpl(getDataSource());
+		
+	}
+	
+	public static CardDao createCardDao() {
+		return new CardDaoImpl(getDataSource());
+
+	}
+	
+	public static SexDao createSexDao() {
+		return new SexDaoImpl(getDataSource());
 
 	}
 

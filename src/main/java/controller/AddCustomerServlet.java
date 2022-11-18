@@ -9,11 +9,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.CardDao;
+import dao.CustomerClassDao;
+import dao.CustomerDao;
 import dao.DaoFactory;
-import dao.RoomDao;
-import dao.RoomTypeDao;
-import domain.Room;
-import domain.RoomType;
+import dao.SexDao;
+import domain.Card;
+import domain.Customer;
+import domain.CustomerClass;
+import domain.Sex;
 
 @WebServlet("/addCustomer")
 public class AddCustomerServlet extends HttpServlet {
@@ -22,11 +26,19 @@ public class AddCustomerServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			RoomTypeDao roomTypeDao = DaoFactory.createRoomTypeDao();
-			List<RoomType> roomTypeList = roomTypeDao.findAll();
-			request.setAttribute("roomTypeList", roomTypeList);
+			CustomerClassDao customerClassDao = DaoFactory.createCustomerClassDao();
+			List<CustomerClass> customerClassList = customerClassDao.findAll();
+			request.setAttribute("customerClassList", customerClassList);
 			
-			request.getRequestDispatcher("/WEB-INF/view/addRoom.jsp").forward(request, response);
+			CardDao cardDao = DaoFactory.createCardDao();
+			List<Card> cardList = cardDao.findAll();
+			request.setAttribute("cardList", cardList);
+			
+			SexDao sexDao = DaoFactory.createSexDao();
+			List<Sex> sexList = sexDao.findAll();
+			request.setAttribute("sexList", sexList);
+			
+			request.getRequestDispatcher("/WEB-INF/view/addCustomer.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			throw new ServletException();
@@ -39,40 +51,48 @@ public class AddCustomerServlet extends HttpServlet {
 		
 
 		try {
-			RoomTypeDao roomTypeDao = DaoFactory.createRoomTypeDao();
-			List<RoomType> roomTypeList = roomTypeDao.findAll();
-			request.setAttribute("roomTypeList", roomTypeList);
+			CustomerClassDao customerClassDao = DaoFactory.createCustomerClassDao();
+			List<CustomerClass> customerClassList = customerClassDao.findAll();
+			request.setAttribute("customerClassList", customerClassList);
 			
-			String roomName = request.getParameter("roomName");
-			Integer roomTypeId =Integer.parseInt(request.getParameter("roomTypeId"));
+			CardDao cardDao = DaoFactory.createCardDao();
+			List<Card> cardList = cardDao.findAll();
+			request.setAttribute("cardList", cardList);
 			
-			request.setAttribute("roomName", roomName);
-			request.setAttribute("roomTypeId", roomTypeId);
+			SexDao sexDao = DaoFactory.createSexDao();
+			List<Sex> sexList = sexDao.findAll();
+			request.setAttribute("sexList", sexList);
+			
+			String customerName = request.getParameter("customerName");
+			Integer customerClassId =Integer.parseInt(request.getParameter("customerClassId"));
+			
+			request.setAttribute("customerName", customerName);
+			request.setAttribute("customerClassId", customerClassId);
 			
 			boolean isError = false;
-			if (roomName.isEmpty()) {
-				request.setAttribute("roomNameError", "名前が未入力です。");
+			if (customerName.isEmpty()) {
+				request.setAttribute("customerNameError", "名前が未入力です。");
 				isError = true;
 			}
-			if (roomName.length() > 20) {
-				request.setAttribute("roomNameError", "20文字以下で入力してください。");
+			if (customerName.length() > 20) {
+				request.setAttribute("customerNameError", "20文字以下で入力してください。");
 				isError = true;
 			}
 			
 			
 			if (isError) {
-				request.getRequestDispatcher("/WEB-INF/view/addRoom.jsp")
+				request.getRequestDispatcher("/WEB-INF/view/addCustomer.jsp")
 				.forward(request, response);
 				return;
 			}
 
-			Room room = new Room();
-			room.setRoomName(roomName);
-			room.setRoomTypeId(roomTypeId);
+			Customer customer = new Customer();
+			customer.setCustomerName(customerName);
+			customer.setCustomerClassId(customerClassId);
 
-			RoomDao roomDao = DaoFactory.createRoomDao();
-			roomDao.insert(room);
-			request.getRequestDispatcher("/WEB-INF/view/addRoomDone.jsp").forward(request, response);
+			CustomerDao customerDao = DaoFactory.createCustomerDao();
+			customerDao.insert(customer);
+			request.getRequestDispatcher("/WEB-INF/view/addCustomerDone.jsp").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

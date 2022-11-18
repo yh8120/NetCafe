@@ -19,7 +19,7 @@ public class Customer {
 	private Date customerRegestered;
 	private Date customerUpdated;
 	private String customerClassName;
-	private String customerSex;
+	private String customerSexName;
 	private String customerCardName;
 	public Integer getCustomerId() {
 		return customerId;
@@ -111,11 +111,12 @@ public class Customer {
 	public void setCustomerClassName(String customerClassName) {
 		this.customerClassName = customerClassName;
 	}
-	public String getCustomerSex() {
-		return customerSex;
+	
+	public String getCustomerSexName() {
+		return customerSexName;
 	}
-	public void setCustomerSex(String customerSex) {
-		this.customerSex = customerSex;
+	public void setCustomerSexName(String customerSexName) {
+		this.customerSexName = customerSexName;
 	}
 	public String getCustomerCardName() {
 		return customerCardName;
