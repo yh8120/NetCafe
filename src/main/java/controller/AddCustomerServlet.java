@@ -74,7 +74,7 @@ public class AddCustomerServlet extends HttpServlet {
 			Integer customerCardId = Integer.parseInt(request.getParameter("customerCardId"));
 			String customerCardNumber = request.getParameter("customerCardNumber");
 			String strCustomerBirthday = request.getParameter("customerBirthday");
-			String strCustomerZipcode = request.getParameter("customerZipcode");
+			String customerZipcode = request.getParameter("customerZipcode");
 			String customerAddress = request.getParameter("customerAddress");
 			String customerMemo = request.getParameter("customerMemo");
 			String customerPhone = request.getParameter("customerPhone");
@@ -87,13 +87,12 @@ public class AddCustomerServlet extends HttpServlet {
 			request.setAttribute("customerCardId", customerCardId);
 			request.setAttribute("customerCardNumber", customerCardNumber);
 			request.setAttribute("customerBirthday", strCustomerBirthday);
-			request.setAttribute("customerZipcode", strCustomerZipcode);
+			request.setAttribute("customerZipcode", customerZipcode);
 			request.setAttribute("customerAddress", customerAddress);
 			request.setAttribute("customerMemo", customerMemo);
 			request.setAttribute("customerPhone", customerPhone);
 			request.setAttribute("customerMail", customerMail);
 			Integer customerId = 0;
-			Integer customerZipcode = 0;
 			Date customerBirthday = null;
 
 			boolean isError = false;
@@ -129,7 +128,7 @@ public class AddCustomerServlet extends HttpServlet {
 
 			//			身分証番号
 			if (customerCardNumber.isEmpty()) {
-				request.setAttribute("customerIdError", "身分証番号が未入力です");
+				request.setAttribute("customerCardNumberError", "身分証番号が未入力です");
 				isError = true;
 			}
 
@@ -150,17 +149,22 @@ public class AddCustomerServlet extends HttpServlet {
 			}
 
 			//			郵便番号
-			if (!strCustomerZipcode.isEmpty()) {
-				try {
-					customerZipcode = Integer.parseInt(strCustomerZipcode);
-					if (customerZipcode <= 0) {
-						request.setAttribute("customerZipCodeError", "郵便番号が不正です。");
-						isError = true;
-					}
-				} catch (NumberFormatException e) {
-					request.setAttribute("customerZipCodeError", "郵便番号が不正です。");
-					isError = true;
-				}
+			Pattern patternZipcode = Pattern
+					.compile("^[0-9]{3}-[0-9]{4}$");
+			Matcher matcherZipcode = patternZipcode.matcher(customerZipcode);
+
+			if (!matcherZipcode.matches()) {
+				request.setAttribute("customerZipcodeError", "郵便番号が不正です。");
+				isError = true;
+			}
+			//           住所
+			if (customerAddress.isEmpty()) {
+				request.setAttribute("customerAddressError", "住所が未入力です。");
+				isError = true;
+			}
+			if (customerAddress.length() > 45) {
+				request.setAttribute("customerAddressError", "45文字以下で入力してください。");
+				isError = true;
 			}
 
 			//			メールアドレス

@@ -11,7 +11,7 @@ public class Customer {
 	private Integer customerCardId;
 	private String customerCardNumber;
 	private Date customerBirthday;
-	private Integer customerZipcode;
+	private String customerZipcode;
 	private String customerAddress;
 	private String customerMemo;
 	private String customerPhone;
@@ -63,10 +63,10 @@ public class Customer {
 	public void setCustomerBirthday(Date customerBirthday) {
 		this.customerBirthday = customerBirthday;
 	}
-	public Integer getCustomerZipcode() {
+	public String getCustomerZipcode() {
 		return customerZipcode;
 	}
-	public void setCustomerZipcode(Integer customerZipcode) {
+	public void setCustomerZipcode(String customerZipcode) {
 		this.customerZipcode = customerZipcode;
 	}
 	public String getCustomerAddress() {

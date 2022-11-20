@@ -79,7 +79,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setObject(5, customer.getCustomerCardId(), Types.INTEGER);
 			stmt.setString(6, customer.getCustomerCardNumber());
 			stmt.setObject(7, customer.getCustomerBirthday(),Types.DATE);
-			stmt.setObject(8, customer.getCustomerZipcode(), Types.INTEGER);
+			stmt.setString(8, customer.getCustomerZipcode());
 			stmt.setString(9, customer.getCustomerAddress());
 			stmt.setString(10, customer.getCustomerMemo());
 			stmt.setString(11, customer.getCustomerPhone());
@@ -104,18 +104,18 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " (customer_regetered=?,customer_updated=NOW())"
 					+ " WHERE customer_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, customer.getCustomerClassId(), Types.INTEGER);
-			stmt.setString(2, customer.getCustomerName());
-			stmt.setObject(3, customer.getCustomerSexId(), Types.INTEGER);
-			stmt.setObject(4, customer.getCustomerCardId(), Types.INTEGER);
-			stmt.setString(5, customer.getCustomerCardNumber());
-			stmt.setObject(6, customer.getCustomerBirthday(),Types.DATE);
-			stmt.setObject(7, customer.getCustomerZipcode(), Types.INTEGER);
-			stmt.setString(8, customer.getCustomerAddress());
-			stmt.setString(9, customer.getCustomerMemo());
-			stmt.setString(10, customer.getCustomerPhone());
-			stmt.setString(11, customer.getCustomerMail());
-			stmt.setObject(12, customer.getCustomerBirthday(),Types.DATE);
+			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);
+			stmt.setObject(2, customer.getCustomerClassId(), Types.INTEGER);
+			stmt.setString(3, customer.getCustomerName());
+			stmt.setObject(4, customer.getCustomerSexId(), Types.INTEGER);
+			stmt.setObject(5, customer.getCustomerCardId(), Types.INTEGER);
+			stmt.setString(6, customer.getCustomerCardNumber());
+			stmt.setObject(7, customer.getCustomerBirthday(),Types.DATE);
+			stmt.setString(8, customer.getCustomerZipcode());
+			stmt.setString(9, customer.getCustomerAddress());
+			stmt.setString(10, customer.getCustomerMemo());
+			stmt.setString(11, customer.getCustomerPhone());
+			stmt.setString(12, customer.getCustomerMail());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -146,7 +146,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setCustomerCardId((Integer) rs.getObject("customer_card_id"));
 		customer.setCustomerCardNumber(rs.getString("customer_card_number"));
 		customer.setCustomerBirthday((Date) rs.getObject("customer_birthday"));
-		customer.setCustomerZipcode((Integer) rs.getObject("customer_zipcode"));
+		customer.setCustomerZipcode(rs.getString("customer_zipcode"));
 		customer.setCustomerAddress(rs.getString("customer_address"));
 		customer.setCustomerMemo(rs.getString("customer_memo"));
 		customer.setCustomerPhone(rs.getString("customer_phone"));
