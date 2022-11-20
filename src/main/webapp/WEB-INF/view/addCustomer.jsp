@@ -15,7 +15,8 @@
     <h1>会員登録</h1>
     <div class="row">
       <div class="col">
-        <form action="" method="post">
+        <form class="h-adr" action="" method="post">
+        <span class="p-country-name" style="display:none;">Japan</span>
           <div class="mb-3">
             <label for="formCustomerId">会員番号</label>
             <c:if test="${not empty customerIdError }">
@@ -98,12 +99,17 @@
                 <c:out value="${customerZipcodeError}"></c:out>
               </div>
             </c:if>
-            <input type="text" name="customerZipcode" id="formCustomerZipcode" class="form-control"
+            <input type="text" name="customerZipcode" id="formCustomerZipcode" class="form-control p-postal-code"  maxlength="8"
               value=<c:out value="${customerZipcode }"/>>
           </div>
           <div class="mb-3">
             <label for="formCustomerAddress">住所</label>
-            <input type="text" name="customerAddress" id="formCustomerAddress" class="form-control"
+            <c:if test="${not empty customerAddressError }">
+              <div class="error-message">
+                <c:out value="${customerAddressError}"></c:out>
+              </div>
+            </c:if>
+            <input type="text" name="customerAddress" id="formCustomerAddress" class="form-control p-region p-locality p-street-address p-extended-address"
               value=<c:out value="${customerAddress }"/>>
           </div>
           <div class="mb-3">
@@ -139,6 +145,7 @@
       </div>
     </div>
   </div>
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
   <script src="js/jquery-3.6.1.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
 </body>
