@@ -13,9 +13,6 @@ import dao.DaoFactory;
 import dao.RoomDao;
 import domain.Room;
 
-
-
-
 @WebServlet("/manager")
 public class ManagerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -24,10 +21,10 @@ public class ManagerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			RoomDao roomDao = DaoFactory.createRoomDao();
-			List<Room> roomList = roomDao.findAll();
+			List<Room> roomList = roomDao.makeManager();
 			request.setAttribute("roomList", roomList);
 			request.getRequestDispatcher("/WEB-INF/view/manager.jsp").forward(request, response);
-
+		
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

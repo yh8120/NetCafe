@@ -5,8 +5,19 @@ public class Room {
 	private String roomName;
 	private Integer roomTypeId;
 	private String roomTypeName;
+	private Integer roomOrder;
 	
 	
+	public Integer getRoomOrder() {
+		return roomOrder;
+	}
+
+
+	public void setRoomOrder(Integer roomOrder) {
+		this.roomOrder = roomOrder;
+	}
+
+
 	public String getRoomTypeName() {
 		return roomTypeName;
 	}

@@ -39,6 +39,30 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
+	public List<Room> makeManager() throws Exception {
+		List<Room> roomList = new ArrayList<>();
+
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT *"
+					+ "FROM rooms"
+					+ " JOIN room_types"
+					+ " ON rooms.room_type_id = room_types.room_type_id"
+					+ " ORDER BY room_order ASC";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Integer roomOrder = (Integer) rs.getObject("room_order");
+				if (roomOrder != null) {
+					roomList.add(mapToRoom(rs));
+				}
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return roomList;
+	}
+
+	@Override
 	public Room findById(Integer id) throws Exception {
 		Room room = null;
 		try (Connection con = ds.getConnection()) {
@@ -98,7 +122,7 @@ public class RoomDaoImpl implements RoomDao {
 			String sql = "DELETE FROM rooms"
 					+ " Where room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, room.getRoomId(),Types.INTEGER);
+			stmt.setObject(1, room.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -112,6 +136,7 @@ public class RoomDaoImpl implements RoomDao {
 		room.setRoomName(rs.getString("room_name"));
 		room.setRoomTypeId((Integer) rs.getObject("room_type_id"));
 		room.setRoomTypeName(rs.getString("room_type_name"));
+		room.setRoomOrder((Integer) rs.getObject("room_order"));
 		return room;
 
 	}
