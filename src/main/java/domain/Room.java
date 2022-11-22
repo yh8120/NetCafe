@@ -6,8 +6,19 @@ public class Room {
 	private Integer roomTypeId;
 	private String roomTypeName;
 	private Integer roomOrder;
+	private RoomStatus roomStatus;
 	
 	
+	public RoomStatus getRoomStatus() {
+		return roomStatus;
+	}
+
+
+	public void setRoomStatus(RoomStatus roomStatus) {
+		this.roomStatus = roomStatus;
+	}
+
+
 	public Integer getRoomOrder() {
 		return roomOrder;
 	}

@@ -15,6 +15,7 @@ import domain.Room;
 
 @WebServlet("/manager")
 public class ManagerServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -24,7 +25,7 @@ public class ManagerServlet extends HttpServlet {
 			List<Room> roomList = roomDao.makeManager();
 			request.setAttribute("roomList", roomList);
 			request.getRequestDispatcher("/WEB-INF/view/manager.jsp").forward(request, response);
-		
+
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

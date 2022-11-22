@@ -46,13 +46,16 @@ public class RoomDaoImpl implements RoomDao {
 			String sql = "SELECT *"
 					+ "FROM rooms"
 					+ " JOIN room_types"
+					+ " JOIN room_status"
 					+ " ON rooms.room_type_id = room_types.room_type_id"
+					+ " ,rooms.room_id = room_status.room_id"
 					+ " ORDER BY room_order ASC";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Integer roomOrder = (Integer) rs.getObject("room_order");
 				if (roomOrder != null) {
+					//作成中
 					roomList.add(mapToRoom(rs));
 				}
 			}
