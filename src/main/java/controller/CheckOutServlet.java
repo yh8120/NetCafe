@@ -14,18 +14,23 @@ import dao.RoomStatusDao;
 import domain.Customer;
 import domain.RoomStatus;
 
-@WebServlet("/checkIn")
+@WebServlet("/checkOut")
 public class CheckOutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			Integer roomId = Integer.parseInt(request.getParameter("id"));
-			
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+			Integer customerId = Integer.parseInt(request.getParameter("customerId"));
+
+			CustomerDao customerDao = DaoFactory.createCustomerDao();
+			Customer customer = customerDao.findById(customerId);
+
 			request.setAttribute("roomId", roomId);
-			
-			request.getRequestDispatcher("/WEB-INF/view/checkIn.jsp").forward(request, response);
+			request.setAttribute("customer", customer);
+
+			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			HttpServletResponse res = (HttpServletResponse) response;
@@ -36,61 +41,16 @@ public class CheckOutServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 
+		Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+
+		RoomStatus roomStatus = new RoomStatus();
+		roomStatus.setRoomId(roomId);
 		try {
-			Integer roomId = Integer.parseInt(request.getParameter("id"));
-			String strCustomerId = request.getParameter("customerId");
-			
-
-			request.setAttribute("roomId", roomId);
-			request.setAttribute("customerId", strCustomerId);
-			
-			Integer customerId = 0;
-			
-			boolean isError = false;
-			
-			//会員番号のバリデーション
-			if (strCustomerId.isEmpty()) {
-				request.setAttribute("customerIdError", "会員番号が未入力です");
-				isError = true;
-			} else {
-				try {
-					customerId = Integer.parseInt(strCustomerId);
-					if (customerId <= 0) {
-						request.setAttribute("customerIdError", "会員番号が不正です。");
-						isError = true;
-					}
-				} catch (NumberFormatException e) {
-					request.setAttribute("customerIdError", "会員番号が不正です。");
-					isError = true;
-				}
-			}
-			
-			//会員検索
-			CustomerDao customerDao = DaoFactory.createCustomerDao();
-			Customer customer = customerDao.findById(customerId);
-			if(customer==null) {
-				request.setAttribute("customerIdError", "会員情報がありません。");
-				isError = true;
-			}
-			
-			
-			if (isError) {
-				request.getRequestDispatcher("/WEB-INF/view/checkIn.jsp")
-				.forward(request, response);
-				return;
-			}
-			
-			//TODO 同じ会員番号での入室を防ぐよう修正
-			
-			RoomStatus roomStatus = new RoomStatus();
-			roomStatus.setRoomId(roomId);
-			roomStatus.setCustomerId(customerId);
 
 			RoomStatusDao roomStatusDao = DaoFactory.createRoomStatusDao();
-			roomStatusDao.insert(roomStatus);
-			
+			roomStatusDao.delete(roomStatus);
+
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect("manager");
 		} catch (Exception e) {

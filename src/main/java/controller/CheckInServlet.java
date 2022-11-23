@@ -21,7 +21,7 @@ public class CheckInServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			Integer roomId = Integer.parseInt(request.getParameter("id"));
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			
 			request.setAttribute("roomId", roomId);
 			
@@ -39,7 +39,7 @@ public class CheckInServlet extends HttpServlet {
 		
 
 		try {
-			Integer roomId = Integer.parseInt(request.getParameter("id"));
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			String strCustomerId = request.getParameter("customerId");
 			
 

@@ -93,7 +93,7 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 	public void delete(RoomStatus roomStatus) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "DELETE FROM room_status"
-					+ " Where room_type_id = ?";
+					+ " Where room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, roomStatus.getRoomId(),Types.INTEGER);
 			stmt.executeUpdate();
