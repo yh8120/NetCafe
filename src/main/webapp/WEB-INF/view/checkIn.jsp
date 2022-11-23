@@ -26,7 +26,7 @@
             <input type="number" name="customerId" id="formCustomerId" class="form-control" value=<c:out value="${customerId }"/>>
           </div>
           <div class="mb-3">
-            <input type="submit" class="btn btn-success" value="登録">
+            <input type="submit" class="btn btn-success" value="入室">
             <a href="manager" class="btn btn-light">キャンセル</a>
           </div>
         </form>

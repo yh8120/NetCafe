@@ -29,7 +29,7 @@
               </td>
             </tr>
           </table>
-          <input type="submit" value="お会計" class="btn btn-primary">
+          <input type="submit" value="清算" class="btn btn-primary">
           <a href="manager" class="btn btn-light">キャンセル</a>
         </form>
       </div>
@@ -40,7 +40,7 @@
   <script>
 			$(document).ready(function() {
 				$("form").submit(function() {
-					return confirm("本当に削除しますか？");
+					return confirm("清算しますか？");
 				});
 			});
 		</script>
