@@ -17,25 +17,26 @@
     <div class="row">
       <div class="accordion accordion-flush" id="accordionFlushExample">
         <c:forEach items="${roomList}" var="room">
+          
           <div class="accordion-item">
-            <h2 class="accordion-header" id="flush-heading${room.roomOrder }">
+            <h2 class="accordion-header" id="flush-heading${room.roomId }">
               <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapse${room.roomOrder }" aria-expanded="false"
-                aria-controls="flush-collapse${room.roomOrder }">
-                <c:out value="${room.roomName }" />
+                data-bs-target="#flush-collapse${room.roomId }" aria-expanded="false"
+                aria-controls="flush-collapse${room.roomId }">
+                <c:out value="${room.roomName }" />＝＝＝<c:out value="${room.customerId }" />＝＝＝<c:out value="${room.started }" />
               </button>
             </h2>
-            <div id="flush-collapse${room.roomOrder }" class="accordion-collapse collapse"
-              aria-labelledby="flush-heading${room.roomOrder }"
+            <div id="flush-collapse${room.roomId }" class="accordion-collapse collapse"
+              aria-labelledby="flush-heading${room.roomId }"
               data-bs-parent="#accordionFlushExample">
               <div class="accordion-body">
                 <div class="no-vacancy">
-                  <a href="" class="btn btn-success col-3 mr-2">入室</a>
+                  <a href="checkIn?id=<c:out value="${room.roomId }"/>" class="btn btn-success col-3 mr-2">入室</a>
                   <a href="" class="btn btn-success col-3 mr-2">予約</a>
                   <a href="" class="btn btn-success col-3">清掃</a>
                 </div>
                 <div class="vacancy">
-                  <a href="" class="btn btn-success col-2 mr-2">退室</a>
+                  <a href="checkOut?id=<c:out value="${room.roomId }"/>" class="btn btn-success col-2 mr-2">退室</a>
                   <a href="" class="btn btn-success col-2 mr-2">販売</a>
                   <a href="" class="btn btn-success col-2 mr-2">レンタル</a>
                   <a href="" class="btn btn-success col-2">ロスタイム</a>
@@ -43,6 +44,7 @@
               </div>
             </div>
           </div>
+          
         </c:forEach>
       </div>
       <div class="col">

@@ -15,6 +15,11 @@ public class DaoFactory {
 		return new RoomDaoImpl(getDataSource());
 
 	}
+	
+	public static RoomStatusDao createRoomStatusDao() {
+		return new RoomStatusDaoImpl(getDataSource());
+
+	}
 
 	public static RoomTypeDao createRoomTypeDao() {
 		return new RoomTypeDaoImpl(getDataSource());

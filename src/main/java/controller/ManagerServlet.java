@@ -24,11 +24,11 @@ public class ManagerServlet extends HttpServlet {
 			RoomDao roomDao = DaoFactory.createRoomDao();
 			List<Room> roomList = roomDao.makeManager();
 			request.setAttribute("roomList", roomList);
-			request.getRequestDispatcher("/WEB-INF/view/manager.jsp").forward(request, response);
 
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
-	}
 
+		request.getRequestDispatcher("WEB-INF/view/manager.jsp").forward(request, response);
+	}
 }

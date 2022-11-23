@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Date;
+
 public class Room {
 	private Integer roomId;
 	private String roomName;
@@ -7,8 +9,30 @@ public class Room {
 	private String roomTypeName;
 	private Integer roomOrder;
 	private RoomStatus roomStatus;
+	private Integer customerId;
+	private Date started;
 	
 	
+	public Integer getCustomerId() {
+		return customerId;
+	}
+
+
+	public void setCustomerId(Integer customerId) {
+		this.customerId = customerId;
+	}
+
+
+	public Date getStarted() {
+		return started;
+	}
+
+
+	public void setStarted(Date started) {
+		this.started = started;
+	}
+
+
 	public RoomStatus getRoomStatus() {
 		return roomStatus;
 	}

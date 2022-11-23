@@ -24,7 +24,22 @@ public class CustomerDaoImpl implements CustomerDao {
 		List<Customer> customerList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT *"
+			String sql = "SELECT"
+					+ " customer_id,"
+					+ " customers.customer_class_id,"
+					+ " customer_class_name,"
+					+ " customer_name,"
+					+ " customer_sex_id,"
+					+ " customer_card_id,"
+					+ " customer_card_number,"
+					+ " customer_birthday,"
+					+ " customer_zipcode,"
+					+ " customer_address,"
+					+ " customer_memo,"
+					+ " customer_phone,"
+					+ " customer_mail,"
+					+ " customer_regestered,"
+					+ " customer_updated,"
 					+ " sexes.sex_name as customer_sex_name"
 					+ " cards.card_name as customer_card_name"
 					+ " FROM customers"
@@ -46,13 +61,27 @@ public class CustomerDaoImpl implements CustomerDao {
 	public Customer findById(Integer id) throws Exception {
 		Customer customer = null;
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT *"
-					+ " sexes.sex_name as customer_sex_name"
-					+ " cards.card_name as customer_card_name"
-					+ " FROM customers"
-					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id"
-					+ " JOIN cards ON customers.customer_card_id = cards.card_id"
-					+ " JOIN sexes ON customers.customer_sex_id = sexes.sex_id"
+			String sql = "SELECT customer_id,  "
+					+ " customers.customer_class_id, "
+					+ " customer_class_name,"
+					+ " customer_name,  "
+					+ " customer_sex_id,  "
+					+ " customer_card_id,  "
+					+ " customer_card_number,  "
+					+ " customer_birthday,  "
+					+ " customer_zipcode,  "
+					+ " customer_address,  "
+					+ " customer_memo,  "
+					+ " customer_phone,   "
+					+ " customer_mail,  "
+					+ " customer_regestered,  "
+					+ " customer_updated,  "
+					+ " sexes.sex_name as customer_sex_name,  "
+					+ " cards.card_name as customer_card_name  "
+					+ " FROM customers   "
+					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id  "
+					+ " JOIN cards ON customers.customer_card_id = cards.card_id  "
+					+ " JOIN sexes ON customers.customer_sex_id = sexes.sex_id  "
 					+ " WHERE customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, id, Types.INTEGER);
@@ -69,7 +98,22 @@ public class CustomerDaoImpl implements CustomerDao {
 	@Override
 	public void insert(Customer customer) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO customers (customer_id, customer_class_id, customer_name, customer_sex_id, customer_card_id, customer_card_number, customer_birthday, customer_zipcode, customer_address, customer_memo, customer_phone, customer_mail, customer_regestered, customer_updated) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
+			String sql = "INSERT INTO customers"
+					+ " (customer_id,"
+					+ " customer_class_id,"
+					+ " customer_name,"
+					+ " customer_sex_id,"
+					+ " customer_card_id,"
+					+ " customer_card_number,"
+					+ " customer_birthday,"
+					+ " customer_zipcode,"
+					+ " customer_address,"
+					+ " customer_memo,"
+					+ " customer_phone,"
+					+ " customer_mail,"
+					+ " customer_regestered,"
+					+ " customer_updated)"
+					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
 			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);
