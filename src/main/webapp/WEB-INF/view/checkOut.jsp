@@ -25,7 +25,7 @@
             <tr>
               <th>名前</th>
               <td>
-                <c:out value="${customer.customerName }" />
+                <c:out value="${customer.lastName } ${customer.firstName }" />
               </td>
             </tr>
           </table>

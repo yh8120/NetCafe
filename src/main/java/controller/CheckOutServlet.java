@@ -33,8 +33,9 @@ public class CheckOutServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
 		} catch (Exception e) {
-			HttpServletResponse res = (HttpServletResponse) response;
-			res.sendRedirect("manager");
+			throw new ServletException(e);
+//			HttpServletResponse res = (HttpServletResponse) response;
+//			res.sendRedirect("manager");
 		}
 
 	}
