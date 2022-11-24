@@ -24,9 +24,10 @@ public class RoomDaoImpl implements RoomDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ "FROM rooms"
-					+ " JOIN room_types"
-					+ " ON rooms.room_type_id = room_types.room_type_id";
+					+ " FROM rooms"
+					+ " JOIN room_types ON rooms.room_type_id = room_types.room_type_id"
+					+ " JOIN cleaning_status ON rooms.cleaning_id = cleaning_status.cleaning_id"
+					+ " ORDER BY room_order ASC";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -39,42 +40,16 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
-	public List<Room> makeManager() throws Exception {
-		List<Room> roomList = new ArrayList<>();
-
-		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT * FROM rooms"
-					+ " JOIN room_types ON rooms.room_type_id = room_types.room_type_id"
-					+ " LEFT OUTER JOIN room_status ON rooms.room_id = room_status.room_id"
-					+ " ORDER BY room_order ASC";
-			PreparedStatement stmt = con.prepareStatement(sql);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Integer roomOrder = (Integer) rs.getObject("room_order");
-				if (roomOrder != null) {
-					Room room = mapToRoom(rs);
-					room.setCustomerId((Integer) rs.getObject("customer_id"));
-					room.setStarted(rs.getTimestamp("started"));
-					roomList.add(room);
-				}
-			}
-		} catch (Exception e) {
-			throw e;
-		}
-		return roomList;
-	}
-
-	@Override
-	public Room findById(Integer id) throws Exception {
+	public Room findById(Integer roomId) throws Exception {
 		Room room = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
 					+ " FROM rooms"
-					+ " JOIN room_types"
-					+ " ON rooms.room_type_id = room_types.room_type_id"
+					+ " JOIN room_types ON rooms.room_type_id = room_types.room_type_id"
+					+ " JOIN cleaning_status ON rooms.cleaning_id = cleaning_status.cleaning_id"
 					+ " WHERE room_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, id, Types.INTEGER);
+			stmt.setObject(1, roomId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				room = mapToRoom(rs);
@@ -84,7 +59,29 @@ public class RoomDaoImpl implements RoomDao {
 		}
 		return room;
 	}
-
+	
+	@Override
+	public Room checkCurrentUser(Integer customerId) throws Exception {
+		Room room = null;
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT *"
+					+ " FROM rooms"
+					+ " JOIN room_types ON rooms.room_type_id = room_types.room_type_id"
+					+ " JOIN cleaning_status ON rooms.cleaning_id = cleaning_status.cleaning_id"
+					+ " WHERE customer_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, customerId, Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				room = mapToRoom(rs);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return room;
+		
+	}
+	
 	@Override
 	public void insert(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -119,6 +116,56 @@ public class RoomDaoImpl implements RoomDao {
 	}
 
 	@Override
+	public void cleaning(Room room) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE rooms"
+					+ " SET cleaning_id = ?"
+					+ " WHERE room_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, room.getCleaningId(), Types.INTEGER);
+			stmt.setObject(2, room.getRoomId(), Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
+	
+	@Override
+	public void checkIn(Room room) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE rooms"
+					+ " SET customer_id = ?,"
+					+ " started = NOW()"
+					+ " WHERE room_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, room.getCustomerId(), Types.INTEGER);
+			stmt.setObject(2, room.getRoomId(), Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
+	@Override
+	public void checkOut(Room room) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE rooms"
+					+ " SET customer_id = null,"
+					+ " started = null,"
+					+ " cleaning_id = 2"
+					+ " WHERE room_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, room.getRoomId(), Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
 	public void delete(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "DELETE FROM rooms"
@@ -139,8 +186,12 @@ public class RoomDaoImpl implements RoomDao {
 		room.setRoomTypeId((Integer) rs.getObject("room_type_id"));
 		room.setRoomTypeName(rs.getString("room_type_name"));
 		room.setRoomOrder((Integer) rs.getObject("room_order"));
+		room.setCustomerId((Integer) rs.getObject("customer_Id"));
+		room.setStarted(rs.getTimestamp("started"));
+		room.setCleaningId((Integer) rs.getObject("cleaning_id"));
+		room.setCleaningName(rs.getString("cleaning_name"));
 		return room;
-
 	}
+
 
 }

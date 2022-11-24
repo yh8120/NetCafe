@@ -8,10 +8,10 @@ public class Room {
 	private Integer roomTypeId;
 	private String roomTypeName;
 	private Integer roomOrder;
-	private RoomStatus roomStatus;
 	private Integer customerId;
 	private Date started;
-	
+	private Integer cleaningId;
+	private String cleaningName;
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -30,16 +30,6 @@ public class Room {
 
 	public void setStarted(Date started) {
 		this.started = started;
-	}
-
-
-	public RoomStatus getRoomStatus() {
-		return roomStatus;
-	}
-
-
-	public void setRoomStatus(RoomStatus roomStatus) {
-		this.roomStatus = roomStatus;
 	}
 
 
@@ -94,6 +84,26 @@ public class Room {
 
 	public void setRoomTypeId(Integer roomTypeId) {
 		this.roomTypeId = roomTypeId;
+	}
+
+
+	public Integer getCleaningId() {
+		return cleaningId;
+	}
+
+
+	public void setCleaningId(Integer cleaningId) {
+		this.cleaningId = cleaningId;
+	}
+
+
+	public String getCleaningName() {
+		return cleaningName;
+	}
+
+
+	public void setCleaningName(String cleaningName) {
+		this.cleaningName = cleaningName;
 	}
 
 }

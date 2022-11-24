@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,22 +12,32 @@ import dao.DaoFactory;
 import dao.RoomDao;
 import domain.Room;
 
-@WebServlet("/manager")
-public class ManagerServlet extends HttpServlet {
-
+@WebServlet("/cleaning")
+public class CleaningServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+			Integer cleaningId = Integer.parseInt(request.getParameter("cleaningId"));
+			
 			RoomDao roomDao = DaoFactory.createRoomDao();
-			List<Room> roomList = roomDao.findAll();
-			request.setAttribute("roomList", roomList);
+			Room room = new Room();
+			
+			room.setRoomId(roomId);
+			room.setCleaningId(cleaningId);
+			
+			roomDao.cleaning(room);
+			
+			HttpServletResponse res = (HttpServletResponse) response;
+			res.sendRedirect("manager");
 
 		} catch (Exception e) {
-			throw new ServletException(e);
+			HttpServletResponse res = (HttpServletResponse) response;
+			res.sendRedirect("manager");
 		}
 
-		request.getRequestDispatcher("WEB-INF/view/manager.jsp").forward(request, response);
 	}
+
 }

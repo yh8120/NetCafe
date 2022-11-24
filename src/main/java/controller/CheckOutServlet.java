@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CustomerDao;
 import dao.DaoFactory;
-import dao.RoomStatusDao;
+import dao.RoomDao;
 import domain.Customer;
-import domain.RoomStatus;
+import domain.Room;
 
 @WebServlet("/checkOut")
 public class CheckOutServlet extends HttpServlet {
@@ -44,12 +44,12 @@ public class CheckOutServlet extends HttpServlet {
 
 		Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 
-		RoomStatus roomStatus = new RoomStatus();
-		roomStatus.setRoomId(roomId);
+		Room room = new Room();
+		room.setRoomId(roomId);
 		try {
 
-			RoomStatusDao roomStatusDao = DaoFactory.createRoomStatusDao();
-			roomStatusDao.delete(roomStatus);
+			RoomDao roomDao = DaoFactory.createRoomDao();
+			roomDao.checkOut(room);
 
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect("manager");
