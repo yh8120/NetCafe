@@ -11,8 +11,8 @@ public class Customer {
 	private String firstName;
 	private String lastKana;
 	private String firstKana;
-	private Integer SexId;
-	private String SexName;
+	private Integer sexId;
+	private String sexName;
 	private Integer cardId;
 	private String cardName;
 	private String cardNumber;
@@ -23,11 +23,11 @@ public class Customer {
 	private String addressCity;
 	private String addressStreet;
 	private String addressRoom;
-	private String Memo;
+	private String memo;
 	private String phoneNumber;
 	private String eMailUserName;
 	private String eMailDomain;
-	private Date Regestered;
+	private Date regestered;
 	private Date Updated;
 	
 	
@@ -73,17 +73,18 @@ public class Customer {
 	public void setFirstKana(String firstKana) {
 		this.firstKana = firstKana;
 	}
+	
 	public Integer getSexId() {
-		return SexId;
+		return sexId;
 	}
 	public void setSexId(Integer sexId) {
-		SexId = sexId;
+		this.sexId = sexId;
 	}
 	public String getSexName() {
-		return SexName;
+		return sexName;
 	}
 	public void setSexName(String sexName) {
-		SexName = sexName;
+		this.sexName = sexName;
 	}
 	public Integer getCardId() {
 		return cardId;
@@ -146,10 +147,10 @@ public class Customer {
 		this.addressRoom = addressRoom;
 	}
 	public String getMemo() {
-		return Memo;
+		return memo;
 	}
 	public void setMemo(String memo) {
-		Memo = memo;
+		this.memo = memo;
 	}
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -169,11 +170,12 @@ public class Customer {
 	public void seteMailDomain(String eMailDomain) {
 		this.eMailDomain = eMailDomain;
 	}
+	
 	public Date getRegestered() {
-		return Regestered;
+		return regestered;
 	}
 	public void setRegestered(Date regestered) {
-		Regestered = regestered;
+		this.regestered = regestered;
 	}
 	public Date getUpdated() {
 		return Updated;

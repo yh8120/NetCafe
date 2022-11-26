@@ -1,5 +1,6 @@
 package controller;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 
@@ -9,10 +10,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dao.CustomCharacterEscapes;
 import dao.CustomerClassDao;
+import dao.CustomerDao;
 import dao.DaoFactory;
 import dao.IdCardDao;
 import dao.SexDao;
+import domain.Customer;
 import domain.CustomerClass;
 import domain.IdCard;
 import domain.Sex;
@@ -46,6 +53,25 @@ public class AddCustomerServlet extends HttpServlet {
 
 	protected void doPut(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		BufferedReader buffer = new BufferedReader(request.getReader());
+		String reqJson = buffer.readLine();
+		System.out.println(reqJson);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+		Customer customerId =mapper.readValue(reqJson, Customer.class);
+		CustomerDao customerDao = DaoFactory.createCustomerDao();
+		Customer customer = customerDao.findById(customerId.getCustomerId());
+        
+        mapper.getFactory().setCharacterEscapes(new CustomCharacterEscapes());
+        
+			String customerJson = mapper.writeValueAsString(customer);
+			response.getWriter().write(customerJson);
+		} catch (JsonProcessingException e) {
+			throw new ServletException();
+		} catch (Exception e) {
+			throw new ServletException();
+		}
 
 	}
 

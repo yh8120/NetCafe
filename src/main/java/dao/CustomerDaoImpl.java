@@ -201,7 +201,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setCardNumber(rs.getString("card_number"));
 		customer.setBirthday((Date) rs.getObject("birthday"));
 		customer.setZipcodePost(rs.getString("zipcode_post"));
-		customer.setZipcodePost(rs.getString("zipcode_post"));
+		customer.setZipcodeCity(rs.getString("zipcode_city"));
 		customer.setAddressState(rs.getString("address_state"));
 		customer.setAddressCity(rs.getString("address_city"));
 		customer.setAddressStreet(rs.getString("address_street"));
