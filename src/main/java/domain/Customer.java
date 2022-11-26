@@ -107,8 +107,8 @@ public class Customer {
 	public Date getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date customerBirthday) {
-		this.birthday = customerBirthday;
+	public void setBirthday(Date Birthday) {
+		this.birthday = Birthday;
 	}
 	public String getZipcodePost() {
 		return zipcodePost;
