@@ -1,6 +1,6 @@
 package domain;
 
-public class Card {
+public class IdCard {
 	private Integer cardId;
 	private String cardName;
 	

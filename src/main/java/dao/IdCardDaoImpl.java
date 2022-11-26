@@ -9,61 +9,61 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import domain.Card;
+import domain.IdCard;
 
-public class CardDaoImpl implements CardDao {
+public class IdCardDaoImpl implements IdCardDao {
 	private DataSource ds;
 
-	public CardDaoImpl(DataSource ds) {
+	public IdCardDaoImpl(DataSource ds) {
 		this.ds = ds;
 	}
 
 	@Override
-	public List<Card> findAll() throws Exception {
-		List<Card> cardList = new ArrayList<>();
+	public List<IdCard> findAll() throws Exception {
+		List<IdCard> idCardList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM cards";
+					+ " FROM id_cards";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				cardList.add(mapToCard(rs));
+				idCardList.add(mapToCard(rs));
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-		return cardList;
+		return idCardList;
 	}
 
 	@Override
-	public Card findById(Integer id) throws Exception {
-		Card card = null;
+	public IdCard findById(Integer cardId) throws Exception {
+		IdCard idCard = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM cads"
+					+ " FROM id_cards"
 					+ " WHERE card_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, id, Types.INTEGER);
+			stmt.setObject(1, cardId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				card = mapToCard(rs);
+				idCard = mapToCard(rs);
 			}
 		} catch (Exception e) {
 			throw e;
 		}
-		return card;
+		return idCard;
 	}
 
 	@Override
-	public void insert(Card card) throws Exception {
+	public void insert(IdCard idCard) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO cads"
+			String sql = "INSERT INTO id_cadrs"
 					+ " (card_id,card_name)"
 					+ " VALUES (?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, card.getCardId(),Types.INTEGER);
-			stmt.setString(2, card.getCardName());
+			stmt.setObject(1, idCard.getCardId(),Types.INTEGER);
+			stmt.setString(2, idCard.getCardName());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -72,14 +72,14 @@ public class CardDaoImpl implements CardDao {
 	}
 
 	@Override
-	public void update(Card card) throws Exception {
+	public void update(IdCard idCard) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE cads"
+			String sql = "UPDATE id_cadrs"
 					+ " SET card_id = ?, card_name = ?"
 					+ " WHERE card_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, card.getCardId(), Types.INTEGER);
-			stmt.setString(2, card.getCardName());
+			stmt.setObject(1, idCard.getCardId(), Types.INTEGER);
+			stmt.setString(2, idCard.getCardName());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -88,12 +88,12 @@ public class CardDaoImpl implements CardDao {
 	}
 
 	@Override
-	public void delete(Card card) throws Exception {
+	public void delete(IdCard idCard) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE FROM cads"
+			String sql = "DELETE FROM id_cards"
 					+ " Where card_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, card.getCardId(),Types.INTEGER);
+			stmt.setObject(1, idCard.getCardId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -101,12 +101,12 @@ public class CardDaoImpl implements CardDao {
 
 	}
 
-	private Card mapToCard(ResultSet rs) throws Exception {
-		Card card = new Card();
-		card.setCardId((Integer) rs.getObject("card_id"));
-		card.setCardName(rs.getString("card_name"));
+	private IdCard mapToCard(ResultSet rs) throws Exception {
+		IdCard idCard = new IdCard();
+		idCard.setCardId((Integer) rs.getObject("card_id"));
+		idCard.setCardName(rs.getString("card_name"));
 
-		return card;
+		return idCard;
 
 	}
 

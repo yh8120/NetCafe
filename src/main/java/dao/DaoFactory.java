@@ -37,8 +37,8 @@ public class DaoFactory {
 		
 	}
 	
-	public static CardDao createCardDao() {
-		return new CardDaoImpl(getDataSource());
+	public static IdCardDao createIdCardDao() {
+		return new IdCardDaoImpl(getDataSource());
 
 	}
 	
