@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -199,7 +198,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setCardId((Integer) rs.getObject("card_id"));
 		customer.setCardName(rs.getString("card_name"));
 		customer.setCardNumber(rs.getString("card_number"));
-		customer.setBirthday((Date) rs.getObject("birthday"));
+		customer.setBirthday(rs.getTimestamp("birthday"));
 		customer.setZipcodePost(rs.getString("zipcode_post"));
 		customer.setZipcodeCity(rs.getString("zipcode_city"));
 		customer.setAddressState(rs.getString("address_state"));
@@ -210,8 +209,8 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setPhoneNumber(rs.getString("phone_number"));
 		customer.seteMailUserName(rs.getString("email_username"));
 		customer.seteMailDomain(rs.getString("email_domain"));
-		customer.setRegestered((Date) rs.getObject("regestered"));
-		customer.setUpdated((Date) rs.getObject("updated"));
+		customer.setRegestered(rs.getTimestamp("regestered"));
+		customer.setUpdated(rs.getTimestamp("updated"));
 		return customer;
 
 	}

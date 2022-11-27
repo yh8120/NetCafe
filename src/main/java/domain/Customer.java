@@ -28,7 +28,7 @@ public class Customer {
 	private String eMailUserName;
 	private String eMailDomain;
 	private Date regestered;
-	private Date Updated;
+	private Date updated;
 	
 	
 	public Integer getCustomerId() {
@@ -107,8 +107,8 @@ public class Customer {
 	public Date getBirthday() {
 		return birthday;
 	}
-	public void setBirthday(Date Birthday) {
-		this.birthday = Birthday;
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
 	}
 	public String getZipcodePost() {
 		return zipcodePost;
@@ -178,10 +178,10 @@ public class Customer {
 		this.regestered = regestered;
 	}
 	public Date getUpdated() {
-		return Updated;
+		return updated;
 	}
 	public void setUpdated(Date updated) {
-		Updated = updated;
+		this.updated = updated;
 	}
 
 }
