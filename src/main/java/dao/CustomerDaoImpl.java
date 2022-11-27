@@ -82,7 +82,9 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " address_street,"
 					+ " address_room,"
 					+ " memo,"
-					+ " phone_number,"
+					+ " phone_number_a = ?,"
+					+ " phone_number_b = ?,"
+					+ " phone_number_c = ?,"
 					+ " email_username,"
 					+ " email_domain,"
 					+ " customer_regestered,"
@@ -107,9 +109,11 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setString(15, customer.getAddressStreet());
 			stmt.setString(16, customer.getAddressRoom());
 			stmt.setString(17, customer.getMemo());
-			stmt.setString(18, customer.getPhoneNumber());
-			stmt.setString(19, customer.geteMailUserName());
-			stmt.setString(20, customer.geteMailDomain());
+			stmt.setString(18, customer.getPhoneNumberA());
+			stmt.setString(19, customer.getPhoneNumberB());
+			stmt.setString(20, customer.getPhoneNumberC());
+			stmt.setString(21, customer.geteMailUserName());
+			stmt.setString(22, customer.geteMailDomain());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -137,7 +141,9 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " address_street = ?,"
 					+ " address_room = ?,"
 					+ " memo = ?,"
-					+ " phone_number = ?,"
+					+ " phone_number_a = ?,"
+					+ " phone_number_b = ?,"
+					+ " phone_number_c = ?,"
 					+ " email_username = ?,"
 					+ " email_domain = ?,"
 					+ " customer_updated = NOW()"
@@ -159,10 +165,12 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setString(14, customer.getAddressStreet());
 			stmt.setString(15, customer.getAddressRoom());
 			stmt.setString(16, customer.getMemo());
-			stmt.setString(17, customer.getPhoneNumber());
-			stmt.setString(18, customer.geteMailUserName());
-			stmt.setString(19, customer.geteMailDomain());
-			stmt.setObject(20, customer.getCustomerId(), Types.INTEGER);
+			stmt.setString(17, customer.getPhoneNumberA());
+			stmt.setString(18, customer.getPhoneNumberB());
+			stmt.setString(19, customer.getPhoneNumberC());
+			stmt.setString(20, customer.geteMailUserName());
+			stmt.setString(21, customer.geteMailDomain());
+			stmt.setObject(22, customer.getCustomerId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -188,7 +196,6 @@ public class CustomerDaoImpl implements CustomerDao {
 		Customer customer = new Customer();
 		customer.setCustomerId((Integer) rs.getObject("customer_id"));
 		customer.setCustomerClassId((Integer) rs.getObject("customer_class_id"));
-		customer.setCustomerClassName(rs.getString("customer_class_name"));
 		customer.setLastName(rs.getString("last_name"));
 		customer.setFirstName(rs.getString("first_name"));
 		customer.setLastKana(rs.getString("last_kana"));
@@ -197,6 +204,7 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setSexName(rs.getString("sex_name"));
 		customer.setCardId((Integer) rs.getObject("card_id"));
 		customer.setCardName(rs.getString("card_name"));
+		customer.setCanCopyNumber(rs.getBoolean("can_copy_number"));
 		customer.setCardNumber(rs.getString("card_number"));
 		customer.setBirthday(rs.getTimestamp("birthday"));
 		customer.setZipcodePost(rs.getString("zipcode_post"));
@@ -206,7 +214,9 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.setAddressStreet(rs.getString("address_street"));
 		customer.setAddressRoom(rs.getString("address_room"));
 		customer.setMemo(rs.getString("memo"));
-		customer.setPhoneNumber(rs.getString("phone_number"));
+		customer.setPhoneNumberA(rs.getString("phone_number_a"));
+		customer.setPhoneNumberB(rs.getString("phone_number_b"));
+		customer.setPhoneNumberC(rs.getString("phone_number_c"));
 		customer.seteMailUserName(rs.getString("email_username"));
 		customer.seteMailDomain(rs.getString("email_domain"));
 		customer.setRegestered(rs.getTimestamp("regestered"));

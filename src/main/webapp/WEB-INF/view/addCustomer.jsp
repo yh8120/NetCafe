@@ -25,15 +25,14 @@
 								<c:out value="${customerIdError}"></c:out>
 							</div>
 						</c:if>
-						<input type="text" name="customerId" id="formCustomerId" class="form-control" value=<c:out value="${customerId }"/>>
+						<input type="number" name="customerId" id="formCustomerId" class="form-control" value=<c:out value="${customerId }"/>>
 					</div>
 
 					<div class="mb-3">
 						<label for="formCustomerClass">会員クラス</label>
-						<select disabled name="customerClassId" id="customerData formCustomerClassId" class="form-control">
+						<select disabled name="customerClassId" id="formCustomerClassId" class="customerData form-control">
 							<c:forEach items="${customerClassList}" var="customerClass">
-								<option id="formCustomerClassId<c:out value="${customerClass.customerClassId}" />" value="<c:out value="${customerClass.customerClassId}" />"
-									<c:if test="${customerClass.customerClassId == customerClassId}">selected</c:if>>
+								<option value="<c:out value="${customerClass.customerClassId}" />" <c:if test="${customerClass.customerClassId == customerClassId}">selected</c:if>>
 									<c:out value="${customerClass.customerClassName}" />
 								</option>
 							</c:forEach>
@@ -47,14 +46,14 @@
 								<c:out value="${lastNameError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="lastName" id="customerData formLastName" class="form-control" value=<c:out value="${lastName }"/>>
+						<input disabled type="text" name="lastName" id="formLastName" class="customerData form-control" value=<c:out value="${lastName }"/>>
 						<label for="formFirstName">名</label>
 						<c:if test="${not empty firstNameError }">
 							<div class="error-message">
 								<c:out value="${firstNameError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="firstName" id="customerData formFirstName" class="form-control" value=<c:out value="${firstName }"/>>
+						<input disabled type="text" name="firstName" id="formFirstName" class="customerData form-control" value=<c:out value="${firstName }"/>>
 					</div>
 
 					<div class="mb-3">
@@ -64,19 +63,19 @@
 								<c:out value="${lastKanaError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="lastKana" id="customerData formLastKana" class="form-control" value=<c:out value="${lastKana }"/>>
+						<input disabled type="text" name="lastKana" id="formLastKana" class="customerData form-control" value=<c:out value="${lastKana }"/>>
 						<label for="formFirstKana">名</label>
 						<c:if test="${not empty firstKanaError }">
 							<div class="error-message">
 								<c:out value="${firstKanaError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="firstKana" id="customerData formFirstKana" class="form-control" value=<c:out value="${firstKana }"/>>
+						<input disabled type="text" name="firstKana" id="formFirstKana" class="customerData form-control" value=<c:out value="${firstKana }"/>>
 					</div>
 
 					<div class="mb-3">
 						<label for="formSexId">性別</label>
-						<select disabled name="sexId" id="customerData formSexId" class="form-control">
+						<select disabled name="sexId" id="formSexId" class="customerData form-control">
 							<c:forEach items="${sexList}" var="sex">
 								<option value="<c:out value="${sex.sexId}" />" <c:if test="${sex.sexId == SexId}">selected</c:if>>
 									<c:out value="${sex.sexName}" />
@@ -87,9 +86,10 @@
 
 					<div class="mb-3">
 						<label for="formCardId">身分証</label>
-						<select disabled name="cardId" id="customerData formCardId" class="form-control">
+						<select disabled name="cardId" id="formCardId" class="customerData form-control">
 							<c:forEach items="${idCardList}" var="idCard">
-								<option value="<c:out value="${idCard.cardId}" />" <c:if test="${idCard.cardId == cardId}">selected</c:if>>
+								<option value="<c:out value="${idCard.cardId}" />" data-can="<c:out value="${idCard.canCopyNumber}"/>" <c:if test="${idCard.cardId == cardId}">selected</c:if>>
+
 									<c:out value="${idCard.cardName}" />
 								</option>
 							</c:forEach>
@@ -103,7 +103,7 @@
 								<c:out value="${cardNumberError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="cardNumber" id="customerData formCardNumber" class="form-control" value=<c:out value="${cardNumber }"/>>
+						<input disabled type="text" name="cardNumber" id="formCardNumber" class="customerData form-control" value=<c:out value="${cardNumber }"/>>
 					</div>
 
 					<div class="mb-3">
@@ -114,7 +114,7 @@
 							</div>
 						</c:if>
 						<div class="col-auto">
-							<input disabled type="date" name="birthday" id="customerData formBirthday" class="form-control" value=<c:out value="${birthday }"/>>
+							<input disabled type="date" name="birthday" id="formBirthday" class="customerData form-control" value=<c:out value="${birthday }"/>>
 						</div>
 					</div>
 
@@ -125,9 +125,9 @@
 								<c:out value="${zipcodeError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="number" name="zipcodePost" id="customerData formZipcodePost" class="form-control p-postal-code" size="3" maxlength="3" value=<c:out value="${zipcodePost }"/>>
+						<input disabled type="number" name="zipcodePost" id="formZipcodePost" class="customerData form-control p-postal-code" size="3" maxlength="3" value=<c:out value="${zipcodePost }"/>>
 						-
-						<input disabled type="number" name="zipcodCity" id="customerData formZipcodeCity" class="form-control p-postal-code" size="4" maxlength="4" value=<c:out value="${zipcodeCity }"/>>
+						<input disabled type="number" name="zipcodeCity" id="formZipcodeCity" class="customerData form-control p-postal-code" size="4" maxlength="4" value=<c:out value="${zipcodeCity }"/>>
 					</div>
 
 					<div class="mb-3">
@@ -137,47 +137,46 @@
 								<c:out value="${addressStateError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="addressState" id="customerData formAddressState" class="form-control p-region" value=<c:out value="${addressState }"/>>
+						<input disabled type="text" name="addressState" id="formAddressState" class="customerData form-control p-region" value=<c:out value="${addressState }"/>>
 						<label for="formAddressCity">市区町村</label>
 						<c:if test="${not empty addressCityError }">
 							<div class="error-message">
 								<c:out value="${addressCityError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="addressCity" id="customerData formAddressCity" class="form-control p-locality" value=<c:out value="${addressCity }"/>>
+						<input disabled type="text" name="addressCity" id="formAddressCity" class="customerData form-control p-locality p-street-address p-extended-address" value=<c:out value="${addressCity }"/>>
 						<label for="formAddressStreet">番地</label>
 						<c:if test="${not empty addressStreetError }">
 							<div class="error-message">
 								<c:out value="${addressStreetError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="addressStreet" id="customerData formAddressStreet" class="form-control p-street-address p-extended-address" value=<c:out value="${addressStreet }"/>>
+						<input disabled type="text" name="addressStreet" id="formAddressStreet" class="customerData form-control" value=<c:out value="${addressStreet }"/>>
 						<label for="formAddress">建物・部屋</label>
 						<c:if test="${not empty addressRoomError }">
 							<div class="error-message">
 								<c:out value="${addressRoomError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="addressRoom" id="customerData formAddressRoom" class="form-control p-region p-locality p-street-address p-extended-address"
-							value=<c:out value="${addressRoom }"/>>
+						<input disabled type="text" name="addressRoom" id="formAddressRoom" class="customerData form-control" value=<c:out value="${addressRoom }"/>>
 					</div>
 
 					<div class="mb-3">
 						<label for="formMemo">メモ</label>
-						<input disabled type="text" name="memo" id="customerData formMemo" class="form-control" value=<c:out value="${memo }"/>>
+						<input disabled type="text" name="memo" id="formMemo" class="customerData form-control" value=<c:out value="${memo }"/>>
 					</div>
 					<div class="mb-3">
-						<label for="formPhoneNumber1">電話番号</label>
+						<label for="formPhoneNumberA">電話番号</label>
 						<c:if test="${not empty phoneNumberError }">
 							<div class="error-message">
 								<c:out value="${phoneNumberError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="phoneNumber1" id="customerData formPhoneNumber1" class="form-control" value=<c:out value="${phoneNumberA }"/>>
+						<input disabled type="text" name="phoneNumberA" id="formPhoneNumberA" class="customerData form-control" value=<c:out value="${phoneNumberA }"/>>
 						-
-						<input disabled type="text" name="phoneNumber2" id="customerData formPhoneNumber2" class="form-control" value=<c:out value="${phoneNumberB }"/>>
+						<input disabled type="text" name="phoneNumberB" id="formPhoneNumberB" class="customerData form-control" value=<c:out value="${phoneNumberB }"/>>
 						-
-						<input disabled type="text" name="phoneNumber3" id="customerData formPhoneNumber3" class="form-control" value=<c:out value="${phoneNumberC }"/>>
+						<input disabled type="text" name="phoneNumberC" id="formPhoneNumberC" class="customerData form-control" value=<c:out value="${phoneNumberC }"/>>
 						-
 					</div>
 					<div class="mb-3">
@@ -187,12 +186,12 @@
 								<c:out value="${eMailAddressError}"></c:out>
 							</div>
 						</c:if>
-						<input disabled type="text" name="eMailUserName" id="customerData formEMailUserName" class="form-control" value=<c:out value="${eMailUserName }"/>>
+						<input disabled type="text" name="eMailUserName" id="formEMailUserName" class="customerData form-control" value=<c:out value="${eMailUserName }"/>>
 						@
-						<input disabled type="text" name="eMailDomain" id="customerData formEMailDomain" class="form-control" value=<c:out value="${eMailDomain }"/>>
+						<input disabled type="text" name="eMailDomain" id="formEMailDomain" class="customerData form-control" value=<c:out value="${eMailDomain }"/>>
 					</div>
 					<div class="mb-3">
-						<input disabled type="submit" id="customerFormSubmit" class="btn btn-success" value="登録">
+						<input disabled type="submit" id="formSubmit" class="customerData btn btn-success" value="登録">
 						<a href="manager" class="btn btn-light">キャンセル</a>
 					</div>
 				</form>
@@ -203,58 +202,83 @@
 	<script src="js/jquery-3.6.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script>
+	const customerId = $("#formCustomerId").val();
+
+	if(!customerId){
+		$(".customerData").Attr("disabled");
+		}
+
+
+	
 		$("#formCustomerId").change(
-				function() {
-					let data = {
-						customerId : $("#formCustomerId").val()
-					};
 
-					$.ajax({
-						url : "http://localhost:8080/NetCafe/addCustomer", // 通信先のURL
-						type : "PUT", // 使用するHTTPメソッド
-						data : JSON.stringify(data),
-						// dataType:"json", // 応答のデータの種類
-						dataType : "text", // 応答のデータの種類(xml/html/script/json/jsonp/text)
+		function() {
+			let data = {
+				customerId : $("#formCustomerId").val()
+			}
 
-					}).done(
-							function(res) {
-								
-								const customer = JSON.parse(res);
-								$("#customerData").removeAtter("value");
-								$("#customerData").removeAttr("disabled");
-								
-								$("#formCustomerId").attr("value", customer.customerId);
-								$("#formCustomerClassId").attr("value",customer.customerClassId);
-								$("#formLastName").attr("value",customer.lastName);
-								$("#formFirstName").attr("value",customer.firstName);
-								$("#formLastKana").attr("value",customer.lastKana);
-								$("#formFirstKana").attr("value",customer.firstKana);
-								$("#formSexId").attr("value", customer.sexId);
-								$("#formCardId").attr("value", customer.cardId);
-								$("#formCardNumber").attr("value",customer.cardNumber);
-								$("#formBirthday").attr("value",customer.birthday);
-								$("#formZipcodePost").attr("value",customer.zipcodePost);
-								$("#formZipcodeCity").attr("value",customer.zipcodeCity);
-								$("#formAddressState").attr("value",customer.addressState);
-								$("#formAddressCity").attr("value",customer.addressCity);
-								$("#formAddressStreet").attr("value",customer.addressStreet);
-								$("#formAddressRoom").attr("value",customer.addressRoom);
-								$("#formMemo").attr("value", customer.memo);
-								$("#formPhoneNumber1").attr("value",customer.phoneNumber1);
-								$("#formPhoneNumber2").attr("value",customer.phoneNumber2);
-								$("#formPhoneNumber3").attr("value",customer.phoneNumber3);
-								$("#formEMailUserName").attr("value",customer.eMailUserName);
-								$("#formEMailDomain").attr("value",customer.eMailDomain);
-								$("form submit").removeAttr("disabled");
+			$.ajax({
+				url : "http://localhost:8080/NetCafe/addCustomer", // 通信先のURL
+				type : "PUT", // 使用するHTTPメソッド
+				data : JSON.stringify(data),
+				// dataType:"json", // 応答のデータの種類
+				dataType : "text", // 応答のデータの種類(xml/html/script/json/jsonp/text)
 
-								// failは、通信に失敗した時に実行される
-							}).fail(function(res) {
-						alert("error");
-						// alwaysは、成功/失敗に関わらず実行される
-					}).always(function() {
-					});
-				});
+			})
 
+			.done(function(res) {
+
+				$(".customerData").val("");
+				$(".customerData").removeAttr("disabled");
+
+				const customer = JSON.parse(res);
+				if (customer != null) {
+					$("#formCustomerId").val(customer.customerId);
+					$("#formCustomerClassId").val(customer.customerClassId);
+					$("#formLastName").val(customer.lastName);
+					$("#formFirstName").val(customer.firstName);
+					$("#formLastKana").val(customer.lastKana);
+					$("#formFirstKana").val(customer.firstKana);
+					$("#formSexId").val(customer.sexId);
+					$("#formCardId").val(customer.cardId);
+					$("#formCardNumber").val(customer.cardNumber);
+					$("#formBirthday").val(customer.birthday);
+					$("#formZipcodePost").val(customer.zipcodePost);
+					$("#formZipcodeCity").val(customer.zipcodeCity);
+					$("#formAddressState").val(customer.addressState);
+					$("#formAddressCity").val(customer.addressCity);
+					$("#formAddressStreet").val(customer.addressStreet);
+					$("#formAddressRoom").val(customer.addressRoom);
+					$("#formMemo").val(customer.memo);
+					$("#formPhoneNumberA").val(customer.phoneNumberA);
+					$("#formPhoneNumberB").val(customer.phoneNumberB);
+					$("#formPhoneNumberC").val(customer.phoneNumberC);
+					$("#formEMailUserName").val(customer.eMailUserName);
+					$("#formEMailDomain").val(customer.eMailDomain);
+
+					if (customer.canCopyNumber) {
+						$("#formCardNumber").removeAttr("disabled");
+					} else {
+						$("#formCardNumber").attr("disabled", "disabled");
+					}
+				}
+
+			}).fail(function(res) {
+				alert("error");
+			}).always(function() {
+			});
+		});
+
+		$("#formCardId").change(function() {
+			const canCopyNumber = $("#formCardId option:selected").data("can");
+
+			if (canCopyNumber) {
+				$("#formCardNumber").removeAttr("disabled");
+			} else {
+				$("#formCardNumber").attr("disabled", "disabled");
+			}
+
+		});
 	</script>
 </body>
 </html>

@@ -59,11 +59,12 @@ public class IdCardDaoImpl implements IdCardDao {
 	public void insert(IdCard idCard) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO id_cadrs"
-					+ " (card_id,card_name)"
-					+ " VALUES (?,?)";
+					+ " (card_id,card_name,can_copy_number)"
+					+ " VALUES (?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, idCard.getCardId(),Types.INTEGER);
 			stmt.setString(2, idCard.getCardName());
+			stmt.setBoolean(3, idCard.getCanCopyNumber());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -75,11 +76,12 @@ public class IdCardDaoImpl implements IdCardDao {
 	public void update(IdCard idCard) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE id_cadrs"
-					+ " SET card_id = ?, card_name = ?"
+					+ " SET card_id = ?, card_name = ?, can_copy_number"
 					+ " WHERE card_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, idCard.getCardId(), Types.INTEGER);
 			stmt.setString(2, idCard.getCardName());
+			stmt.setBoolean(2, idCard.getCanCopyNumber());
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -105,6 +107,7 @@ public class IdCardDaoImpl implements IdCardDao {
 		IdCard idCard = new IdCard();
 		idCard.setCardId((Integer) rs.getObject("card_id"));
 		idCard.setCardName(rs.getString("card_name"));
+		idCard.setCanCopyNumber(rs.getBoolean("can_copy_number"));
 
 		return idCard;
 

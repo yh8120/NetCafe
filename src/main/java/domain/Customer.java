@@ -15,6 +15,7 @@ public class Customer {
 	private String sexName;
 	private Integer cardId;
 	private String cardName;
+	private Boolean canCopyNumber;;
 	private String cardNumber;
 	private Date birthday;
 	private String zipcodePost;
@@ -24,7 +25,9 @@ public class Customer {
 	private String addressStreet;
 	private String addressRoom;
 	private String memo;
-	private String phoneNumber;
+	private String phoneNumberA;
+	private String phoneNumberB;
+	private String phoneNumberC;
 	private String eMailUserName;
 	private String eMailDomain;
 	private Date regestered;
@@ -98,6 +101,13 @@ public class Customer {
 	public void setCardName(String cardName) {
 		this.cardName = cardName;
 	}
+	
+	public Boolean getCanCopyNumber() {
+		return canCopyNumber;
+	}
+	public void setCanCopyNumber(Boolean canCopyNumber) {
+		this.canCopyNumber = canCopyNumber;
+	}
 	public String getCardNumber() {
 		return cardNumber;
 	}
@@ -152,11 +162,24 @@ public class Customer {
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
-	public String getPhoneNumber() {
-		return phoneNumber;
+	
+	public String getPhoneNumberA() {
+		return phoneNumberA;
 	}
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	public void setPhoneNumberA(String phoneNumberA) {
+		this.phoneNumberA = phoneNumberA;
+	}
+	public String getPhoneNumberB() {
+		return phoneNumberB;
+	}
+	public void setPhoneNumberB(String phoneNumberB) {
+		this.phoneNumberB = phoneNumberB;
+	}
+	public String getPhoneNumberC() {
+		return phoneNumberC;
+	}
+	public void setPhoneNumberC(String phoneNumberC) {
+		this.phoneNumberC = phoneNumberC;
 	}
 	public String geteMailUserName() {
 		return eMailUserName;

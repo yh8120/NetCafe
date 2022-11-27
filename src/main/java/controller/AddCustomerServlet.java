@@ -98,35 +98,58 @@ public class AddCustomerServlet extends HttpServlet {
 			request.setAttribute("sexList", sexList);
 
 			String strCustomerId = request.getParameter("customerId");
-			Integer customerClassId = Integer.parseInt(request.getParameter("customerClassId"));
+			String strCustomerClassId = request.getParameter("customerClassId");
 			String lastName = request.getParameter("lastName");
 			String firstName = request.getParameter("firstName");
 			String lastKana = request.getParameter("lastKana");
 			String firstKana = request.getParameter("firstKana");
-			Integer sexId = Integer.parseInt(request.getParameter("sexId"));
-			Integer cardId = Integer.parseInt(request.getParameter("cardId"));
-			String customerCardNumber = request.getParameter("customerCardNumber");
-			String strCustomerBirthday = request.getParameter("customerBirthday");
-			String customerZipcode = request.getParameter("customerZipcode");
-			String customerAddress = request.getParameter("customerAddress");
-			String customerMemo = request.getParameter("customerMemo");
-			String customerPhone = request.getParameter("customerPhone");
-			String customerMail = request.getParameter("customerMail");
+			String strSexId = request.getParameter("sexId");
+			String strCardId = request.getParameter("cardId");
+			String cardNumber = request.getParameter("cardNumber");
+			String strBirthday = request.getParameter("birthday");
+			String zipcodePost = request.getParameter("zipcodePost");
+			String zipcodeCity = request.getParameter("zipcodeCity");
+			String addressState = request.getParameter("addressState");
+			String addressCity = request.getParameter("addressCity");
+			String addressStreet = request.getParameter("addressStreet");
+			String addressRoom = request.getParameter("addressRoom");
+			String memo = request.getParameter("memo");
+			String phoneNumberA = request.getParameter("phoneNumberA");
+			String phoneNumberB = request.getParameter("phoneNumberB");
+			String phoneNumberC = request.getParameter("phoneNumberC");
+			String eMailUserName = request.getParameter("eMailUserName");
+			String eMailDomain = request.getParameter("eMailDomain");
 
 			request.setAttribute("customerId", strCustomerId);
-			request.setAttribute("customerClassId", customerClassId);
-			request.setAttribute("customerName", customerName);
-			request.setAttribute("customerSexId", customerSexId);
-			request.setAttribute("customerCardId", customerCardId);
-			request.setAttribute("customerCardNumber", customerCardNumber);
-			request.setAttribute("customerBirthday", strCustomerBirthday);
-			request.setAttribute("customerZipcode", customerZipcode);
-			request.setAttribute("customerAddress", customerAddress);
-			request.setAttribute("customerMemo", customerMemo);
-			request.setAttribute("customerPhone", customerPhone);
-			request.setAttribute("customerMail", customerMail);
+			request.setAttribute("strCustomerClassId", strCustomerClassId);
+			request.setAttribute("lastName", lastName);
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("lastName", lastName);
+			request.setAttribute("firstName", firstName);
+			request.setAttribute("lastKana", lastKana);
+			request.setAttribute("firstKana", firstKana);
+			request.setAttribute("strSexId", strSexId);
+			request.setAttribute("strCardId", strCardId);
+			request.setAttribute("cardNumber", cardNumber);
+			request.setAttribute("birthday", strBirthday);
+			request.setAttribute("strZipcodePost", zipcodePost);
+			request.setAttribute("strZipcodeCity", zipcodeCity);
+			request.setAttribute("addressState", addressState);
+			request.setAttribute("addressCity", addressCity);
+			request.setAttribute("addressStreet", addressStreet);
+			request.setAttribute("addressRoom", addressRoom);
+			request.setAttribute("memo", memo);
+			request.setAttribute("phoneNumberA", phoneNumberA);
+			request.setAttribute("phoneNumberB", phoneNumberB);
+			request.setAttribute("phoneNumberC", phoneNumberC);
+			request.setAttribute("eMailUserName", eMailUserName);
+			request.setAttribute("eMailDomain", eMailDomain);
 			Integer customerId = 0;
-			Date customerBirthday = null;
+			Integer customerClassId = 0;
+			Integer sexId = 0;
+			Integer cardId = 0;
+			Date birthday = null;
+			IdCard idCard = null;
 
 			boolean isError = false;
 
@@ -145,6 +168,23 @@ public class AddCustomerServlet extends HttpServlet {
 					}
 				} catch (NumberFormatException e) {
 					request.setAttribute("customerIdError", "会員番号が不正です。");
+					isError = true;
+				}
+			}
+
+			//          会員クラスID
+			if (strCustomerClassId == null) {
+				request.setAttribute("customerClassIdError", "会員クラスが未入力です");
+				isError = true;
+			} else {
+				try {
+					customerClassId = Integer.parseInt(strCustomerClassId);
+					if (customerClassId < 0) {
+						request.setAttribute("customerClassIdError", "会員クラスが不正です。");
+						isError = true;
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("customerClassIdError", "会員クラスが不正です。");
 					isError = true;
 				}
 			}
@@ -184,64 +224,138 @@ public class AddCustomerServlet extends HttpServlet {
 				isError = true;
 			}
 
-			//			身分証番号
-			if (customerCardNumber.isEmpty()) {
-				request.setAttribute("customerCardNumberError", "身分証番号が未入力です");
+			//          性別ID
+			if (strSexId == null) {
+				request.setAttribute("sexIdError", "性別が未入力です");
 				isError = true;
+			} else {
+				try {
+					sexId = Integer.parseInt(strSexId);
+					if (sexId < 0) {
+						request.setAttribute("sexIdError", "性別が不正です。");
+						isError = true;
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("sexIdError", "性別が不正です。");
+					isError = true;
+				}
+			}
+
+			//          身分証関係
+			if (strCardId == null) {
+				request.setAttribute("cardIdError", "カード種別が未入力です");
+				isError = true;
+			} else {
+				try {
+					cardId = Integer.parseInt(strCardId);
+					if (cardId < 0) {
+						request.setAttribute("cardIdError", "カード種別が不正です。");
+						isError = true;
+
+						//身分証番号の入力可否の判定のためにidCardインスタンスが必要なの
+						idCard = IdCardDao.findById(cardId);
+						if (!idCard.getCanCopyNumber() && cardNumber.isEmpty()) {
+							request.setAttribute("cardNumberError", "身分証番号が未入力です");
+							isError = true;
+						}
+
+					}
+				} catch (NumberFormatException e) {
+					request.setAttribute("cardIdError", "カード種別が不正です。");
+					isError = true;
+				}
 			}
 
 			//			生年月日
-			if (!strCustomerBirthday.isEmpty()) {
+			if (!strBirthday.isEmpty()) {
 				try {
 					SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
-					customerBirthday = sdFormat.parse(strCustomerBirthday);
-					System.out.println(customerBirthday);
+					birthday = sdFormat.parse(strBirthday);
 				} catch (ParseException e) {
-					request.setAttribute("customerBirthdayError", "生年月日が不正です。");
+					request.setAttribute("birthdayError", "生年月日が不正です。");
 					isError = true;
 				}
 
 			} else {
-				request.setAttribute("customerBirthdayError", "生年月日が未入力です。");
+				request.setAttribute("birthdayError", "生年月日が未入力です。");
 				isError = true;
 			}
 
 			//			郵便番号
-			Pattern patternZipcode = Pattern
-					.compile("^[0-9]{3}-[0-9]{4}$");
-			Matcher matcherZipcode = patternZipcode.matcher(customerZipcode);
+			Pattern ptnZipPost = Pattern
+					.compile("^[0-9]{3}");
+			Matcher mtcZipPost = ptnZipPost.matcher(zipcodePost);
 
-			if (!matcherZipcode.matches()) {
-				request.setAttribute("customerZipcodeError", "郵便番号が不正です。");
+			if (!mtcZipPost.matches()) {
+				request.setAttribute("zipcodePostError", "郵便番号が不正です。");
+				isError = true;
+			}
+
+			Pattern ptnZipCity = Pattern
+					.compile("^[0-9]{4}");
+			Matcher mtcZipCity = ptnZipCity.matcher(zipcodeCity);
+
+			if (!mtcZipCity.matches()) {
+				request.setAttribute("zipcodeCityError", "郵便番号が不正です。");
 				isError = true;
 			}
 			//           住所
-			if (customerAddress.isEmpty()) {
-				request.setAttribute("customerAddressError", "住所が未入力です。");
+			if (addressState.isEmpty()) {
+				request.setAttribute("addressStateError", "都道府県が未入力です。");
 				isError = true;
 			}
-			if (customerAddress.length() > 45) {
-				request.setAttribute("customerAddressError", "45文字以下で入力してください。");
+			if (addressState.length() > 45) {
+				request.setAttribute("addressStateError", "45文字以下で入力してください。");
 				isError = true;
 			}
-
-			//			メールアドレス
-			Pattern patternMail = Pattern
-					.compile("^[a-zA-Z0-9_.+-]+@([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$");
-			Matcher matcherMail = patternMail.matcher(customerMail);
-
-			if (!matcherMail.matches()) {
-				request.setAttribute("customerMailError", "メールアドレスが不正です。");
+			if (addressCity.isEmpty()) {
+				request.setAttribute("addressCityError", "市区町村が未入力です。");
+				isError = true;
+			}
+			if (addressCity.length() > 45) {
+				request.setAttribute("addressCityError", "45文字以下で入力してください。");
+				isError = true;
+			}
+			if (addressStreet.isEmpty()) {
+				request.setAttribute("addressStreetError", "番地が未入力です。");
+				isError = true;
+			}
+			if (addressStreet.length() > 45) {
+				request.setAttribute("addressStreetError", "45文字以下で入力してください。");
 				isError = true;
 			}
 
 			//			電話番号
-			Pattern patternPhone = Pattern
-					.compile("[0-9+]+");
-			Matcher matcherPhone = patternPhone.matcher(customerPhone);
+			Pattern ptnPhoneA = Pattern
+					.compile("[0-9+]");
+			Matcher mtcPhoneA = ptnPhoneA.matcher(phoneNumberA);
 
-			if (!matcherPhone.matches()) {
-				request.setAttribute("customerPhoneError", "数字と＋のみ入力が可能です。");
+			Pattern ptnPhone = Pattern
+					.compile("[0-9]");
+			Matcher mtcPhoneB = ptnPhone.matcher(phoneNumberB);
+			Matcher mtcPhoneC = ptnPhone.matcher(phoneNumberC);
+
+			if (!mtcPhoneA.matches() || !mtcPhoneB.matches() || !mtcPhoneC.matches()) {
+				request.setAttribute("phoneNumberError", "電話番号が不正です。");
+				isError = true;
+			}
+
+			//			メールアドレス
+			Pattern ptnEMailUser = Pattern
+					.compile("^[a-zA-Z0-9_.+-]");
+			Matcher mtcEMailUser = ptnEMailUser.matcher(eMailUserName);
+
+			if (!mtcEMailUser.matches()) {
+				request.setAttribute("eMailUserNameError", "メールアドレスが不正です。");
+				isError = true;
+			}
+
+			Pattern ptnEMailDomain = Pattern
+					.compile("^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]*\\.)+[a-zA-Z]{2,}$");
+			Matcher mtcEMailDomain = ptnEMailDomain.matcher(eMailDomain);
+
+			if (!mtcEMailDomain.matches()) {
+				request.setAttribute("eMailDomainError", "ドメイン名が不正です。");
 				isError = true;
 			}
 
@@ -256,16 +370,26 @@ public class AddCustomerServlet extends HttpServlet {
 			Customer customer = new Customer();
 			customer.setCustomerId(customerId);
 			customer.setCustomerClassId(customerClassId);
-			customer.setCustomerName(customerName);
-			customer.setCustomerSexId(customerSexId);
-			customer.setCustomerCardId(customerCardId);
-			customer.setCustomerCardNumber(customerCardNumber);
-			customer.setCustomerBirthday(customerBirthday);
-			customer.setCustomerZipcode(customerZipcode);
-			customer.setCustomerAddress(customerAddress);
-			customer.setCustomerMemo(customerMemo);
-			customer.setCustomerPhone(customerPhone);
-			customer.setCustomerMail(customerMail);
+			customer.setLastName(lastName);
+			customer.setFirstName(firstName);
+			customer.setLastKana(lastKana);
+			customer.setFirstKana(firstKana);
+			customer.setSexId(sexId);
+			customer.setCardId(cardId);
+			customer.setCardNumber(cardNumber);
+			customer.setBirthday(birthday);
+			customer.setZipcodePost(zipcodePost);
+			customer.setZipcodeCity(zipcodeCity);
+			customer.setAddressState(addressState);
+			customer.setAddressCity(addressCity);
+			customer.setAddressStreet(addressStreet);
+			customer.setAddressRoom(addressRoom);
+			customer.setMemo(memo);
+			customer.setPhoneNumberA(phoneNumberA);
+			customer.setPhoneNumberB(phoneNumberB);
+			customer.setPhoneNumberC(phoneNumberC);
+			customer.seteMailUserName(eMailUserName);
+			customer.seteMailDomain(eMailDomain);
 
 			CustomerDao customerDao = DaoFactory.createCustomerDao();
 			customerDao.insert(customer);

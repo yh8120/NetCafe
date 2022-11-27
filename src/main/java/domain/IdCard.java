@@ -3,6 +3,7 @@ package domain;
 public class IdCard {
 	private Integer cardId;
 	private String cardName;
+	private Boolean canCopyNumber;
 	
 	
 	public Integer getCardId() {
@@ -16,6 +17,12 @@ public class IdCard {
 	}
 	public void setCardName(String cardName) {
 		this.cardName = cardName;
+	}
+	public Boolean getCanCopyNumber() {
+		return canCopyNumber;
+	}
+	public void setCanCopyNumber(Boolean canCopyNumber) {
+		this.canCopyNumber = canCopyNumber;
 	}
 
 }
