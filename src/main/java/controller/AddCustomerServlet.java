@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.CustomCharacterEscapes;
@@ -51,6 +50,7 @@ public class AddCustomerServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/view/addCustomer.jsp").forward(request, response);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ServletException();
 		}
 
@@ -72,9 +72,8 @@ public class AddCustomerServlet extends HttpServlet {
 
 			String customerJson = mapper.writeValueAsString(customer);
 			response.getWriter().write(customerJson);
-		} catch (JsonProcessingException e) {
-			throw new ServletException();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ServletException();
 		}
 
@@ -119,7 +118,7 @@ public class AddCustomerServlet extends HttpServlet {
 			String phoneNumberC = request.getParameter("phoneNumberC");
 			String eMailUserName = request.getParameter("eMailUserName");
 			String eMailDomain = request.getParameter("eMailDomain");
-
+			System.out.println(strBirthday);
 			request.setAttribute("customerId", strCustomerId);
 			request.setAttribute("strCustomerClassId", strCustomerClassId);
 			request.setAttribute("lastName", lastName);
@@ -132,8 +131,8 @@ public class AddCustomerServlet extends HttpServlet {
 			request.setAttribute("strCardId", strCardId);
 			request.setAttribute("cardNumber", cardNumber);
 			request.setAttribute("birthday", strBirthday);
-			request.setAttribute("strZipcodePost", zipcodePost);
-			request.setAttribute("strZipcodeCity", zipcodeCity);
+			request.setAttribute("zipcodePost", zipcodePost);
+			request.setAttribute("zipcodeCity", zipcodeCity);
 			request.setAttribute("addressState", addressState);
 			request.setAttribute("addressCity", addressCity);
 			request.setAttribute("addressStreet", addressStreet);
@@ -167,6 +166,7 @@ public class AddCustomerServlet extends HttpServlet {
 						isError = true;
 					}
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					request.setAttribute("customerIdError", "会員番号が不正です。");
 					isError = true;
 				}
@@ -184,6 +184,7 @@ public class AddCustomerServlet extends HttpServlet {
 						isError = true;
 					}
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					request.setAttribute("customerClassIdError", "会員クラスが不正です。");
 					isError = true;
 				}
@@ -236,6 +237,7 @@ public class AddCustomerServlet extends HttpServlet {
 						isError = true;
 					}
 				} catch (NumberFormatException e) {
+					e.printStackTrace();
 					request.setAttribute("sexIdError", "性別が不正です。");
 					isError = true;
 				}
@@ -271,7 +273,9 @@ public class AddCustomerServlet extends HttpServlet {
 				try {
 					SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
 					birthday = sdFormat.parse(strBirthday);
+					System.out.println(birthday);
 				} catch (ParseException e) {
+					e.printStackTrace();
 					request.setAttribute("birthdayError", "生年月日が不正です。");
 					isError = true;
 				}
@@ -280,6 +284,7 @@ public class AddCustomerServlet extends HttpServlet {
 				request.setAttribute("birthdayError", "生年月日が未入力です。");
 				isError = true;
 			}
+			System.out.println(birthday);
 
 			//			郵便番号
 			Pattern ptnZipPost = Pattern
@@ -327,22 +332,30 @@ public class AddCustomerServlet extends HttpServlet {
 
 			//			電話番号
 			Pattern ptnPhoneA = Pattern
-					.compile("[0-9+]");
+					.compile("^[0-9+]+");
 			Matcher mtcPhoneA = ptnPhoneA.matcher(phoneNumberA);
 
 			Pattern ptnPhone = Pattern
-					.compile("[0-9]");
+					.compile("^[0-9]+");
 			Matcher mtcPhoneB = ptnPhone.matcher(phoneNumberB);
 			Matcher mtcPhoneC = ptnPhone.matcher(phoneNumberC);
 
-			if (!mtcPhoneA.matches() || !mtcPhoneB.matches() || !mtcPhoneC.matches()) {
-				request.setAttribute("phoneNumberError", "電話番号が不正です。");
+			if (!mtcPhoneA.matches()) {
+				request.setAttribute("phoneNumberAError", "電話番号Aが不正です。");
+				isError = true;
+			}
+			if (!mtcPhoneB.matches()) {
+				request.setAttribute("phoneNumberBError", "電話番号Bが不正です。");
+				isError = true;
+			}
+			if (!mtcPhoneC.matches()) {
+				request.setAttribute("phoneNumberCError", "電話番号Cが不正です。");
 				isError = true;
 			}
 
 			//			メールアドレス
 			Pattern ptnEMailUser = Pattern
-					.compile("^[a-zA-Z0-9_.+-]");
+					.compile("^[a-zA-Z0-9_.+-]+");
 			Matcher mtcEMailUser = ptnEMailUser.matcher(eMailUserName);
 
 			if (!mtcEMailUser.matches()) {
@@ -395,6 +408,7 @@ public class AddCustomerServlet extends HttpServlet {
 			customerDao.insert(customer);
 			request.getRequestDispatcher("/WEB-INF/view/addCustomerDone.jsp").forward(request, response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ServletException(e);
 		}
 	}

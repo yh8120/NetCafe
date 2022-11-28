@@ -43,12 +43,7 @@ public class CustomerDaoImpl implements CustomerDao {
 	public Customer findById(Integer customerId) throws Exception {
 		Customer customer = null;
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT *"
-					+ " FROM customers"
-					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id"
-					+ " JOIN id_cards ON customers.card_id = id_cards.card_id"
-					+ " JOIN sexes ON customers.sex_id = sexes.sex_id"
-					+ " WHERE customer_id=?";
+			String sql = "SELECT * FROM customers JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id JOIN id_cards ON customers.card_id = id_cards.card_id JOIN sexes ON customers.sex_id = sexes.sex_id WHERE customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, customerId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
@@ -56,6 +51,7 @@ public class CustomerDaoImpl implements CustomerDao {
 				customer = mapToCustomer(rs);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw e;
 		}
 		return customer;
@@ -82,14 +78,14 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " address_street,"
 					+ " address_room,"
 					+ " memo,"
-					+ " phone_number_a = ?,"
-					+ " phone_number_b = ?,"
-					+ " phone_number_c = ?,"
+					+ " phone_number_a,"
+					+ " phone_number_b,"
+					+ " phone_number_c,"
 					+ " email_username,"
 					+ " email_domain,"
-					+ " customer_regestered,"
-					+ " customer_updated)"
-					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
+					+ " regestered,"
+					+ " updated)"
+					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			
 			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);
@@ -146,7 +142,7 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " phone_number_c = ?,"
 					+ " email_username = ?,"
 					+ " email_domain = ?,"
-					+ " customer_updated = NOW()"
+					+ " updated = NOW()"
 					+ " WHERE customer_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, customer.getCustomerClassId(), Types.INTEGER);
