@@ -236,9 +236,24 @@
               class="customerData form-control" value=<c:out value="${eMailUserName }"/>> @
             <input type="text" name="eMailDomain" id="formEMailDomain"
               class="customerData form-control" value=<c:out value="${eMailDomain }"/>>
-          </div>
+          </div> <div class="col">
+        <table class="table table-bordered">
+          <tr>
+            <th>登録日</th>
+            <th>更新日</th>
+          </tr>
+          <tr>
+            <td id="regestered">
+              <c:out value="${regestred }" />
+            </td>
+            <td id="updated">
+              <c:out value="${updated }" />
+            </td>
+          </tr>
+        </table>
+      </div>
           <div class="mb-3">
-            <input type="submit" id="formSubmit" class="customerData btn btn-success" value="登録">
+            <input type="submit" id="formSubmit" class="btn btn-success" value="登録">
             <a href="manager" class="btn btn-light">キャンセル</a>
           </div>
         </form>
@@ -291,7 +306,7 @@
 					$("#formSexId").val(customer.sexId);
 					$("#formCardId").val(customer.cardId);
 					$("#formCardNumber").val(customer.cardNumber);
-					$("#formBirthday").val(customer.birthday);
+					$("#formBirthday").val(customer.strBirthday);
 					$("#formZipcodePost").val(customer.zipcodePost);
 					$("#formZipcodeCity").val(customer.zipcodeCity);
 					$("#formAddressState").val(customer.addressState);
@@ -304,6 +319,8 @@
 					$("#formPhoneNumberC").val(customer.phoneNumberC);
 					$("#formEMailUserName").val(customer.eMailUserName);
 					$("#formEMailDomain").val(customer.eMailDomain);
+					$("#regestered").text(customer.strRegestered);
+					$("#updated").text(customer.strUpdated);
 
 					if (customer.canCopyNumber) {
 						$("#formCardNumber").removeAttr("disabled");

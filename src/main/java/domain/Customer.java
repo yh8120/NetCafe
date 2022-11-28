@@ -18,6 +18,7 @@ public class Customer {
 	private Boolean canCopyNumber;;
 	private String cardNumber;
 	private Date birthday;
+	private String strBirthday;
 	private String zipcodePost;
 	private String zipcodeCity;
 	private String addressState;
@@ -32,7 +33,8 @@ public class Customer {
 	private String eMailDomain;
 	private Date regestered;
 	private Date updated;
-	
+	private String strRegestered;
+	private String strUpdated;
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -120,6 +122,13 @@ public class Customer {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
+	
+	public String getStrBirthday() {
+		return strBirthday;
+	}
+	public void setStrBirthday(String strBirthday) {
+		this.strBirthday = strBirthday;
+	}
 	public String getZipcodePost() {
 		return zipcodePost;
 	}
@@ -206,5 +215,18 @@ public class Customer {
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
+	public String getStrRegestered() {
+		return strRegestered;
+	}
+	public String getStrUpdated() {
+		return strUpdated;
+	}
+	public void setStrRegestered(String strRegestered) {
+		this.strRegestered = strRegestered;
+	}
+	public void setStrUpdated(String strUpdated) {
+		this.strUpdated = strUpdated;
+	}
+	
 
 }

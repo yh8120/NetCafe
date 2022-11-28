@@ -405,7 +405,7 @@ public class AddCustomerServlet extends HttpServlet {
 			customer.seteMailDomain(eMailDomain);
 
 			CustomerDao customerDao = DaoFactory.createCustomerDao();
-			customerDao.insert(customer);
+			customerDao.insertWithCheck(customer);
 			request.getRequestDispatcher("/WEB-INF/view/addCustomerDone.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class CustomerDaoImpl implements CustomerDao {
 					+ " updated)"
 					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			
+
 			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);
 			stmt.setObject(2, customer.getCustomerClassId(), Types.INTEGER);
 			stmt.setString(3, customer.getLastName());
@@ -97,7 +98,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setObject(7, customer.getSexId(), Types.INTEGER);
 			stmt.setObject(8, customer.getCardId(), Types.INTEGER);
 			stmt.setString(9, customer.getCardNumber());
-			stmt.setObject(10, customer.getBirthday(),Types.DATE);
+			stmt.setObject(10, customer.getBirthday(), Types.DATE);
 			stmt.setString(11, customer.getZipcodePost());
 			stmt.setString(12, customer.getZipcodeCity());
 			stmt.setString(13, customer.getAddressState());
@@ -116,12 +117,23 @@ public class CustomerDaoImpl implements CustomerDao {
 		}
 
 	}
+	
+	@Override
+	public void insertWithCheck(Customer customer) throws Exception {
+		Customer checkCustomer =findById(customer.getCustomerId());
+		if(checkCustomer==null) {
+			insert(customer);
+		}else {
+			update(customer);
+		}
+		
+	}
 
 	@Override
 	public void update(Customer customer) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE customers"
-					+ " customer_class_id = ?,"
+					+ " SET customer_class_id = ?,"
 					+ " last_name = ?,"
 					+ " first_name = ?,"
 					+ " last_kana = ?,"
@@ -153,7 +165,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setObject(6, customer.getSexId(), Types.INTEGER);
 			stmt.setObject(7, customer.getCardId(), Types.INTEGER);
 			stmt.setString(8, customer.getCardNumber());
-			stmt.setObject(9, customer.getBirthday(),Types.DATE);
+			stmt.setObject(9, customer.getBirthday(), Types.DATE);
 			stmt.setString(10, customer.getZipcodePost());
 			stmt.setString(11, customer.getZipcodeCity());
 			stmt.setString(12, customer.getAddressState());
@@ -167,6 +179,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			stmt.setString(20, customer.geteMailUserName());
 			stmt.setString(21, customer.geteMailDomain());
 			stmt.setObject(22, customer.getCustomerId(), Types.INTEGER);
+			System.out.println(stmt);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -180,7 +193,7 @@ public class CustomerDaoImpl implements CustomerDao {
 			String sql = "DELETE FROM customers"
 					+ " Where customer_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, customer.getCustomerId(),Types.INTEGER);
+			stmt.setObject(1, customer.getCustomerId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -217,6 +230,19 @@ public class CustomerDaoImpl implements CustomerDao {
 		customer.seteMailDomain(rs.getString("email_domain"));
 		customer.setRegestered(rs.getTimestamp("regestered"));
 		customer.setUpdated(rs.getTimestamp("updated"));
+
+		try {
+			String strBirthday = new SimpleDateFormat("yyyy-MM-dd").format(customer.getBirthday());
+			String strRegestered = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(customer.getRegestered());
+			String strUpdated = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(customer.getUpdated());
+
+			customer.setStrBirthday(strBirthday);
+			customer.setStrRegestered(strRegestered);
+			customer.setStrUpdated(strUpdated);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return customer;
 
 	}
