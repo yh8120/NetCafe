@@ -340,18 +340,11 @@ public class AddCustomerServlet extends HttpServlet {
 			Matcher mtcPhoneB = ptnPhone.matcher(phoneNumberB);
 			Matcher mtcPhoneC = ptnPhone.matcher(phoneNumberC);
 
-			if (!mtcPhoneA.matches()) {
-				request.setAttribute("phoneNumberAError", "電話番号Aが不正です。");
+			if (!mtcPhoneA.matches()||!mtcPhoneB.matches()||!mtcPhoneC.matches()) {
+				request.setAttribute("phoneNumberError", "電話番号が不正です。");
 				isError = true;
 			}
-			if (!mtcPhoneB.matches()) {
-				request.setAttribute("phoneNumberBError", "電話番号Bが不正です。");
-				isError = true;
-			}
-			if (!mtcPhoneC.matches()) {
-				request.setAttribute("phoneNumberCError", "電話番号Cが不正です。");
-				isError = true;
-			}
+			
 
 			//			メールアドレス
 			Pattern ptnEMailUser = Pattern
