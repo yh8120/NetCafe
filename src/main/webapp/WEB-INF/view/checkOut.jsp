@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -28,6 +29,32 @@
                 <c:out value="${customer.lastName } ${customer.firstName }" />
               </td>
             </tr>
+            <tr>
+              <th>利用時間</th>
+              <td>
+                <c:out value="${currentTime }" /> 分
+              </td>
+            </tr>
+            <tr>
+              <th>税率</th>
+              <td>
+                <c:out value="${tax }" /> ％
+              </td>
+            </tr>
+            <tr>
+              <th>小計</th>
+              <td>
+                <c:out value="${subtotal }" /> 円
+              </td>
+              
+            </tr>
+            <tr>
+              <th>お会計</th>
+              <td>
+                <c:out value="${currentPrice }" /> 円
+              </td>
+            </tr>
+            
           </table>
           <input type="submit" value="清算" class="btn btn-primary">
           <a href="manager" class="btn btn-light">キャンセル</a>

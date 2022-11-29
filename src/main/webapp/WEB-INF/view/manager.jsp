@@ -48,7 +48,7 @@
                     <c:when test="${not empty room.customerId }">
                       <div class="vacancy">
                         <a
-                          href="checkOut?roomId=<c:out value="${room.roomId }"/>&customerId=<c:out value="${room.customerId }"/>"
+                          href="checkOut?roomId=<c:out value="${room.roomId }"/>"
                           class="btn btn-success col-2 mr-2">退室</a>
                         <a href="" class="btn btn-success col-2 mr-2">販売</a>
                         <a href="" class="btn btn-success col-2 mr-2">レンタル</a>
