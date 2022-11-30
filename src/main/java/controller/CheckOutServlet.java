@@ -10,12 +10,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
 import dao.DaoFactory;
 import dao.RoomDao;
+import dao.SalesDataDao;
+import dao.UserDao;
 import domain.Customer;
 import domain.Room;
+import domain.SalesData;
+import domain.User;
 
 @WebServlet("/checkOut")
 public class CheckOutServlet extends HttpServlet {
@@ -35,68 +40,93 @@ public class CheckOutServlet extends HttpServlet {
 			Customer customer = customerDao.findById(customerId);
 			Date now = new Date();
 
-			//			BigDecimal b2= new BigDecimal(60*1000);
-			//			BigDecimal currentTime = b1.divide(b2,RoundingMode.HALF_UP);
-			//			BigDecimal baisicChargeTime = new BigDecimal(10);
-			//			BigDecimal countCharges = currentTime.divide(baisicChargeTime,RoundingMode.DOWN);
-
-			BigDecimal bigCurrentMS = new BigDecimal(now.getTime() - startTime.getTime());
+			BigDecimal currentMS = new BigDecimal(now.getTime() - startTime.getTime());
 			BigDecimal basicPrice = new BigDecimal(500);
 			BigDecimal basicMS = new BigDecimal(3600000);
 			BigDecimal addPrice = new BigDecimal(100);
 			BigDecimal addMS = new BigDecimal(600000);
-			BigDecimal bigTax = new BigDecimal(1.1);
-			BigDecimal bigSubtotal = null;
-			BigDecimal bigCurrentPrice = null;
+			BigDecimal tax = new BigDecimal(0.1);
+			BigDecimal currentHour = currentMS.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
+			BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
+			BigDecimal currentMin = (currentMS.subtract(currentHourMS)).divide(BigDecimal.valueOf(60000),
+					RoundingMode.DOWN);
+			BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
+			BigDecimal currentSec = (currentMS.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
+					RoundingMode.DOWN);
 
-			if (bigCurrentMS.compareTo(basicMS)==-1) {
-				bigCurrentPrice = bigTax.multiply(basicPrice); 
-			}else {
-				BigDecimal currentTime = bigCurrentMS.subtract(basicMS);
-				System.out.println(currentTime);
-				BigDecimal timesOfAdded = (currentTime).divide(addMS,RoundingMode.DOWN);
-				System.out.println(timesOfAdded);
-				bigSubtotal = (timesOfAdded).multiply(addPrice);
-				System.out.println(bigSubtotal);
-				bigCurrentPrice = bigSubtotal.multiply(bigTax);
-				//四捨五入
-				bigCurrentPrice = bigCurrentPrice.setScale(0, RoundingMode.HALF_UP);
-				System.out.println(bigCurrentPrice);
+			// 超過時間（＝利用時間－基本時間）
+			// (利用時間が基本時間以下の場合超過時間は0)
+			BigDecimal excMS = currentMS.subtract(basicMS);
+			if (excMS.compareTo(BigDecimal.ZERO) == -1) {
+				excMS = BigDecimal.ZERO;
 			}
-			
-			Double currentPrice = bigCurrentPrice.doubleValue();
-			Double subtotal = bigSubtotal.doubleValue();
-			Integer tax = ((bigTax.subtract(new BigDecimal(1))).multiply(new BigDecimal(100))).intValue();
-			Double currentTime = bigCurrentMS.doubleValue()/60000;
-			
-			request.setAttribute("roomId", roomId);
+			System.out.println(excMS);
+			// 追加料金発生回数（＝超過時間÷追加料金時間(切り上げ））
+			BigDecimal timesOfAdded = excMS.divide(addMS, RoundingMode.UP);
+			System.out.println(timesOfAdded);
+			// 追加料金（＝追加料金発生時間×追加料金）
+			BigDecimal excPrice = (timesOfAdded).multiply(addPrice);
+			System.out.println(excPrice);
+			// 小計（＝基本料金＋(追加料金)）
+			BigDecimal subtotal = basicPrice.add(excPrice);
+			System.out.println(subtotal);
+			// 内消費税（＝小計×税率(四捨五入)）
+			BigDecimal taxFee = subtotal.multiply(tax);
+			taxFee = taxFee.setScale(0, RoundingMode.HALF_UP);
+			// 合計（＝小計＋内消費税）
+			BigDecimal currentPrice = subtotal.add(taxFee);
+			System.out.println(currentPrice);
+
+			room.setStayingTime(currentMS.longValue());
+			room.setSubtotal(subtotal.intValue());
+			room.setCurrentPrice(currentPrice.intValue());
+
+			roomdao.preCheckOut(room);
+
+			request.setAttribute("room", room);
 			request.setAttribute("customer", customer);
-			request.setAttribute("currentTime", currentTime);
-			request.setAttribute("subtotal", subtotal);
-			request.setAttribute("tax", bigTax);
-			request.setAttribute("currentPrice", currentPrice);
+			request.setAttribute("currentHour", currentHour);
+			request.setAttribute("currentMin", currentMin);
+			request.setAttribute("currentSec", currentSec);
+			request.setAttribute("tax", tax);
+			request.setAttribute("taxFee", taxFee);
 
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
 		} catch (Exception e) {
-			HttpServletResponse res = (HttpServletResponse) response;
-			res.sendRedirect("manager");
+			e.printStackTrace();
+			throw new ServletException(e);
+			//			HttpServletResponse res = (HttpServletResponse) response;
+			//			res.sendRedirect("manager");
 		}
 
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		Integer roomId = Integer.parseInt(request.getParameter("roomId"));
-
-		Room room = new Room();
-		room.setRoomId(roomId);
 		try {
-
-			RoomDao roomDao = DaoFactory.createRoomDao();
-			roomDao.checkOut(room);
-
+			HttpServletRequest req = (HttpServletRequest) request;
+			HttpSession session = req.getSession();
+			Integer storeId= (Integer) session.getAttribute("storeId");
+			String loginId = (String) session.getAttribute("loginId");
+			
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+			RoomDao roomdao = DaoFactory.createRoomDao();
+			Room room = roomdao.findById(roomId);
+			SalesDataDao salesDataDao = DaoFactory.createSalesDataDao();
+			SalesData salesData = new SalesData();
+			
+			UserDao userDao = DaoFactory.createUserDao();
+			User user = userDao.findByLoginId(loginId);
+			
+			salesData.setStoreId(storeId);
+			salesData.setUserId(user.getId());
+			salesData.setCustomerId(room.getCustomerId());
+			salesData.setSales(room.getCurrentPrice());
+			
+			salesDataDao.insert(salesData);
+			roomdao.checkOut(room);
+			
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect("manager");
 		} catch (Exception e) {

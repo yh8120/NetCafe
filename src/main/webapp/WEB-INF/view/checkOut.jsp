@@ -17,6 +17,12 @@
       <div class="col">
         <form action="" method="post">
           <table class="table table-bordered">
+          <tr>
+              <th>ルーム</th>
+              <td>
+                <c:out value="${room.roomName }" />
+              </td>
+            </tr>
             <tr>
               <th>会員番号</th>
               <td>
@@ -30,34 +36,52 @@
               </td>
             </tr>
             <tr>
-              <th>利用時間</th>
+              <th>ご利用時間</th>
               <td>
-                <c:out value="${currentTime }" /> 分
+                <c:out value="${currentHour}時間　${currentMin}分　${currentSec}秒" />
               </td>
             </tr>
             <tr>
               <th>税率</th>
               <td>
-                <c:out value="${tax }" /> ％
+                <fmt:formatNumber value="${tax}" pattern="##%" />
               </td>
             </tr>
             <tr>
               <th>小計</th>
               <td>
-                <c:out value="${subtotal }" /> 円
+                <fmt:formatNumber value="${room.subtotal}" type="CURRENCY" currencyCode="JPY"
+                  maxFractionDigits="0" />
               </td>
-              
+
             </tr>
             <tr>
               <th>お会計</th>
               <td>
-                <c:out value="${currentPrice }" /> 円
+                <fmt:formatNumber value="${room.currentPrice}" type="CURRENCY" currencyCode="JPY"
+                  maxFractionDigits="0" />
               </td>
             </tr>
-            
           </table>
-          <input type="submit" value="清算" class="btn btn-primary">
-          <a href="manager" class="btn btn-light">キャンセル</a>
+          <div class="row">
+            <div class="col">
+              <c:if test="${not empty paymentError }">
+                <div class="error-message">
+                  <c:out value="${paymentError}"></c:out>
+                </div>
+              </c:if>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="input-group col-auto">
+              <span class="input-group-text">預り金</span> <input type="number" pattern="\d*"
+                name="payment" id="formPayment" class="form-control" min="0" max="999999"
+                value=<c:out value="${payment}"/>> <span class="input-group-text">円</span>
+            </div>
+
+          </div>
+          <input type="submit" value="清算" class="btn btn-primary"> <a href="manager"
+            class="btn btn-light">キャンセル</a>
         </form>
       </div>
     </div>

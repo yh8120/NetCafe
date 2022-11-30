@@ -46,6 +46,10 @@ public class DaoFactory {
 		return new SexDaoImpl(getDataSource());
 
 	}
+	
+	public static SalesDataDao createSalesDataDao() {
+		return new SalesDataDaoImpl(getDataSource());
+	}
 
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;

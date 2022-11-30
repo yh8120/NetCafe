@@ -59,7 +59,27 @@ public class UserDaoImpl implements UserDao {
 		}
 		return user;
 	}
-
+	
+	@Override
+	public User findByLoginId(String loginId) throws Exception {
+		User user = null;
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT * FROM users"
+					+ " JOIN user_classes"
+					+ " ON users.user_class_id = user_classes.user_class_id"
+					+ " WHERE login_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, loginId);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				user = mapToUser(rs);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return user;
+	}
+	
 	@Override
 	public void insert(User user) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -144,5 +164,7 @@ public class UserDaoImpl implements UserDao {
 		 return user; 
 		 
 	}
+
+	
 
 }

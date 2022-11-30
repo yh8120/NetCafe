@@ -59,7 +59,7 @@ public class RoomDaoImpl implements RoomDao {
 		}
 		return room;
 	}
-	
+
 	@Override
 	public Room checkCurrentUser(Integer customerId) throws Exception {
 		Room room = null;
@@ -79,9 +79,9 @@ public class RoomDaoImpl implements RoomDao {
 			throw e;
 		}
 		return room;
-		
+
 	}
-	
+
 	@Override
 	public void insert(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -131,7 +131,6 @@ public class RoomDaoImpl implements RoomDao {
 
 	}
 
-	
 	@Override
 	public void checkIn(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
@@ -142,6 +141,27 @@ public class RoomDaoImpl implements RoomDao {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, room.getCustomerId(), Types.INTEGER);
 			stmt.setObject(2, room.getRoomId(), Types.INTEGER);
+			stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
+	@Override
+	public void preCheckOut(Room room) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE rooms"
+					+ " SET staying_time = ?,"
+					+ " subtotal = ?,"
+					+ " current_price = ?,"
+					+ " checkout_time = NOW()"
+					+ " WHERE room_id = ?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, room.getStayingTime(), Types.BIGINT);
+			stmt.setObject(2, room.getSubtotal(), Types.INTEGER);
+			stmt.setObject(3, room.getCurrentPrice(), Types.INTEGER);
+			stmt.setObject(4, room.getRoomId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -190,8 +210,11 @@ public class RoomDaoImpl implements RoomDao {
 		room.setStarted(rs.getTimestamp("started"));
 		room.setCleaningId((Integer) rs.getObject("cleaning_id"));
 		room.setCleaningName(rs.getString("cleaning_name"));
+		room.setStayingTime((Long) rs.getObject("staying_time"));
+		room.setCheckOutTime(rs.getTimestamp("checkout_time"));
+		room.setSubtotal((Integer) rs.getObject("subtotal"));
+		room.setCurrentPrice((Integer) rs.getObject("current_price"));
 		return room;
 	}
-
 
 }

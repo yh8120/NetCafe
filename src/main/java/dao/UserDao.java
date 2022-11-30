@@ -9,6 +9,7 @@ public interface UserDao {
 	List<User> findAll() throws Exception;
 
 	User findById(Integer id) throws Exception;
+	User findByLoginId(String loginId) throws Exception;
 
 	void insert(User user) throws Exception;
 

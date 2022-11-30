@@ -12,6 +12,10 @@ public class Room {
 	private Date started;
 	private Integer cleaningId;
 	private String cleaningName;
+	private Long stayingTime;
+	private Date checkOutTime;
+	private Integer subtotal;
+	private Integer currentPrice; 
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -104,6 +108,46 @@ public class Room {
 
 	public void setCleaningName(String cleaningName) {
 		this.cleaningName = cleaningName;
+	}
+
+
+	public Long getStayingTime() {
+		return stayingTime;
+	}
+
+
+	public Date getCheckOutTime() {
+		return checkOutTime;
+	}
+
+
+	public void setCheckOutTime(Date checkOutTime) {
+		this.checkOutTime = checkOutTime;
+	}
+
+
+	public Integer getSubtotal() {
+		return subtotal;
+	}
+
+
+	public Integer getCurrentPrice() {
+		return currentPrice;
+	}
+
+
+	public void setStayingTime(Long stayingTime) {
+		this.stayingTime = stayingTime;
+	}
+
+
+	public void setSubtotal(Integer subtotal) {
+		this.subtotal = subtotal;
+	}
+
+
+	public void setCurrentPrice(Integer currentPrice) {
+		this.currentPrice = currentPrice;
 	}
 
 }

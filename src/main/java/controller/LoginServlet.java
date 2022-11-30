@@ -52,8 +52,11 @@ public class LoginServlet extends HttpServlet {
 
 			User user = userDao.findByLoginIdAndLoginPass(loginId, loginPass);
 			
+			Integer storeId =123;
+			
 			if(user!=null) {
 				request.getSession().setAttribute("loginId", user.getLoginId());
+				request.getSession().setAttribute("storeId", storeId);
 				response.sendRedirect("index");
 			}else {
 				request.setAttribute("error", true);
