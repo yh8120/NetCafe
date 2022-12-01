@@ -57,7 +57,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label for="formShopId">ルームタイプ</label>
+            <label for="formShopId">所属店舗</label>
             <select name="shopId" id="formShopId" class="form-control">
               <c:forEach items="${shopList}" var="shop">
                 <option value="<c:out value="${shop.shopId}" />"

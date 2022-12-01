@@ -59,6 +59,10 @@ public class UpdateUserServlet extends HttpServlet {
 			UserClassDao userClassDao = DaoFactory.createUserClassDao();
 			List<UserClass> userClassList = userClassDao.findAll();
 			request.setAttribute("userClassList", userClassList);
+			
+			ShopDao shopDao = DaoFactory.createShopDao();
+			List<Shop> shopList = shopDao.findAll();
+			request.setAttribute("shopList", shopList);
 
 			Integer userId = Integer.parseInt(request.getParameter("userId"));
 			String userName = request.getParameter("userName");

@@ -54,6 +54,17 @@
           </select>
         </div>
         <div class="mb-3">
+            <label for="formShopId">所属店舗</label>
+            <select name="shopId" id="formShopId" class="form-control">
+              <c:forEach items="${shopList}" var="shop">
+                <option value="<c:out value="${shop.shopId}" />"
+                  <c:if test="${shop.shopId == shopId}">selected</c:if>>
+                  <c:out value="${shop.shopName}" />
+                </option>
+              </c:forEach>
+            </select>
+          </div>
+        <div class="mb-3">
           <input type="submit" class="btn btn-success" value="登録">
           <a href="listUser" class="btn btn-light">キャンセル</a>
         </div>

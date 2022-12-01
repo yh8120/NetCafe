@@ -57,7 +57,7 @@
                     </c:when>
                     <c:otherwise>
                       <div class="no-vacancy">
-                        <c:if test="${room.cleaningId != 3}">
+                        <c:if test="${room.cleaningId == 1}">
                           <a href="checkIn?roomId=<c:out value="${room.roomId }"/>"
                             class="btn btn-success col-2 mr-2">入室</a>
                           <a href="" class="btn btn-success col-3 mr-2">予約</a>

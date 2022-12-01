@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 
 import dao.DaoFactory;
+import dao.ShopDao;
 import dao.UserClassDao;
 import dao.UserDao;
+import domain.Shop;
 import domain.User;
 import domain.UserClass;
 
@@ -33,6 +35,10 @@ public class AddUserServlet extends HttpServlet {
 			UserClassDao userClassDao = DaoFactory.createUserClassDao();
 			List<UserClass> userClassList = userClassDao.findAll();
 			request.setAttribute("userClassList", userClassList);
+			
+			ShopDao shopDao = DaoFactory.createShopDao();
+			List<Shop> shopList = shopDao.findAll();
+			request.setAttribute("shopList", shopList);
 
 			request.getRequestDispatcher("/WEB-INF/view/addUser.jsp").forward(request, response);
 
@@ -52,23 +58,29 @@ public class AddUserServlet extends HttpServlet {
 			UserClassDao userClassDao = DaoFactory.createUserClassDao();
 			List<UserClass> userClassList = userClassDao.findAll();
 			request.setAttribute("userClassList", userClassList);
+			
+			ShopDao shopDao = DaoFactory.createShopDao();
+			List<Shop> shopList = shopDao.findAll();
+			request.setAttribute("shopList", shopList);
 
-			String name = request.getParameter("name");
+			String userName = request.getParameter("userName");
 			String newLoginId = request.getParameter("newLoginId");
 			String loginPass = request.getParameter("loginPass");
 			Integer userClassId = Integer.parseInt(request.getParameter("userClassId"));
+			Integer shopId = Integer.parseInt(request.getParameter("shopId"));
 
-			request.setAttribute("name", name);
+			request.setAttribute("name", userName);
 			request.setAttribute("newLoginId", newLoginId);
 			request.setAttribute("loginPass", loginPass);
 			request.setAttribute("userClassId", userClassId);
+			request.setAttribute("shopId", shopId);
 
 			boolean isError = false;
-			if (name.isEmpty()) {
+			if (userName.isEmpty()) {
 				request.setAttribute("nameError", "名前が未入力です。");
 				isError = true;
 			}
-			if (name.length() > 50) {
+			if (userName.length() > 50) {
 				request.setAttribute("nameError", "20文字以下で入力してください。");
 				isError = true;
 			}
@@ -92,10 +104,11 @@ public class AddUserServlet extends HttpServlet {
 			}
 
 			User user = new User();
-			user.setUserName(name);
+			user.setUserName(userName);
 			user.setLoginId(newLoginId);
 			user.setLoginPass(BCrypt.hashpw(loginPass, BCrypt.gensalt()));
 			user.setUserClassId(userClassId);
+			user.setShopId(shopId);
 
 			UserDao userDao = DaoFactory.createUserDao();
 			userDao.insert(user);

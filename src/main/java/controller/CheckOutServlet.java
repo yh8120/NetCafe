@@ -116,8 +116,7 @@ public class CheckOutServlet extends HttpServlet {
 			
 			roomdao.checkOut(room);
 			
-			HttpServletResponse res = (HttpServletResponse) response;
-			res.sendRedirect("manager");
+			request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
