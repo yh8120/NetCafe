@@ -41,15 +41,15 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findById(Integer id) throws Exception {
+	public User findById(Integer userId) throws Exception {
 		User user = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT * FROM users"
 					+ " JOIN user_classes"
 					+ " ON users.user_class_id = user_classes.user_class_id"
-					+ " WHERE id=?";
+					+ " WHERE user_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, id, Types.INTEGER);
+			stmt.setObject(1, userId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				user = mapToUser(rs);
@@ -84,13 +84,14 @@ public class UserDaoImpl implements UserDao {
 	public void insert(User user) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO users"
-					+ " (login_id, login_pass, name,user_class_id)"
-					+ " VALUES ( ?,?,?,?)";
+					+ " (login_id, login_pass, user_name,user_class_id, shop_id)"
+					+ " VALUES ( ?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, user.getLoginId());
 			stmt.setString(2, user.getLoginPass());
-			stmt.setString(3, user.getName());
+			stmt.setString(3, user.getUserName());
 			stmt.setObject(4, user.getUserClassId(),Types.INTEGER);
+			stmt.setObject(5, user.getShopId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -102,14 +103,15 @@ public class UserDaoImpl implements UserDao {
 	public void update(User user) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE users"
-					+ " SET login_id = ?, login_pass = ?, name = ?,user_class_id= ?"
-					+ " WHERE id = ?";
+					+ " SET login_id = ?, login_pass = ?, user_name = ?,user_class_id= ?,shop_id=?"
+					+ " WHERE user_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, user.getLoginId());
 			stmt.setString(2, user.getLoginPass());
-			stmt.setString(3, user.getName());
+			stmt.setString(3, user.getUserName());
 			stmt.setObject(4, user.getUserClassId(), Types.INTEGER);
-			stmt.setObject(5, user.getId(), Types.INTEGER);
+			stmt.setObject(5, user.getShopId(),Types.INTEGER);
+			stmt.setObject(6, user.getUserId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -121,9 +123,9 @@ public class UserDaoImpl implements UserDao {
 	public void delete(User user) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "DELETE FROM users"
-					+ " WHERE id = ?";
+					+ " WHERE user_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, user.getId(),Types.INTEGER);
+			stmt.setObject(1, user.getUserId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -155,12 +157,13 @@ public class UserDaoImpl implements UserDao {
 	
 	private User mapToUser(ResultSet rs) throws Exception {
 		User user = new User(); 
-		 user.setId((Integer) rs.getObject("id")); 
+		 user.setUserId((Integer) rs.getObject("user_id")); 
 		 user.setLoginId(rs.getString("login_id"));
 		 user.setLoginPass(rs.getString("login_pass"));
-		 user.setName(rs.getString("name"));
-		 user.setUserClassId(Integer.parseInt(rs.getString("user_class_id")));
+		 user.setUserName(rs.getString("user_name"));
+		 user.setUserClassId((Integer)(rs.getObject("user_class_id")));
 		 user.setUserClassName(rs.getString("user_class_name"));
+		 user.setShopId((Integer)(rs.getObject("shop_id")));
 		 return user; 
 		 
 	}

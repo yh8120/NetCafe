@@ -27,10 +27,10 @@
             <c:forEach items="${userList}" var="user">
               <tr>
                 <td>
-                  <c:out value="${user.id }" />
+                  <c:out value="${user.userId }" />
                 </td>
                 <td>
-                  <c:out value="${user.name }" />
+                  <c:out value="${user.userName }" />
                 </td>
                 <td>
                   <c:out value="${user.loginId }" />
@@ -42,10 +42,10 @@
                   <c:out value="${user.userClassName }" />
                 </td>
                 <td>
-                  <a href="updateUser?id=<c:out value="${user.id }"/>">更新</a>
+                  <a href="updateUser?userId=<c:out value="${user.userId }"/>">更新</a>
                 </td>
                 <td>
-                  <a href="deleteUser?id=<c:out value="${user.id }"/>">削除</a>
+                  <a href="deleteUser?userId=<c:out value="${user.userId }"/>">削除</a>
                 </td>
               </tr>
             </c:forEach>

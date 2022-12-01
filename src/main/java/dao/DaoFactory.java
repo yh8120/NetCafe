@@ -47,8 +47,20 @@ public class DaoFactory {
 
 	}
 	
+	public static ReceiptDataDao createRecieptDataDao() {
+		return new ReceiptDataDaoImpl(getDataSource());
+	}
+	
 	public static SalesDataDao createSalesDataDao() {
 		return new SalesDataDaoImpl(getDataSource());
+	}
+	
+	public static ProductDao createProductDao() {
+		return new ProductDaoImpl(getDataSource());
+	}
+	
+	public static ShopDao createShopDao() {
+		return new ShopDaoImpl(getDataSource());
 	}
 
 	private static DataSource getDataSource() {

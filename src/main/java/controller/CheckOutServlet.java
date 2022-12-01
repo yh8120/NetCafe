@@ -15,11 +15,9 @@ import javax.servlet.http.HttpSession;
 import dao.CustomerDao;
 import dao.DaoFactory;
 import dao.RoomDao;
-import dao.SalesDataDao;
 import dao.UserDao;
 import domain.Customer;
 import domain.Room;
-import domain.SalesData;
 import domain.User;
 
 @WebServlet("/checkOut")
@@ -107,24 +105,15 @@ public class CheckOutServlet extends HttpServlet {
 		try {
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpSession session = req.getSession();
-			Integer storeId= (Integer) session.getAttribute("storeId");
-			String loginId = (String) session.getAttribute("loginId");
+			User user= (User) session.getAttribute("user");
 			
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			RoomDao roomdao = DaoFactory.createRoomDao();
 			Room room = roomdao.findById(roomId);
-			SalesDataDao salesDataDao = DaoFactory.createSalesDataDao();
-			SalesData salesData = new SalesData();
+			
 			
 			UserDao userDao = DaoFactory.createUserDao();
-			User user = userDao.findByLoginId(loginId);
 			
-			salesData.setStoreId(storeId);
-			salesData.setUserId(user.getId());
-			salesData.setCustomerId(room.getCustomerId());
-			salesData.setSales(room.getCurrentPrice());
-			
-			salesDataDao.insert(salesData);
 			roomdao.checkOut(room);
 			
 			HttpServletResponse res = (HttpServletResponse) response;

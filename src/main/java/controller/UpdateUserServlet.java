@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.mindrot.jbcrypt.BCrypt;
 
 import dao.DaoFactory;
+import dao.ShopDao;
 import dao.UserClassDao;
 import dao.UserDao;
+import domain.Shop;
 import domain.User;
 import domain.UserClass;
 
@@ -24,23 +26,28 @@ public class UpdateUserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		String strId = request.getParameter("id");
-		Integer id = Integer.parseInt(strId);
+		String strUserId = request.getParameter("userId");
+		Integer userId = Integer.parseInt(strUserId);
 
 		try {
 			UserClassDao userClassDao = DaoFactory.createUserClassDao();
 			List<UserClass> userClassList = userClassDao.findAll();
 			request.setAttribute("userClassList", userClassList);
+			
+			ShopDao shopDao = DaoFactory.createShopDao();
+			List<Shop> shopList = shopDao.findAll();
+			request.setAttribute("shopList", shopList);
 
 			UserDao userDao = DaoFactory.createUserDao();
-			User user = userDao.findById(id);
+			User user = userDao.findById(userId);
 
-			request.setAttribute("name", user.getName());
+			request.setAttribute("userName", user.getUserName());
 			request.setAttribute("newLoginId", user.getLoginId());
 			request.setAttribute("userClassId", user.getUserClassId());
 			request.getRequestDispatcher("/WEB-INF/view/updateUser.jsp")
 					.forward(request, response);
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new ServletException(e);
 		}
 	}
@@ -53,24 +60,27 @@ public class UpdateUserServlet extends HttpServlet {
 			List<UserClass> userClassList = userClassDao.findAll();
 			request.setAttribute("userClassList", userClassList);
 
-			Integer id = Integer.parseInt(request.getParameter("id"));
-			String name = request.getParameter("name");
+			Integer userId = Integer.parseInt(request.getParameter("userId"));
+			String userName = request.getParameter("userName");
 			String newLoginId = request.getParameter("newLoginId");
 			String loginPass = request.getParameter("loginPass");
 			Integer userClassId = Integer.parseInt(request.getParameter("userClassId"));
+			Integer shopId = Integer.parseInt(request.getParameter("shopId"));
 
-			request.setAttribute("name", name);
+			
+			request.setAttribute("userName", userName);
 			request.setAttribute("newLoginId", newLoginId);
 			request.setAttribute("loginPass", loginPass);
 			request.setAttribute("userclassId", userClassId);
+			request.setAttribute("shopId", shopId);
 
 			boolean isError = false;
-			if (name.isEmpty()) {
-				request.setAttribute("nameError", "名前が未入力です。");
+			if (userName.isEmpty()) {
+				request.setAttribute("userNameError", "名前が未入力です。");
 				isError = true;
 			}
-			if (name.length() > 50) {
-				request.setAttribute("nameError", "20文字以下で入力してください。");
+			if (userName.length() > 50) {
+				request.setAttribute("userNameError", "20文字以下で入力してください。");
 				isError = true;
 			}
 			if (newLoginId.isEmpty()) {
@@ -93,11 +103,12 @@ public class UpdateUserServlet extends HttpServlet {
 			}
 
 			User user = new User();
-			user.setId(id);
-			user.setName(name);
+			user.setUserId(userId);
+			user.setUserName(userName);
 			user.setLoginId(newLoginId);
 			user.setLoginPass(BCrypt.hashpw(loginPass, BCrypt.gensalt()));
 			user.setUserClassId(userClassId);
+			user.setShopId(shopId);
 
 			UserDao userDao = DaoFactory.createUserDao();
 			userDao.update(user);

@@ -24,8 +24,29 @@ public class SalesDataDaoImpl implements SalesDataDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM sales_data";
+					+ " FROM sales_datas"
+					+ " JOIN master_products ON sales_datas.product_id = master_product.product_id";
 			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				salesDataList.add(mapToSalesData(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return salesDataList;
+	}
+
+	@Override
+	public List<SalesData> findByReceiptId(Integer receiptId) throws Exception {
+		List<SalesData> salesDataList = new ArrayList<>();
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT *"
+					+ " FROM sales_datas"
+					+ " JOIN master_products ON sales_datas.product_id = master_product.product_id"
+					+ " WHERE receipt_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, receiptId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				salesDataList.add(mapToSalesData(rs));
@@ -41,8 +62,9 @@ public class SalesDataDaoImpl implements SalesDataDao {
 		SalesData salesData = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM sales_data"
-					+ " WHERE receipt_id=?";
+					+ " FROM sales_datas"
+					+ " JOIN master_products ON sales_datas.product_id = master_product.product_id"
+					+ " WHERE sales_data_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, salesDataId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
@@ -55,20 +77,16 @@ public class SalesDataDaoImpl implements SalesDataDao {
 		return salesData;
 	}
 
-	
-
 	@Override
 	public void insert(SalesData salesData) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO sales_data"
-					+ " (reciept_id,store_id,user_id,customer_id,sales)"
-					+ " VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO sales_datas"
+					+ " (receipt_id,product_id,number_product)"
+					+ " VALUES (?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, salesData.getReceiptId(), Types.INTEGER);
-			stmt.setObject(2, salesData.getStoreId(), Types.INTEGER);
-			stmt.setObject(3, salesData.getUserId(), Types.INTEGER);
-			stmt.setObject(4, salesData.getCustomerId(), Types.INTEGER);
-			stmt.setObject(5, salesData.getSales(), Types.INTEGER);
+			stmt.setObject(2, salesData.getProductId(), Types.INTEGER);
+			stmt.setObject(3, salesData.getNumberProduct(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -78,31 +96,16 @@ public class SalesDataDaoImpl implements SalesDataDao {
 
 	@Override
 	public void update(SalesData salesData) throws Exception {
-		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE sales_data"
-					+ " (store_id,user_id,customer_id,sales)"
-					+ " WHERE reciept_id = ?";
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, salesData.getStoreId(), Types.INTEGER);
-			stmt.setObject(2, salesData.getUserId(), Types.INTEGER);
-			stmt.setObject(3, salesData.getCustomerId(), Types.INTEGER);
-			stmt.setObject(4, salesData.getSales(), Types.INTEGER);
-			stmt.setObject(5, salesData.getReceiptId(), Types.INTEGER);
-			stmt.executeUpdate();
-		} catch (Exception e) {
-			throw e;
-		}
-
+		
 	}
-
 
 	@Override
 	public void delete(SalesData salesData) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE FROM sales_data"
-					+ " Where reciept_id = ?";
+			String sql = "DELETE FROM sales_datas"
+					+ " Where sales_data_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, salesData.getReceiptId(), Types.INTEGER);
+			stmt.setObject(1, salesData.getSalesDataId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -112,11 +115,13 @@ public class SalesDataDaoImpl implements SalesDataDao {
 
 	private SalesData mapToSalesData(ResultSet rs) throws Exception {
 		SalesData salesData = new SalesData();
+		salesData.setSalesDataId((Integer) rs.getObject("sales_data_id"));
 		salesData.setReceiptId((Integer) rs.getObject("receipt_id"));
-		salesData.setStoreId((Integer) rs.getObject("store_id"));
-		salesData.setUserId((Integer) rs.getObject("user_id"));
-		salesData.setCustomerId((Integer) rs.getObject("customer_id"));
-		salesData.setSales((Integer) rs.getObject("sales"));
+		salesData.setProductId((Integer) rs.getObject("product_id"));
+		salesData.setProductName(rs.getString("product_name"));
+		salesData.setProductPrice((Integer) rs.getObject("product_price"));
+		salesData.setNumberProduct((Integer) rs.getObject("number_product"));
+
 		return salesData;
 	}
 

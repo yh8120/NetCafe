@@ -2,12 +2,13 @@ package domain;
 
 public class User {
 	
-	private Integer id;
+	private Integer userid;
 	private String loginId;
 	private String loginPass;
-	private String name;
+	private String userName;
 	private Integer userClassId;
 	private String userClassName;
+	private Integer shopId;
 	
 	public String getUserClassName() {
 		return userClassName;
@@ -22,19 +23,19 @@ public class User {
 		this.userClassId = userClassId;
 	}
 	
-	public String getName() {
-		return name;
+	public String getUserName() {
+		return userName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	
 
-	public Integer getId() {
-		return id;
+	public Integer getUserId() {
+		return userid;
 	}
-	public void setId(Integer id) {
-		this.id = id;
+	public void setUserId(Integer userId) {
+		this.userid = userId;
 	}
 	public String getLoginId() {
 		return loginId;
@@ -47,6 +48,12 @@ public class User {
 	}
 	public void setLoginPass(String loginPass) {
 		this.loginPass = loginPass;
+	}
+	public Integer getShopId() {
+		return shopId;
+	}
+	public void setShopId(Integer shopId) {
+		this.shopId = shopId;
 	}
 	
 	

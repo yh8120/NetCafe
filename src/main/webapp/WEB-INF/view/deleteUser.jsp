@@ -19,13 +19,13 @@
             <tr>
               <th>ID</th>
               <td>
-                <c:out value="${user.id }" />
+                <c:out value="${user.userId }" />
               </td>
             </tr>
             <tr>
               <th>名前</th>
               <td>
-                <c:out value="${user.name }" />
+                <c:out value="${user.userName }" />
               </td>
             </tr>
             <tr>

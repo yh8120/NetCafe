@@ -17,13 +17,13 @@
     <div class="col">
       <form action="" method="post">
         <div class="mb-3">
-          <label for="formName">ユーザー名</label>
-          <c:if test="${not empty nameError }">
+          <label for="formUserName">ユーザー名</label>
+          <c:if test="${not empty userNameError }">
                   <div class="error-message">
-                    <c:out value="${nameError}"></c:out>
+                    <c:out value="${userNameError}"></c:out>
                   </div>
                 </c:if>
-          <input type="text" name="name" id="formName" class="form-control" value=<c:out value="${name }"/>>
+          <input type="text" name="userName" id="formUserName" class="form-control" value=<c:out value="${userName }"/>>
         </div>
         <div class="mb-3">
           <label for="formName">ログインID</label>

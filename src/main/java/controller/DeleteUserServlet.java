@@ -25,12 +25,12 @@ public class DeleteUserServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		Integer userId = Integer.parseInt(request.getParameter("userId"));
 		
 		try {
 			
 			UserDao userDao = DaoFactory.createUserDao();
-			User user = userDao.findById(id);
+			User user = userDao.findById(userId);
 			
 			request.setAttribute("user", user);
 			request.getRequestDispatcher("/WEB-INF/view/deleteUser.jsp")
@@ -43,10 +43,10 @@ public class DeleteUserServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		Integer id = Integer.parseInt(request.getParameter("id"));
+		Integer userId = Integer.parseInt(request.getParameter("userId"));
 		
 		User user = new User();
-		user.setId(id);
+		user.setUserId(userId);
 		try {
 			
 			UserDao userDao = DaoFactory.createUserDao();

@@ -92,7 +92,7 @@ public class AddUserServlet extends HttpServlet {
 			}
 
 			User user = new User();
-			user.setName(name);
+			user.setUserName(name);
 			user.setLoginId(newLoginId);
 			user.setLoginPass(BCrypt.hashpw(loginPass, BCrypt.gensalt()));
 			user.setUserClassId(userClassId);
