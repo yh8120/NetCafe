@@ -15,7 +15,9 @@ public class Room {
 	private Long stayingTime;
 	private Date checkOutTime;
 	private Integer subtotal;
-	private Integer currentPrice; 
+	private Integer sumPrice; 
+	private Integer innerTax;
+	private Boolean inUse;
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -131,8 +133,8 @@ public class Room {
 	}
 
 
-	public Integer getCurrentPrice() {
-		return currentPrice;
+	public Integer getSumPrice() {
+		return sumPrice;
 	}
 
 
@@ -146,8 +148,28 @@ public class Room {
 	}
 
 
-	public void setCurrentPrice(Integer currentPrice) {
-		this.currentPrice = currentPrice;
+	public void setSumPrice(Integer sumPrice) {
+		this.sumPrice = sumPrice;
+	}
+
+
+	public Integer getInnerTax() {
+		return innerTax;
+	}
+
+
+	public void setInnerTax(Integer innerTax) {
+		this.innerTax = innerTax;
+	}
+
+
+	public Boolean getInUse() {
+		return inUse;
+	}
+
+
+	public void setInUse(Boolean inUse) {
+		this.inUse = inUse;
 	}
 
 }

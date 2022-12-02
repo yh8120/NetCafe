@@ -33,7 +33,7 @@
 
                   <c:out value="◆　${room.roomName }" />
 
-                  <c:if test="${not empty room.customerId}">
+                  <c:if test="${room.inUse}">
                     <c:out value="　◆会員：${room.customerId }　◆入室：" />
                     <fmt:formatDate value="${room.started }" pattern="d日HH時mm分" />
                   </c:if>
@@ -45,7 +45,7 @@
                 data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
                   <c:choose>
-                    <c:when test="${not empty room.customerId }">
+                    <c:when test="${room.inUse }">
                       <div class="vacancy">
                         <a
                           href="checkOut?roomId=<c:out value="${room.roomId }"/>"

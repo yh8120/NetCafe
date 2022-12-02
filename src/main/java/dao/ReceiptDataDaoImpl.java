@@ -3,8 +3,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Timestamp;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,31 +57,40 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 
 	@Override
 	public Integer insert(ReceiptData receiptData) throws Exception {
-		ResultSet resultSet = null;
 		Integer autoIncrementKey = null;
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO sales_data"
-					+ " (receipt_id,shop_id,user_id,customer_id,sales_date,sum_price,start_time,time_spent)"
-					+ " VALUES (?,?,?,?,NOW(),?,?,?)";
-			PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			stmt.setObject(1, receiptData.getReceiptId(), Types.INTEGER);
-			stmt.setObject(2, receiptData.getShopId(), Types.INTEGER);
-			stmt.setObject(3, receiptData.getUserId(), Types.INTEGER);
-			stmt.setObject(4, receiptData.getCustomerId(), Types.INTEGER);
+			String sql = "INSERT INTO receipt_data"
+					+ "(shop_id,"
+					+ " user_id,"
+					+ " customer_id,"
+					+ " checkout_time,"
+					+ " sum_price,"
+					+ " inner_tax,"
+					+ " payment,"
+					+ " change_money)"
+					+ " VALUES (?,?,?,?,?,?,?,?)";
+			PreparedStatement stmt = con.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
+			stmt.setObject(1, receiptData.getShopId(), Types.INTEGER);
+			stmt.setObject(2, receiptData.getUserId(), Types.INTEGER);
+			stmt.setObject(3, receiptData.getCustomerId(), Types.INTEGER);
+			stmt.setObject(4, receiptData.getCheckOutTime(),Types.DATE);
 			stmt.setObject(5, receiptData.getSumPrice(), Types.INTEGER);
-			stmt.setTimestamp(6, (Timestamp) receiptData.getStartTime());
-			stmt.setObject(7, receiptData.getTimeSpent(), Types.INTEGER);
+			stmt.setObject(6, receiptData.getInnerTax(), Types.INTEGER);
+			stmt.setObject(7, receiptData.getPayment(), Types.INTEGER);
+			stmt.setObject(8, receiptData.getChangeMoney(), Types.INTEGER);
 			stmt.executeUpdate();
+			
+			ResultSet res = stmt.getGeneratedKeys();
 
-			resultSet = stmt.getGeneratedKeys();
+	         if(res.next()){
+	            autoIncrementKey = res.getInt(1);
+	            System.out.println(autoIncrementKey);
+	         }
 
 		} catch (Exception e) {
 			throw e;
 		}
 
-		if (resultSet.next()) {
-			autoIncrementKey = resultSet.getInt(1);
-		}
 		return autoIncrementKey;
 
 	}
@@ -127,8 +134,10 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 		receiptData.setShopId((Integer) rs.getObject("store_id"));
 		receiptData.setUserId((Integer) rs.getObject("user_id"));
 		receiptData.setCustomerId((Integer) rs.getObject("customer_id"));
-		receiptData.setSalesDate(rs.getTimestamp("sales_date"));
+		receiptData.setCheckOutTime(rs.getTimestamp("checkout_time"));
 		receiptData.setSumPrice((Integer) rs.getObject("sum_price"));
+		receiptData.setInnerTax((Integer)rs.getObject("inner_tax"));
+		receiptData.setPayment((Integer)rs.getObject("payment"));
 		receiptData.setStartTime(rs.getTimestamp("start_time"));
 		receiptData.setTimeSpent((Long) rs.getObject("time_spent"));
 		SalesDataDao salesDataDao = DaoFactory.createSalesDataDao();

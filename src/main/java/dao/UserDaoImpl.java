@@ -70,6 +70,7 @@ public class UserDaoImpl implements UserDao {
 					+ " WHERE login_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, loginId);
+			
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				user = mapToUser(rs);
@@ -86,23 +87,16 @@ public class UserDaoImpl implements UserDao {
 			String sql = "INSERT INTO users"
 					+ " (login_id, login_pass, user_name,user_class_id, shop_id)"
 					+ " VALUES ( ?,?,?,?,?)";
-			PreparedStatement stmt = con.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
+			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, user.getLoginId());
 			stmt.setString(2, user.getLoginPass());
 			stmt.setString(3, user.getUserName());
 			stmt.setObject(4, user.getUserClassId(),Types.INTEGER);
 			stmt.setObject(5, user.getShopId(),Types.INTEGER);
-			
 			stmt.executeUpdate();
 			
-			ResultSet res = stmt.getGeneratedKeys();
-
-	         if(res.next()){
-	            int autoIncrementKey = res.getInt(1);
-	            System.out.println(autoIncrementKey);
-	         }
-
-			stmt.executeUpdate();
+			
+	         
 		} catch (Exception e) {
 			throw e;
 		}

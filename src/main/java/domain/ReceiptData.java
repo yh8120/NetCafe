@@ -8,9 +8,11 @@ public class ReceiptData {
 	private Integer shopId;
 	private Integer userId;
 	private Integer customerId;
-	private Date salesDate;
+	private Date checkOutTime;
 	private Integer sumPrice;
+	private Integer innerTax;
 	private Integer payment;
+	private Integer changeMoney;
 	private Date startTime;
 	private Long timeSpent;
 	//shopより
@@ -46,11 +48,12 @@ public class ReceiptData {
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
 	}
-	public Date getSalesDate() {
-		return salesDate;
+	
+	public Date getCheckOutTime() {
+		return checkOutTime;
 	}
-	public void setSalesDate(Date salesDate) {
-		this.salesDate = salesDate;
+	public void setCheckOutTime(Date checkOutTime) {
+		this.checkOutTime = checkOutTime;
 	}
 	public Integer getSumPrice() {
 		return sumPrice;
@@ -58,11 +61,24 @@ public class ReceiptData {
 	public void setSumPrice(Integer sumPrice) {
 		this.sumPrice = sumPrice;
 	}
+	public Integer getInnerTax() {
+		return innerTax;
+	}
+	public void setInnerTax(Integer innerTax) {
+		this.innerTax = innerTax;
+	}
 	public Integer getPayment() {
 		return payment;
 	}
 	public void setPayment(Integer payment) {
 		this.payment = payment;
+	}
+	
+	public Integer getChangeMoney() {
+		return changeMoney;
+	}
+	public void setChangeMoney(Integer changeMoney) {
+		this.changeMoney = changeMoney;
 	}
 	public Date getStartTime() {
 		return startTime;

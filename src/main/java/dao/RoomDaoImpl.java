@@ -68,7 +68,7 @@ public class RoomDaoImpl implements RoomDao {
 					+ " FROM rooms"
 					+ " JOIN room_types ON rooms.room_type_id = room_types.room_type_id"
 					+ " JOIN cleaning_status ON rooms.cleaning_id = cleaning_status.cleaning_id"
-					+ " WHERE customer_id=?";
+					+ " WHERE in_use=true AND customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, customerId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
@@ -136,11 +136,13 @@ public class RoomDaoImpl implements RoomDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
 					+ " SET customer_id = ?,"
-					+ " started = NOW()"
+					+ " started = NOW(),"
+					+ " in_use = ?"
 					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, room.getCustomerId(), Types.INTEGER);
-			stmt.setObject(2, room.getRoomId(), Types.INTEGER);
+			stmt.setBoolean(2, true);
+			stmt.setObject(3, room.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -153,15 +155,17 @@ public class RoomDaoImpl implements RoomDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
 					+ " SET staying_time = ?,"
+					+ " checkout_time = NOW(),"
 					+ " subtotal = ?,"
-					+ " current_price = ?,"
-					+ " checkout_time = NOW()"
+					+ " inner_tax = ?,"
+					+ " sum_price = ?"
 					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, room.getStayingTime(), Types.BIGINT);
 			stmt.setObject(2, room.getSubtotal(), Types.INTEGER);
-			stmt.setObject(3, room.getCurrentPrice(), Types.INTEGER);
-			stmt.setObject(4, room.getRoomId(),Types.INTEGER);
+			stmt.setObject(3, room.getInnerTax(), Types.INTEGER);
+			stmt.setObject(4, room.getSumPrice(), Types.INTEGER);
+			stmt.setObject(5, room.getRoomId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -173,9 +177,7 @@ public class RoomDaoImpl implements RoomDao {
 	public void checkOut(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
-					+ " SET customer_id = null,"
-					+ " started = null,"
-					+ " cleaning_id = 2"
+					+ " SET in_use = false"
 					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, room.getRoomId(), Types.INTEGER);
@@ -213,7 +215,9 @@ public class RoomDaoImpl implements RoomDao {
 		room.setStayingTime((Long) rs.getObject("staying_time"));
 		room.setCheckOutTime(rs.getTimestamp("checkout_time"));
 		room.setSubtotal((Integer) rs.getObject("subtotal"));
-		room.setCurrentPrice((Integer) rs.getObject("current_price"));
+		room.setSumPrice((Integer) rs.getObject("sum_price"));
+		room.setInnerTax((Integer) rs.getObject("inner_tax"));
+		room.setInUse(rs.getBoolean("in_use"));
 		return room;
 	}
 
