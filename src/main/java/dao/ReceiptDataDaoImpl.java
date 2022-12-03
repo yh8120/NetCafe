@@ -73,7 +73,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 			stmt.setObject(1, receiptData.getShopId(), Types.INTEGER);
 			stmt.setObject(2, receiptData.getUserId(), Types.INTEGER);
 			stmt.setObject(3, receiptData.getCustomerId(), Types.INTEGER);
-			stmt.setObject(4, receiptData.getCheckOutTime(),Types.DATE);
+			stmt.setObject(4, receiptData.getCheckOutTime(),Types.TIMESTAMP);
 			stmt.setObject(5, receiptData.getSumPrice(), Types.INTEGER);
 			stmt.setObject(6, receiptData.getInnerTax(), Types.INTEGER);
 			stmt.setObject(7, receiptData.getPayment(), Types.INTEGER);

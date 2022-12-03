@@ -177,7 +177,8 @@ public class RoomDaoImpl implements RoomDao {
 	public void checkOut(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
-					+ " SET in_use = false"
+					+ " SET in_use = false,"
+					+ " cleaning_id = 2"
 					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, room.getRoomId(), Types.INTEGER);

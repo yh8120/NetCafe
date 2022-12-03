@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import dao.CustomCharacterEscapes;
 import dao.CustomerClassDao;
 import dao.CustomerDao;
 import dao.DaoFactory;
 import dao.IdCardDao;
 import dao.SexDao;
+import domain.CustomCharacterEscapes;
 import domain.Customer;
 import domain.CustomerClass;
 import domain.IdCard;
@@ -400,6 +400,7 @@ public class AddCustomerServlet extends HttpServlet {
 			CustomerDao customerDao = DaoFactory.createCustomerDao();
 			customerDao.insertWithCheck(customer);
 			request.getRequestDispatcher("/WEB-INF/view/addCustomerDone.jsp").forward(request, response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new ServletException(e);

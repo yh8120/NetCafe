@@ -59,6 +59,8 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("error", true);
 				request.getRequestDispatcher("WEB-INF/view/login.jsp") .forward(request, response);
 			}
+			
+			
 
 		} catch (Exception e) {
 			throw new ServletException(e);

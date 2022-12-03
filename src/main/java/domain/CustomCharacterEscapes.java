@@ -1,4 +1,4 @@
-package dao;
+package domain;
 
 import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
