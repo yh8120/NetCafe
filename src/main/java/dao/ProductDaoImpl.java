@@ -26,7 +26,11 @@ public class ProductDaoImpl implements ProductDao {
 			String sql = "SELECT *"
 					+ " FROM master_products"
 					+ " JOIN product_types"
-					+ " ON master_products.product_type = product_types.product_type_id";
+					+ " ON master_products.product_type = product_types.product_type_id"
+					+ " LEFT OUTER JOIN product_types ON master_products.product_type = product_types.product_type_id"
+					+ " LEFT OUTER JOIN master_tax_types ON product_types.tax_type = master_tax_types.tax_type_id"
+					+ " LEFT OUTER JOIN master_tax_rates ON product_types.tax_type = master_tax_rates.tax_type"
+					+ " WHERE master_tax_rates.tax_start <= NOW() AND master_tax_rates.tax_end > NOW()";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -46,7 +50,11 @@ public class ProductDaoImpl implements ProductDao {
 					+ " FROM master_products"
 					+ " JOIN product_types"
 					+ " ON master_products.product_type = product_types.product_type_id"
-					+ " WHERE product_id=?";
+					+ " LEFT OUTER JOIN product_types ON master_products.product_type = product_types.product_type_id"
+					+ " LEFT OUTER JOIN master_tax_types ON product_types.tax_type = master_tax_types.tax_type_id"
+					+ " LEFT OUTER JOIN master_tax_rates ON product_types.tax_type = master_tax_rates.tax_type"
+					+ " WHERE master_tax_rates.tax_start <= NOW() AND master_tax_rates.tax_end > NOW()"
+					+ " AND product_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, productId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
@@ -114,7 +122,10 @@ public class ProductDaoImpl implements ProductDao {
 		product.setProductPrice((Integer) rs.getObject("product_price"));
 		product.setProductTypeId((Integer) rs.getObject("product_type_id"));
 		product.setProductTypeName(rs.getString("product_type_name"));
-
+		product.setTaxTypeId((Integer) rs.getObject("tax_type_id"));
+		product.setTaxTypeName(rs.getString("tax_type_name"));
+		product.setTaxRate((Double) rs.getObject("tax_rate"));
+		
 		return product;
 
 	}

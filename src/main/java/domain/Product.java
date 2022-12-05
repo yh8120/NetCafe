@@ -6,6 +6,9 @@ public class Product {
 	private Integer productPrice;
 	private Integer productTypeId;
 	private String productTypeName;
+	private Integer taxTypeId;
+	private String taxTypeName;
+	private Double taxRate;
 	
 	public Integer getProductId() {
 		return productId;
@@ -36,6 +39,24 @@ public class Product {
 	}
 	public void setProductTypeName(String productTypeName) {
 		this.productTypeName = productTypeName;
+	}
+	public Integer getTaxTypeId() {
+		return taxTypeId;
+	}
+	public void setTaxTypeId(Integer taxTypeId) {
+		this.taxTypeId = taxTypeId;
+	}
+	public String getTaxTypeName() {
+		return taxTypeName;
+	}
+	public void setTaxTypeName(String taxTypeName) {
+		this.taxTypeName = taxTypeName;
+	}
+	public Double getTaxRate() {
+		return taxRate;
+	}
+	public void setTaxRate(Double taxRate) {
+		this.taxRate = taxRate;
 	}
 	
 	

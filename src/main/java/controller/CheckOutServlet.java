@@ -63,32 +63,6 @@ public class CheckOutServlet extends HttpServlet {
 				}
 			}
 			
-			
-			
-//			BigDecimal basicPrice = new BigDecimal(500);
-//			BigDecimal basicMS = new BigDecimal(3600000);
-//			BigDecimal addPrice = new BigDecimal(100);
-//			BigDecimal addMS = new BigDecimal(600000);
-//			BigDecimal tax = new BigDecimal(0.1);
-//
-//			// 超過時間（＝利用時間－基本時間）
-//			// (利用時間が基本時間以下の場合超過時間は0)
-//			BigDecimal excMS = stayingTime.subtract(basicMS);
-//			if (excMS.compareTo(BigDecimal.ZERO) == -1) {
-//				excMS = BigDecimal.ZERO;
-//			}
-//			// 追加料金発生回数（＝超過時間÷追加料金時間(切り上げ））
-//			BigDecimal timesOfAdded = excMS.divide(addMS, RoundingMode.UP);
-//			// 追加料金（＝追加料金発生時間×追加料金）
-//			BigDecimal excPrice = (timesOfAdded).multiply(addPrice);
-//
-//			// 小計（＝基本料金＋(追加料金)）
-//			BigDecimal subtotal = basicPrice.add(excPrice);
-//			// 内消費税（＝小計×税率(四捨五入)）
-//			BigDecimal innerTax = subtotal.multiply(tax);
-//			innerTax = innerTax.setScale(0, RoundingMode.HALF_UP);
-//			// 合計（＝小計＋内消費税）
-//			BigDecimal sumPrice = subtotal.add(innerTax);
 //
 			room.setStayingTime(stayingTime.longValue());
 			room.setSubtotal(calcRoom.getSubtotal());
