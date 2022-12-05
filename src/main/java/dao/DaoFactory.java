@@ -62,6 +62,10 @@ public class DaoFactory {
 	public static ShopDao createShopDao() {
 		return new ShopDaoImpl(getDataSource());
 	}
+	
+	public static PricePlanDao createPricePlanDao() {
+		return new PricePlanDaoImpl(getDataSource());
+	}
 
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;

@@ -3,7 +3,9 @@ package controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.sql.Time;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,9 +16,11 @@ import javax.servlet.http.HttpSession;
 
 import dao.CustomerDao;
 import dao.DaoFactory;
+import dao.PricePlanDao;
 import dao.ReceiptDataDao;
 import dao.RoomDao;
 import domain.Customer;
+import domain.PricePlan;
 import domain.ReceiptData;
 import domain.Room;
 import domain.User;
@@ -38,55 +42,64 @@ public class CheckOutServlet extends HttpServlet {
 
 			Date startTime = room.getStarted();
 			Date now = new Date();
+			Time time = new Time(startTime.getTime());
 
 			//時計表示用
 			BigDecimal stayingTime = new BigDecimal(now.getTime() - startTime.getTime());
-			BigDecimal currentHour = stayingTime.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
-			BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
-			BigDecimal currentMin = (stayingTime.subtract(currentHourMS)).divide(BigDecimal.valueOf(60000),
-					RoundingMode.DOWN);
-			BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
-			BigDecimal currentSec = (stayingTime.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
-					RoundingMode.DOWN);
+			String timeDisplay = timeDisplay(stayingTime);
 
 			//料金計算用
-			BigDecimal basicPrice = new BigDecimal(500);
-			BigDecimal basicMS = new BigDecimal(3600000);
-			BigDecimal addPrice = new BigDecimal(100);
-			BigDecimal addMS = new BigDecimal(600000);
-			BigDecimal tax = new BigDecimal(0.1);
-
-			// 超過時間（＝利用時間－基本時間）
-			// (利用時間が基本時間以下の場合超過時間は0)
-			BigDecimal excMS = stayingTime.subtract(basicMS);
-			if (excMS.compareTo(BigDecimal.ZERO) == -1) {
-				excMS = BigDecimal.ZERO;
+			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
+			List<PricePlan> pricePlanList = pricePlanDao.findByNow(time);
+			Room calcRoom=null;
+			
+			for(PricePlan plisePlan:pricePlanList) {
+				Room calcRoomNew = planToRoom(stayingTime, plisePlan);
+				if (calcRoom==null) {
+					calcRoom=calcRoomNew;
+				}
+				if(calcRoom.getSumPrice()>calcRoomNew.getSumPrice()) {
+					calcRoom = calcRoomNew;
+				}
 			}
-			// 追加料金発生回数（＝超過時間÷追加料金時間(切り上げ））
-			BigDecimal timesOfAdded = excMS.divide(addMS, RoundingMode.UP);
-			// 追加料金（＝追加料金発生時間×追加料金）
-			BigDecimal excPrice = (timesOfAdded).multiply(addPrice);
-
-			// 小計（＝基本料金＋(追加料金)）
-			BigDecimal subtotal = basicPrice.add(excPrice);
-			// 内消費税（＝小計×税率(四捨五入)）
-			BigDecimal innerTax = subtotal.multiply(tax);
-			innerTax = innerTax.setScale(0, RoundingMode.HALF_UP);
-			// 合計（＝小計＋内消費税）
-			BigDecimal sumPrice = subtotal.add(innerTax);
-
+			
+			
+			
+//			BigDecimal basicPrice = new BigDecimal(500);
+//			BigDecimal basicMS = new BigDecimal(3600000);
+//			BigDecimal addPrice = new BigDecimal(100);
+//			BigDecimal addMS = new BigDecimal(600000);
+//			BigDecimal tax = new BigDecimal(0.1);
+//
+//			// 超過時間（＝利用時間－基本時間）
+//			// (利用時間が基本時間以下の場合超過時間は0)
+//			BigDecimal excMS = stayingTime.subtract(basicMS);
+//			if (excMS.compareTo(BigDecimal.ZERO) == -1) {
+//				excMS = BigDecimal.ZERO;
+//			}
+//			// 追加料金発生回数（＝超過時間÷追加料金時間(切り上げ））
+//			BigDecimal timesOfAdded = excMS.divide(addMS, RoundingMode.UP);
+//			// 追加料金（＝追加料金発生時間×追加料金）
+//			BigDecimal excPrice = (timesOfAdded).multiply(addPrice);
+//
+//			// 小計（＝基本料金＋(追加料金)）
+//			BigDecimal subtotal = basicPrice.add(excPrice);
+//			// 内消費税（＝小計×税率(四捨五入)）
+//			BigDecimal innerTax = subtotal.multiply(tax);
+//			innerTax = innerTax.setScale(0, RoundingMode.HALF_UP);
+//			// 合計（＝小計＋内消費税）
+//			BigDecimal sumPrice = subtotal.add(innerTax);
+//
 			room.setStayingTime(stayingTime.longValue());
-			room.setSubtotal(subtotal.intValue());
-			room.setInnerTax(innerTax.intValue());
-			room.setSumPrice(sumPrice.intValue());
+			room.setSubtotal(calcRoom.getSubtotal());
+			room.setInnerTax(calcRoom.getInnerTax());
+			room.setSumPrice(calcRoom.getSumPrice());
 
 			roomdao.preCheckOut(room);
 
 			request.setAttribute("room", room);
 			request.setAttribute("customer", customer);
-			request.setAttribute("currentHour", currentHour);
-			request.setAttribute("currentMin", currentMin);
-			request.setAttribute("currentSec", currentSec);
+			request.setAttribute("timeDisplay", timeDisplay);
 
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
@@ -116,20 +129,12 @@ public class CheckOutServlet extends HttpServlet {
 				Customer customer = customerDao.findById(customerId);
 
 				BigDecimal stayingTime = new BigDecimal(room.getStayingTime());
-				BigDecimal currentHour = stayingTime.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
-				BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
-				BigDecimal currentMin = (stayingTime.subtract(currentHourMS)).divide(BigDecimal.valueOf(60000),
-						RoundingMode.DOWN);
-				BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
-				BigDecimal currentSec = (stayingTime.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
-						RoundingMode.DOWN);
+				String timeDisplay = timeDisplay(stayingTime);
 
 				request.setAttribute("payment", strPayment);
 				request.setAttribute("room", room);
 				request.setAttribute("customer", customer);
-				request.setAttribute("currentHour", currentHour);
-				request.setAttribute("currentMin", currentMin);
-				request.setAttribute("currentSec", currentSec);
+				request.setAttribute("timeDisplay", timeDisplay);
 
 				// バリデーション
 				Integer sumPrice = room.getSumPrice();
@@ -197,6 +202,54 @@ public class CheckOutServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
+	}
+	
+	private String timeDisplay(BigDecimal stayingTime) {
+		BigDecimal currentHour = stayingTime.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
+		BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
+		BigDecimal currentMin = (stayingTime.subtract(currentHourMS)).divide(BigDecimal.valueOf(60000),
+				RoundingMode.DOWN);
+		BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
+		BigDecimal currentSec = (stayingTime.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
+				RoundingMode.DOWN);
+		
+		String timeDisplay = currentHour+"時間"+currentMin+"分"+currentSec+"秒";
+		return timeDisplay;
+	}
+	
+	private  Room planToRoom(BigDecimal stayingTime,PricePlan pricePlan) {
+		//料金計算用
+		BigDecimal basicPrice = new BigDecimal(pricePlan.getBasicPrice());
+		BigDecimal basicMS = new BigDecimal(pricePlan.getBasicTime());
+		BigDecimal addPrice = new BigDecimal(pricePlan.getAddPrice());
+		BigDecimal addMS = new BigDecimal(pricePlan.getAddTime());
+		BigDecimal tax = new BigDecimal(pricePlan.getTaxRate());
+
+		// 超過時間（＝利用時間－基本時間）
+		// (利用時間が基本時間以下の場合超過時間は0)
+		BigDecimal excMS = stayingTime.subtract(basicMS);
+		if (excMS.compareTo(BigDecimal.ZERO) == -1) {
+			excMS = BigDecimal.ZERO;
+		}
+		// 追加料金発生回数（＝超過時間÷追加料金時間(切り上げ））
+		BigDecimal timesOfAdded = excMS.divide(addMS, RoundingMode.UP);
+		// 追加料金（＝追加料金発生時間×追加料金）
+		BigDecimal excPrice = (timesOfAdded).multiply(addPrice);
+
+		// 小計（＝基本料金＋(追加料金)）
+		BigDecimal subtotal = basicPrice.add(excPrice);
+		// 内消費税（＝小計×税率(四捨五入)）
+		BigDecimal innerTax = subtotal.multiply(tax);
+		innerTax = innerTax.setScale(0, RoundingMode.HALF_UP);
+		// 合計（＝小計＋内消費税）
+		BigDecimal sumPrice = subtotal.add(innerTax);
+		
+		Room room = new Room();
+		room.setSubtotal(subtotal.intValue());
+		room.setInnerTax(innerTax.intValue());
+		room.setSumPrice(sumPrice.intValue());
+		
+		return room;
 	}
 
 }

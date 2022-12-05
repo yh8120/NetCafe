@@ -38,7 +38,7 @@
             <tr>
               <th>ご利用時間</th>
               <td>
-                <c:out value="${currentHour}時間　${currentMin}分　${currentSec}秒" />
+                <c:out value="${timeDisplay}" />
               </td>
             </tr>
             <tr>
