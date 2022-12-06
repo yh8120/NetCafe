@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
-import dao.RoomDao;
-import domain.Room;
+import dao.ProductDao;
+import domain.Product;
 
 @WebServlet("/shopping")
 public class ShoppingServlet extends HttpServlet {
@@ -21,14 +21,18 @@ public class ShoppingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
-			RoomDao roomDao = DaoFactory.createRoomDao();
-			List<Room> roomList = roomDao.findAll();
-			request.setAttribute("roomList", roomList);
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+			ProductDao productDao = DaoFactory.createProductDao();
+			List<Product> productList = productDao.findAll();
+			request.setAttribute("roomId", roomId);
+			request.setAttribute("productList", productList);
 
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 
-		request.getRequestDispatcher("WEB-INF/view/manager.jsp").forward(request, response);
+		request.getRequestDispatcher("WEB-INF/view/shopping.jsp").forward(request, response);
 	}
+	
+	
 }

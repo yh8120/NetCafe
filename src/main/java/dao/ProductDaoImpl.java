@@ -25,12 +25,33 @@ public class ProductDaoImpl implements ProductDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
 					+ " FROM master_products"
-					+ " JOIN product_types"
-					+ " ON master_products.product_type = product_types.product_type_id"
 					+ " LEFT OUTER JOIN product_types ON master_products.product_type = product_types.product_type_id"
 					+ " LEFT OUTER JOIN master_tax_types ON product_types.tax_type = master_tax_types.tax_type_id"
 					+ " LEFT OUTER JOIN master_tax_rates ON product_types.tax_type = master_tax_rates.tax_type"
 					+ " WHERE master_tax_rates.tax_start <= NOW() AND master_tax_rates.tax_end > NOW()";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				productList.add(mapToProduct(rs));
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		return productList;
+	}
+	
+	@Override
+	public List<Product> findShoppingList() throws Exception {
+		List<Product> productList = new ArrayList<>();
+
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT *"
+					+ " FROM master_products"
+					+ " LEFT OUTER JOIN product_types ON master_products.product_type = product_types.product_type_id"
+					+ " LEFT OUTER JOIN master_tax_types ON product_types.tax_type = master_tax_types.tax_type_id"
+					+ " LEFT OUTER JOIN master_tax_rates ON product_types.tax_type = master_tax_rates.tax_type"
+					+ " WHERE master_tax_rates.tax_start <= NOW() AND master_tax_rates.tax_end > NOW()"
+					+ " ORDER BY master_products.product_type ASC";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -48,8 +69,6 @@ public class ProductDaoImpl implements ProductDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
 					+ " FROM master_products"
-					+ " JOIN product_types"
-					+ " ON master_products.product_type = product_types.product_type_id"
 					+ " LEFT OUTER JOIN product_types ON master_products.product_type = product_types.product_type_id"
 					+ " LEFT OUTER JOIN master_tax_types ON product_types.tax_type = master_tax_types.tax_type_id"
 					+ " LEFT OUTER JOIN master_tax_rates ON product_types.tax_type = master_tax_rates.tax_type"
@@ -130,4 +149,5 @@ public class ProductDaoImpl implements ProductDao {
 
 	}
 
+	
 }

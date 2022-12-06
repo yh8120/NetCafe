@@ -47,40 +47,40 @@
                   <c:choose>
                     <c:when test="${room.inUse }">
                       <div class="vacancy">
-                        <a
-                          href="checkOut?roomId=<c:out value="${room.roomId }"/>"
-                          class="btn btn-success col-2 mr-2">退室</a>
-                        <a href="" class="btn btn-success col-2 mr-2">販売</a>
-                        <a href="" class="btn btn-success col-2 mr-2">レンタル</a>
-                        <a href="" class="btn btn-success col-2">ロスタイム</a>
+                        <a href="checkOut?roomId=<c:out value="${room.roomId }"/>"
+                          class="btn btn-success col-auto mr-2">退室</a>
+                        <a href="shopping?roomId=<c:out value="${room.roomId }"/>"
+                          class="btn btn-success col-auto mr-2">販売</a>
+                        <a href="" class="btn btn-success col-auto mr-2">レンタル</a>
+                        <a href="" class="btn btn-success col-auto">ロスタイム</a>
                       </div>
                     </c:when>
                     <c:otherwise>
                       <div class="no-vacancy">
                         <c:if test="${room.cleaningId == 1}">
                           <a href="checkIn?roomId=<c:out value="${room.roomId }"/>"
-                            class="btn btn-success col-2 mr-2">入室</a>
-                          <a href="" class="btn btn-success col-3 mr-2">予約</a>
+                            class="btn btn-success col-auto mr-2">入室</a>
+                          <a href="" class="btn btn-success col-auto mr-2">予約</a>
                         </c:if>
 
                         <c:if test="${room.cleaningId == 2}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=1"
-                            class="btn btn-success col-2 mr-2">清掃完了</a>
+                            class="btn btn-success col-auto mr-2">清掃完了</a>
                         </c:if>
 
                         <c:if test="${room.cleaningId == 1}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
-                            class="btn btn-success col-2 mr-2">未清掃に戻す</a>
+                            class="btn btn-success col-auto mr-2">未清掃に戻す</a>
                         </c:if>
 
                         <c:if test="${room.cleaningId == 3}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
-                            class="btn btn-success col-2 mr-2">点検解除</a>
+                            class="btn btn-success col-auto mr-2">点検解除</a>
                         </c:if>
 
                         <c:if test="${room.cleaningId == 1}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=3"
-                            class="btn btn-success col-2 mr-2">点検</a>
+                            class="btn btn-success col-auto mr-2">点検</a>
                         </c:if>
 
                       </div>
