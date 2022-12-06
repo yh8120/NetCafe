@@ -23,7 +23,7 @@ public class ShoppingServlet extends HttpServlet {
 		try {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			ProductDao productDao = DaoFactory.createProductDao();
-			List<Product> productList = productDao.findAll();
+			List<Product> productList = productDao.findShoppingList();
 			request.setAttribute("roomId", roomId);
 			request.setAttribute("productList", productList);
 
