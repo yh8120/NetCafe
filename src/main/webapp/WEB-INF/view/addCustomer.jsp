@@ -285,6 +285,7 @@
       </div>
     </div>
   </div>
+ 
   <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
   <script src="js/jquery-3.6.1.min.js"></script>
   <script src="js/bootstrap.bundle.min.js"></script>
