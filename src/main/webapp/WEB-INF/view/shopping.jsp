@@ -8,13 +8,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-<title>入室管理</title>
+<title>ルーム販売</title>
 </head>
 <body style="padding: 0rem 0rem 5rem">
     <header class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">商品販売</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            <button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
                 <img src="images/cart_icon.svg" alt="cart_icon" width="32" height="32">
@@ -26,8 +26,10 @@
                             <table class="table">
                                 <thead>
                                     <tr>
+                                        <th scope="col">商品ID</th>
                                         <th scope="col">商品名</th>
                                         <th scope="col">個数</th>
+                                        <th scope="col">金額</th>
                                         <th scope="col">操作</th>
                                     </tr>
                                 </thead>
@@ -35,6 +37,7 @@
 
                                 </tbody>
                             </table>
+
 
                         </div>
                     </div>
@@ -65,7 +68,6 @@
 
 
 
-    <!-- ↓↓↓アコーディオンここから↓↓↓ -->
     <div class="accordion-item">
         <h2 class="accordion-header" id="flush-heading${product.productTypeId }">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -80,7 +82,7 @@
             <div class="accordion-body">
                 </c:if>
 
-                <button data-pId="${product.productId }" 
+                <button data-id="${product.productId }" data-price="${product.productPrice}"
                     class="addcart btn btn-success col-auto mr-2 mb-1">
                     <c:out value="${product.productName }" />
                 </button>
@@ -89,7 +91,6 @@
             </div>
         </div>
     </div>
-    <!-- ↑↑↑アコーディオンここまで↑↑↑ -->
     </c:if>
 
 
@@ -103,25 +104,40 @@
     </div>
     <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
         <ul class="navbar-nav">
-            <li class="nav-item"><a href="#" class="btn btn-primary me-2">カート</a></li>
-            <li class="nav-item"><a href="#" class="btn btn-primary me-2">決定</a></li>
+            <li class="nav-item"><button id="cartSubmit" class="btn btn-primary me-2">決定</button></li>
             <li class="nav-item"><a href="manager" class="btn btn-danger me-2">キャンセル</a></li>
         </ul>
     </footer>
 
-    <!-- 商品項目テンプレ -->
+
     <template id="cart-row-template">
         <tr>
-            <th scope="row" class="productName"></th>
-            <td class="productUnit"></td>
+            <th scope="row" id="productId"></th>
+            <td id="productName"></td>
+            <td id="productUnit"></td>
+            <td id="priceXUnit"></td>
+            <td id="productUnitButton"></td>
+        </tr>
+    </template>
+
+    <template id="unit-button-template">
+        <div>
+            <button class="btn btn-increase">
+                <img src="images/increase_icon.svg" alt="cart_icon" width="32" height="32">
+            </button>
+            <button class="btn btn-decrease">
+                <img src="images/decrease_icon.svg" alt="cart_icon" width="32" height="32">
+            </button>
+        </div>
+    </template>
+
+    <template id="sum-price-template">
+        <tr>
+            <th scope="row" colspan="3" class="text-end">合計</th>
             <td>
-                <button id="btn-increase" class="btn">
-                    <img src="images/increase_icon.svg" alt="cart_icon" width="32" height="32">
-                </button>
-                <button id="btn-decrease" class="btn">
-                    <img src="images/decrease_icon.svg" alt="cart_icon" width="32" height="32">
-                </button>
+                <span><c:out value="${sumPrice}" /></span>円
             </td>
+            <td></td>
         </tr>
     </template>
 

@@ -1,25 +1,27 @@
 package domain;
 
-public class SalesData {
-	private Integer salesDataId;
-	private Integer receiptId;
+public class ShoppingCart {
+	private Integer shoppingCartId;
+	private Integer roomId;
 	private Integer productId;
 	private String productName;
 	private Integer productPrice;
 	private Integer productUnit;
 	private Integer totalPrice;
 	private Integer discount;
-	public Integer getSalesDataId() {
-		return salesDataId;
+	
+	
+	public Integer getShoppingCartId() {
+		return shoppingCartId;
 	}
-	public void setSalesDataId(Integer salesDataId) {
-		this.salesDataId = salesDataId;
+	public void setShoppingCartId(Integer shoppingCartId) {
+		this.shoppingCartId = shoppingCartId;
 	}
-	public Integer getReceiptId() {
-		return receiptId;
+	public Integer getRoomId() {
+		return roomId;
 	}
-	public void setReceiptId(Integer receiptId) {
-		this.receiptId = receiptId;
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
 	}
 	public Integer getProductId() {
 		return productId;
@@ -58,6 +60,7 @@ public class SalesData {
 		this.discount = discount;
 	}
 	
-
+	
+	
 
 }

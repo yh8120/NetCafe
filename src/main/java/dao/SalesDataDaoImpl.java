@@ -86,7 +86,7 @@ public class SalesDataDaoImpl implements SalesDataDao {
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, salesData.getReceiptId(), Types.INTEGER);
 			stmt.setObject(2, salesData.getProductId(), Types.INTEGER);
-			stmt.setObject(3, salesData.getNumberProduct(), Types.INTEGER);
+			stmt.setObject(3, salesData.getProductUnit(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -120,7 +120,8 @@ public class SalesDataDaoImpl implements SalesDataDao {
 		salesData.setProductId((Integer) rs.getObject("product_id"));
 		salesData.setProductName(rs.getString("product_name"));
 		salesData.setProductPrice((Integer) rs.getObject("product_price"));
-		salesData.setNumberProduct((Integer) rs.getObject("number_product"));
+		salesData.setProductUnit((Integer) rs.getObject("number_product"));
+		salesData.setDiscount((Integer) rs.getObject("discount"));
 
 		return salesData;
 	}
