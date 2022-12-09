@@ -5,12 +5,15 @@ import java.util.List;
 
 public class ReceiptData {
 	private Integer receiptId;
+	private Integer roomId;
 	private Integer shopId;
 	private Integer userId;
 	private Integer customerId;
 	private Date checkOutTime;
 	private Integer sumPrice;
+	private Integer sumTax;
 	private Integer innerTax;
+	private Integer innerTaxReduced;
 	private Integer payment;
 	private Integer changeMoney;
 	private Date startTime;

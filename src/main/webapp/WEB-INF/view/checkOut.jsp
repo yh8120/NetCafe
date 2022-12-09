@@ -42,23 +42,16 @@
               </td>
             </tr>
             <tr>
-              <th>小計</th>
-              <td>
-                <fmt:formatNumber value="${room.subtotal}" type="CURRENCY" currencyCode="JPY"
-                  maxFractionDigits="0" />
-              </td>
-            </tr>
-            <tr>
               <th>お会計</th>
               <td>
-                <fmt:formatNumber value="${room.sumPrice}" type="CURRENCY" currencyCode="JPY"
+                <fmt:formatNumber value="${tempReceipt.sumPrice}" type="CURRENCY" currencyCode="JPY"
                   maxFractionDigits="0" />
               </td>
             </tr>
             <tr>
               <th>内税</th>
               <td>
-                <fmt:formatNumber value="${room.innerTax}" type="CURRENCY" currencyCode="JPY"
+                <fmt:formatNumber value="${tempReceipt.sumTax}" type="CURRENCY" currencyCode="JPY"
                   maxFractionDigits="0" />
               </td>
             </tr>

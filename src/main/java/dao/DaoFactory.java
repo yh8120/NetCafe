@@ -70,6 +70,10 @@ public class DaoFactory {
 	public static ShoppingCartDao createShoppingCartDao() {
 		return new ShoppingCartDaoImpl(getDataSource());
 	}
+	
+	public static TempReceiptDao creaTempReceiptDao() {
+		return new TempReceiptDaoImpl(getDataSource());
+	}
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;
 		DataSource ds = null;

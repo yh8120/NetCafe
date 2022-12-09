@@ -11,6 +11,7 @@
 <title>ルーム販売</title>
 </head>
 <body style="padding: 0rem 0rem 5rem">
+<h1>ルーム販売商品に設定しました</h1>
     <div class="container">
         <div class="row">
             <div class="col">

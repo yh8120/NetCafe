@@ -12,11 +12,6 @@ public class Room {
 	private Date started;
 	private Integer cleaningId;
 	private String cleaningName;
-	private Long stayingTime;
-	private Date checkOutTime;
-	private Integer subtotal;
-	private Integer sumPrice; 
-	private Integer innerTax;
 	private Boolean inUse;
 	
 	public Integer getCustomerId() {
@@ -110,56 +105,6 @@ public class Room {
 
 	public void setCleaningName(String cleaningName) {
 		this.cleaningName = cleaningName;
-	}
-
-
-	public Long getStayingTime() {
-		return stayingTime;
-	}
-
-
-	public Date getCheckOutTime() {
-		return checkOutTime;
-	}
-
-
-	public void setCheckOutTime(Date checkOutTime) {
-		this.checkOutTime = checkOutTime;
-	}
-
-
-	public Integer getSubtotal() {
-		return subtotal;
-	}
-
-
-	public Integer getSumPrice() {
-		return sumPrice;
-	}
-
-
-	public void setStayingTime(Long stayingTime) {
-		this.stayingTime = stayingTime;
-	}
-
-
-	public void setSubtotal(Integer subtotal) {
-		this.subtotal = subtotal;
-	}
-
-
-	public void setSumPrice(Integer sumPrice) {
-		this.sumPrice = sumPrice;
-	}
-
-
-	public Integer getInnerTax() {
-		return innerTax;
-	}
-
-
-	public void setInnerTax(Integer innerTax) {
-		this.innerTax = innerTax;
 	}
 
 

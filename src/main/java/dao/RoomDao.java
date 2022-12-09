@@ -12,7 +12,6 @@ public interface RoomDao {
 	void update (Room room) throws Exception;
 	void cleaning(Room room) throws Exception;
 	void checkIn(Room room) throws Exception;
-	void preCheckOut(Room room) throws Exception;
 	void checkOut(Room room) throws Exception;
 	void delete (Room room) throws Exception;
 }

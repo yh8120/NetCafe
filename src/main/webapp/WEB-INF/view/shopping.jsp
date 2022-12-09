@@ -13,7 +13,7 @@
 <body style="padding: 0rem 0rem 5rem">
     <header class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">商品販売</a>
+            <h2 class="navbar-brand">商品販売</h2>
             <button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,7 @@
     </div>
     <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
         <ul class="navbar-nav">
-            <li class="nav-item"><button id="cartSubmit" class="btn btn-primary me-2">決定</button></li>
+            <li class="nav-item"><form action="" method="post"><button id="cartSubmit" class="btn btn-primary me-2">決定</button></form></li>
             <li class="nav-item"><a href="manager" class="btn btn-danger me-2">キャンセル</a></li>
         </ul>
     </footer>
@@ -135,7 +135,7 @@
         <tr>
             <th scope="row" colspan="3" class="text-end">合計</th>
             <td>
-                <span><c:out value="${sumPrice}" /></span>円
+                <span id="sumPrice"></span>円
             </td>
             <td></td>
         </tr>

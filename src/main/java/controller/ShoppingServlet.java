@@ -1,8 +1,8 @@
 package controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -32,42 +32,51 @@ public class ShoppingServlet extends HttpServlet {
 			List<Product> productList = productDao.findShoppingList();
 			request.setAttribute("roomId", roomId);
 			request.setAttribute("productList", productList);
-
+			request.getRequestDispatcher("WEB-INF/view/shopping.jsp").forward(request, response);
 		} catch (Exception e) {
-			throw new ServletException(e);
+			HttpServletResponse res = (HttpServletResponse) response;
+			res.sendRedirect("manager");
 		}
 
-		request.getRequestDispatcher("WEB-INF/view/shopping.jsp").forward(request, response);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Integer roomId = Integer.parseInt(request.getParameter("roomId"));
-		BufferedReader buffer = new BufferedReader(request.getReader());
-		String cartJSON = buffer.readLine();
-		System.out.println(cartJSON);
-
+		String cartJSON = request.getParameter("cartJSON");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			ShoppingCart[] cartArray = mapper.readValue(cartJSON, ShoppingCart[].class);
 			ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-			List<ShoppingCart> newCartArray=new ArrayList<>();
 			Integer sumPrice=0;
-			for (ShoppingCart cart : cartArray) {
-				cart.setRoomId(roomId);
-				Integer totalPrice = cart.getProductPrice()*cart.getProductUnit();
-				cart.setTotalPrice(totalPrice);
-				shoppingCartDao.insert(cart);
-				newCartArray.add(cart);
-				sumPrice=sumPrice+cart.getTotalPrice();
+			ProductDao productDao = DaoFactory.createProductDao();
+			
+			for (ShoppingCart shoppingCart : cartArray) {
+				Product product = productDao.findById(shoppingCart.getProductId());
+				
+				shoppingCart.setRoomId(roomId);
+				shoppingCart.setProductName(product.getProductName());
+				BigDecimal totalPrice = new BigDecimal(product.getProductPrice()*shoppingCart.getProductUnit());
+				shoppingCart.setTotalPrice(totalPrice.intValue());
+				shoppingCart.setTaxType(product.getTaxTypeId());
+				shoppingCart.setTaxName(product.getTaxTypeName());
+				BigDecimal taxRatePlus = new BigDecimal(1+product.getTaxRate());
+				BigDecimal prePrice = totalPrice.divide(taxRatePlus);
+				BigDecimal innerTax = totalPrice.subtract(prePrice);
+				innerTax = totalPrice.setScale(0,RoundingMode.DOWN);
+				System.out.println(innerTax);
+				shoppingCart.setInnerTax(innerTax.intValue());
+				
+				shoppingCartDao.insert(shoppingCart);
+				sumPrice=sumPrice+shoppingCart.getTotalPrice();
 			}
-			request.setAttribute("cartArray", newCartArray);
+			request.setAttribute("cartArray", cartArray);
 			request.setAttribute("sumPrice", sumPrice);
 			
 			request.getRequestDispatcher("WEB-INF/view/shoppingDone.jsp").forward(request, response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new ServletException();
 		}
 	}
