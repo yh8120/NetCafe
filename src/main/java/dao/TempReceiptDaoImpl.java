@@ -73,16 +73,36 @@ public class TempReceiptDaoImpl implements TempReceiptDao {
 		}
 		return tempReceipt;
 	}
+	
+	@Override
+	public void marge(TempReceipt tempReciept) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "SELECT *"
+					+ " FROM temp_receipt"
+					+ " WHERE room_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setObject(1, tempReciept.getRoomId(), Types.INTEGER);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				update(tempReciept);
+			}else {
+				insert(tempReciept);
+			}
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
 
 	@Override
-	public Integer insert(TempReceipt tempReceipt) throws Exception {
-		Integer autoIncrementKey = null;
+	public void insert(TempReceipt tempReceipt) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO temp_receipt"
 					+ "(room_id,"
+					+ " room_name,"
 					+ " start_time,"
 					+ " checkout_time,"
-					+ " stayTime,"
+					+ " stay_time,"
 					+ " customer_id,"
 					+ " customer_name,"
 					+ " sum_price,"
@@ -91,10 +111,56 @@ public class TempReceiptDaoImpl implements TempReceiptDao {
 					+ " room_price,"
 					+ " room_tax,"
 					+ " payment,"
-					+ " changeMoney"
-					+ " VALUES (?,?,NOW(),?,?,?,?,?,?,?,?,?,?)";
+					+ " change_money,"
+					+ " plan_id,"
+					+ " plan_name)"
+					+ " VALUES (?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, tempReceipt.getRoomId(), Types.INTEGER);
+			stmt.setString(2, tempReceipt.getRoomName());
+			stmt.setObject(3, tempReceipt.getStartTime(),Types.TIMESTAMP);
+			stmt.setObject(4, tempReceipt.getStayTime(), Types.BIGINT);
+			stmt.setObject(5, tempReceipt.getCustomerId(), Types.INTEGER);
+			stmt.setString(6, tempReceipt.getCustomerName());
+			stmt.setObject(7, tempReceipt.getSumPrice(), Types.INTEGER);
+			stmt.setObject(8, tempReceipt.getSumTax(), Types.INTEGER);
+			stmt.setObject(9, tempReceipt.getSumDiscount(), Types.INTEGER);
+			stmt.setObject(10, tempReceipt.getRoomPrice(), Types.INTEGER);
+			stmt.setObject(11, tempReceipt.getRoomTax(), Types.INTEGER);
+			stmt.setObject(12, tempReceipt.getPayment(), Types.INTEGER);
+			stmt.setObject(13, tempReceipt.getChangeMoney(), Types.INTEGER);
+			stmt.setObject(14, tempReceipt.getPlanId(), Types.INTEGER);
+			stmt.setString(15, tempReceipt.getPlanName());
+			stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw e;
+		}
+
+	}
+
+	@Override
+	public void update(TempReceipt tempReceipt) throws Exception {
+		try (Connection con = ds.getConnection()) {
+			String sql = "UPDATE temp_receipt"
+					+ " SET room_name=?,"
+					+ " start_time=?,"
+					+ " checkout_time=NOW(),"
+					+ " stay_time=?,"
+					+ " customer_id=?,"
+					+ " customer_name=?,"
+					+ " sum_price=?,"
+					+ " sum_tax=?,"
+					+ " sum_discount=?,"
+					+ " room_price=?,"
+					+ " room_tax=?,"
+					+ " payment=?,"
+					+ " change_money=?,"
+					+ " plan_id=?,"
+					+ " plan_name=?"
+					+ " WHERE room_id=?";
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, tempReceipt.getCustomerName());
 			stmt.setObject(2, tempReceipt.getStartTime(),Types.TIMESTAMP);
 			stmt.setObject(3, tempReceipt.getStayTime(), Types.BIGINT);
 			stmt.setObject(4, tempReceipt.getCustomerId(), Types.INTEGER);
@@ -106,18 +172,15 @@ public class TempReceiptDaoImpl implements TempReceiptDao {
 			stmt.setObject(10, tempReceipt.getRoomTax(), Types.INTEGER);
 			stmt.setObject(11, tempReceipt.getPayment(), Types.INTEGER);
 			stmt.setObject(12, tempReceipt.getChangeMoney(), Types.INTEGER);
+			stmt.setObject(13, tempReceipt.getPlanId(), Types.INTEGER);
+			stmt.setString(14, tempReceipt.getPlanName());
+			stmt.setObject(15, tempReceipt.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 			
 		} catch (Exception e) {
 			throw e;
 		}
 
-		return autoIncrementKey;
-
-	}
-
-	@Override
-	public void update(TempReceipt tempReceipt) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
 		//			String sql = "UPDATE sales_data"
 		//					+ " (shop_id,user_id,customer_id,sales_date,sum_price,start_time,time_spent)"
@@ -152,9 +215,12 @@ public class TempReceiptDaoImpl implements TempReceiptDao {
 	private TempReceipt mapToTempReceipt(ResultSet rs) throws Exception {
 		TempReceipt tempReceipt = new TempReceipt();
 		tempReceipt.setRoomId((Integer) rs.getObject("store_id"));
+		tempReceipt.setRoomName(rs.getString("room_name"));
 		tempReceipt.setStartTime(rs.getTimestamp("start_time"));
 		tempReceipt.setCheckOutTime(rs.getTimestamp("checkout_time"));
 		tempReceipt.setStayTime((Long) rs.getObject("stay_time"));
+		tempReceipt.setPlanId((Integer) rs.getObject("plan_id"));
+		tempReceipt.setPlanName(rs.getString("plan_name"));
 		tempReceipt.setCustomerId((Integer) rs.getObject("customer_id"));
 		tempReceipt.setCustomerName(rs.getString("customer_name"));
 		tempReceipt.setSumPrice((Integer) rs.getObject("sum_price"));
@@ -168,6 +234,8 @@ public class TempReceiptDaoImpl implements TempReceiptDao {
 
 		return tempReceipt;
 	}
+
+	
 
 
 

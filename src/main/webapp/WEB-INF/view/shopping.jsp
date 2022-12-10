@@ -23,7 +23,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <table class="table">
+                            <table class="table table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">商品ID</th>
@@ -46,8 +46,6 @@
         </div>
     </header>
     <div class="container">
-
-
 
         <div class="row">
             <div class="accordion accordion-flush" id="accordionFlushExample">

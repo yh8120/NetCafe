@@ -226,6 +226,7 @@ public class PricePlanDaoImpl implements PricePlanDao {
 		
 		PricePlan pricePlan = new PricePlan();
 		pricePlan.setPlanId((Integer) rs.getObject("plan_id"));
+		pricePlan.setPlanName(rs.getString("plan_name"));
 		pricePlan.setPlanStart(rs.getTimestamp("plan_start"));
 		pricePlan.setPlanEnd(rs.getTimestamp("plan_end"));
 		pricePlan.setStartTime(rs.getString("start_time"));

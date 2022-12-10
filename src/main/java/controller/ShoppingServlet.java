@@ -1,8 +1,6 @@
 package controller;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -16,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dao.DaoFactory;
 import dao.ProductDao;
 import dao.ShoppingCartDao;
+import domain.CalculateInnerTax;
 import domain.Product;
 import domain.ShoppingCart;
 
@@ -49,7 +48,7 @@ public class ShoppingServlet extends HttpServlet {
 		try {
 			ShoppingCart[] cartArray = mapper.readValue(cartJSON, ShoppingCart[].class);
 			ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-			Integer sumPrice=0;
+			Integer sumCartPrice=0;
 			ProductDao productDao = DaoFactory.createProductDao();
 			
 			for (ShoppingCart shoppingCart : cartArray) {
@@ -57,22 +56,22 @@ public class ShoppingServlet extends HttpServlet {
 				
 				shoppingCart.setRoomId(roomId);
 				shoppingCart.setProductName(product.getProductName());
-				BigDecimal totalPrice = new BigDecimal(product.getProductPrice()*shoppingCart.getProductUnit());
-				shoppingCart.setTotalPrice(totalPrice.intValue());
+				Integer totalPrice = product.getProductPrice()*shoppingCart.getProductUnit();
+				shoppingCart.setTotalPrice(totalPrice);
 				shoppingCart.setTaxType(product.getTaxTypeId());
 				shoppingCart.setTaxName(product.getTaxTypeName());
-				BigDecimal taxRatePlus = new BigDecimal(1+product.getTaxRate());
-				BigDecimal prePrice = totalPrice.divide(taxRatePlus);
-				BigDecimal innerTax = totalPrice.subtract(prePrice);
-				innerTax = totalPrice.setScale(0,RoundingMode.DOWN);
+				
+				Double taxRate = product.getTaxRate();
+				Integer innerTax = CalculateInnerTax.calculate(taxRate, totalPrice);
+				
 				System.out.println(innerTax);
 				shoppingCart.setInnerTax(innerTax.intValue());
 				
 				shoppingCartDao.insert(shoppingCart);
-				sumPrice=sumPrice+shoppingCart.getTotalPrice();
+				sumCartPrice=sumCartPrice+shoppingCart.getTotalPrice();
 			}
 			request.setAttribute("cartArray", cartArray);
-			request.setAttribute("sumPrice", sumPrice);
+			request.setAttribute("sumCartPrice", sumCartPrice);
 			
 			request.getRequestDispatcher("WEB-INF/view/shoppingDone.jsp").forward(request, response);
 

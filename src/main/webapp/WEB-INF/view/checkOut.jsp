@@ -11,82 +11,124 @@
 <title>入室管理</title>
 </head>
 <body>
-  <div class="container">
-    <h1>お会計</h1>
-    <div class="row">
-      <div class="col">
-        <form action="" method="post">
-          <table class="table table-bordered">
-          <tr>
-              <th>ルーム</th>
-              <td>
-                <c:out value="${room.roomName }" />
-              </td>
-            </tr>
-            <tr>
-              <th>会員番号</th>
-              <td>
-                <c:out value="${customer.customerId }" />
-              </td>
-            </tr>
-            <tr>
-              <th>名前</th>
-              <td>
-                <c:out value="${customer.lastName } ${customer.firstName }" />
-              </td>
-            </tr>
-            <tr>
-              <th>ご利用時間</th>
-              <td>
-                <c:out value="${timeDisplay}" />
-              </td>
-            </tr>
-            <tr>
-              <th>お会計</th>
-              <td>
-                <fmt:formatNumber value="${tempReceipt.sumPrice}" type="CURRENCY" currencyCode="JPY"
-                  maxFractionDigits="0" />
-              </td>
-            </tr>
-            <tr>
-              <th>内税</th>
-              <td>
-                <fmt:formatNumber value="${tempReceipt.sumTax}" type="CURRENCY" currencyCode="JPY"
-                  maxFractionDigits="0" />
-              </td>
-            </tr>
-          </table>
-          <div class="row">
-            <div class="col">
-              <c:if test="${not empty paymentError }">
-                <div class="error-message">
-                  <c:out value="${paymentError}"></c:out>
-                </div>
-              </c:if>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="input-group col-auto">
-              <span class="input-group-text">預り金</span> <input type="number" pattern="\d*"
-                name="payment" id="formPayment" class="form-control" min="0" max="999999"
-                value=<c:out value="${payment}"/>> <span class="input-group-text">円</span>
-            </div>
+	<div class="container">
+		<h1>お会計</h1>
+		<div class="row">
+			<div class="col">
+				<form action="" method="post">
+					<table class="table table-bordered">
+						<c:if test="${not empty tempReceipt.roomId }">
+							<tr>
+								<th>ルーム</th>
+								<td><c:out value="${tempReceipt.roomName }" /></td>
+							</tr>
+							<tr>
+								<th>会員番号</th>
+								<td><c:out value="${tempReceipt.customerId }" /></td>
+							</tr>
+							<tr>
+								<th>会員名</th>
+								<td><c:out value="${tempReceipt.customerName }" /></td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty shoppingCartList}">
+							<tr>
+								<th>商品料金</th>
+								<td>
+									<table class="table">
+										<thead class="bg-white">
+											<tr>
+												<th scope="col">商品ID</th>
+												<th scope="col">商品名</th>
+												<th scope="col">個数</th>
+												<th scope="col">金額</th>
+											</tr>
+										</thead>
+										<tbody>
+											<c:forEach items="${shoppingCartList}" var="cart">
+												<tr>
+													<td><c:out value="${cart.productId }" /></td>
+													<td><c:out value="${cart.productName }" /></td>
+													<td><c:out value="${cart.productUnit }" /></td>
+													<td><fmt:formatNumber value="${cart.totalPrice }" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
+												</tr>
+											</c:forEach>
+										</tbody>
+										<tr>
+											<td colspan="2"><fmt:formatNumber value="${shoppingPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /><small class="text-muted"> (内税<fmt:formatNumber
+														value="${shoppingTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />)
+											</small></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</c:if>
+						<c:if test="${not empty tempReceipt.roomId }">
+							<tr>
+								<th>ルーム料金</th>
+								<td>
+									<table class="table">
+										<thead class="sticky-top bg-white">
+											<tr>
+												<th scope="col">利用時間</th>
+												<th scope="col">適用プラン</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td><c:out value="${timeDisplay}" /></td>
+												<td><c:out value="${tempReceipt.planName }" /></td>
+											</tr>
+										</tbody>
+										<tr>
+											<td colspan="2"><fmt:formatNumber value="${tempReceipt.roomPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /><small class="text-muted"> (内税<fmt:formatNumber
+														value="${tempReceipt.roomTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />)
+											</small></td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</c:if>
+						<tr>
+							<th>お会計</th>
+							<td><fmt:formatNumber value="${tempReceipt.sumPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
+						</tr>
+						<tr>
+							<th>内税</th>
+							<td><fmt:formatNumber value="${tempReceipt.sumTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
+						</tr>
+					</table>
+					<div class="row">
+						<div class="col">
+							<c:if test="${not empty paymentError }">
+								<div class="error-message">
+									<c:out value="${paymentError}"></c:out>
+								</div>
+							</c:if>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="input-group col-auto">
+							<span class="input-group-text">預り金</span>
+							<input type="number" pattern="\d*" name="payment" id="formPayment" class="form-control" min="0" max="999999" value=<c:out value="${payment}"/>>
+							<span class="input-group-text">円</span>
+						</div>
 
-          </div>
-          <input type="submit" value="清算" class="btn btn-primary"> <a href="manager"
-            class="btn btn-light">キャンセル</a>
-        </form>
-      </div>
-    </div>
-  </div>
-  <script src="js/jquery-3.6.1.min.js"></script>
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script>
-			$(document).ready(function() {
-				$("form").submit(function() {
-					return confirm("清算しますか？");
-				});
+					</div>
+					<input type="submit" value="清算" class="btn btn-primary">
+					<a href="manager" class="btn btn-light">キャンセル</a>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="js/jquery-3.6.1.min.js"></script>
+	<script src="js/bootstrap.bundle.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("form").submit(function() {
+				return confirm("清算しますか？");
 			});
-		</script>
+		});
+	</script>
 </body>
 </html>

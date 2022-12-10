@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class PricePlan {
 	private Integer planId;
+	private String planName;
 	private Date planStart;
 	private Date planEnd;
 	private String startTime;
@@ -22,6 +23,12 @@ public class PricePlan {
 	public void setPlanId(Integer planId) {
 		this.planId = planId;
 	}
+	public String getPlanName() {
+		return planName;
+	}
+	public void setPlanName(String planName) {
+		this.planName = planName;
+	}
 	public Date getPlanStart() {
 		return planStart;
 	}
@@ -34,7 +41,6 @@ public class PricePlan {
 	public void setPlanEnd(Date planEnd) {
 		this.planEnd = planEnd;
 	}
-	
 	public String getStartTime() {
 		return startTime;
 	}
@@ -95,6 +101,7 @@ public class PricePlan {
 	public void setTaxRate(Double taxRate) {
 		this.taxRate = taxRate;
 	}
+	
 	
 
 }

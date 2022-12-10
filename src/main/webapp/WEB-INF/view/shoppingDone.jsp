@@ -42,7 +42,7 @@
                         <tr>
                                 <th scope="row" colspan="3">合計</th>
                                 <td>
-                                    <span ><c:out value="${sumPrice}" /></span>円
+                                    <span ><c:out value="${sumCartPrice}" /></span>円
                                 </td>
                                 <td></td>
                             </tr>

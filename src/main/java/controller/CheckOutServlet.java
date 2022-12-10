@@ -73,6 +73,7 @@ public class CheckOutServlet extends HttpServlet {
 			}
 			
 			tempReceipt.setRoomId(roomId);
+			tempReceipt.setRoomName(room.getRoomName());
 			tempReceipt.setStartTime(startTime);
 			tempReceipt.setStayTime(stayTime.longValue());
 			tempReceipt.setCustomerId(customerId);
@@ -83,10 +84,12 @@ public class CheckOutServlet extends HttpServlet {
 			tempReceipt.setSumDiscount(null);
 			
 			TempReceiptDao tempReceiptDao = DaoFactory.creaTempReceiptDao();
-			tempReceiptDao.insert(tempReceipt);
+			tempReceiptDao.marge(tempReceipt);
 
-			request.setAttribute("room", room);
 			request.setAttribute("tempReceipt", tempReceipt);
+			request.setAttribute("shoppingCartList", shoppingCartList);
+			request.setAttribute("shoppingPrice", shoppingPrice);
+			request.setAttribute("shoppingTax", shoppingTax);
 			request.setAttribute("timeDisplay", timeDisplay);
 
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
@@ -236,6 +239,8 @@ public class CheckOutServlet extends HttpServlet {
 		BigDecimal sumPrice = subtotal.add(innerTax);
 		
 		TempReceipt tempReceipt = new TempReceipt();
+		tempReceipt.setPlanId(pricePlan.getPlanId());
+		tempReceipt.setPlanName(pricePlan.getPlanName());
 		tempReceipt.setRoomTax(innerTax.intValue());
 		tempReceipt.setRoomPrice(sumPrice.intValue());
 		
