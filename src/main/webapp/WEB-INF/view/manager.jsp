@@ -27,14 +27,14 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse${room.roomId }" aria-expanded="false"
                   aria-controls="flush-collapse${room.roomId }">
-                  <c:if test="${room.cleaningId != 1}">
+                  <c:if test="${room.cleaningId != 1 && not empty room.cleaningId}">
                     <c:out value="※${room.cleaningName }※" />
                   </c:if>
 
                   <c:out value="◆　${room.roomName }" />
 
                   <c:if test="${room.inUse}">
-                    <c:out value="　◆会員：${room.customerId }　◆入室：" />
+                    <c:out value="　◆会員：${room.customerName }　◆入室：" />
                     <fmt:formatDate value="${room.started }" pattern="d日HH時mm分" />
                   </c:if>
 

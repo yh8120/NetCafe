@@ -9,6 +9,7 @@ public class Room {
 	private String roomTypeName;
 	private Integer roomOrder;
 	private Integer customerId;
+	private String customerName;
 	private Date started;
 	private Integer cleaningId;
 	private String cleaningName;
@@ -21,6 +22,16 @@ public class Room {
 
 	public void setCustomerId(Integer customerId) {
 		this.customerId = customerId;
+	}
+
+
+	public String getCustomerName() {
+		return customerName;
+	}
+
+
+	public void setCustomerName(String customerName) {
+		this.customerName = customerName;
 	}
 
 

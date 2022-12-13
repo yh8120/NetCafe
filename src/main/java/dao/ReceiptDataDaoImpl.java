@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import domain.ReceiptData;
+import domain.ExitReceiptData;
 
 public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	private DataSource ds;
@@ -19,8 +19,8 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public List<ReceiptData> findAll() throws Exception {
-		List<ReceiptData> salesDataList = new ArrayList<>();
+	public List<ExitReceiptData> findAll() throws Exception {
+		List<ExitReceiptData> salesDataList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
@@ -37,8 +37,8 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public ReceiptData findById(Integer salesDataId) throws Exception {
-		ReceiptData salesData = null;
+	public ExitReceiptData findById(Integer salesDataId) throws Exception {
+		ExitReceiptData salesData = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
 					+ " FROM sales_data"
@@ -56,7 +56,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public Integer insert(ReceiptData receiptData) throws Exception {
+	public Integer insert(ExitReceiptData receiptData) throws Exception {
 		Integer autoIncrementKey = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO receipt_data"
@@ -96,7 +96,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public void update(ReceiptData salesData) throws Exception {
+	public void update(ExitReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
 		//			String sql = "UPDATE sales_data"
 		//					+ " (shop_id,user_id,customer_id,sales_date,sum_price,start_time,time_spent)"
@@ -115,7 +115,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public void delete(ReceiptData salesData) throws Exception {
+	public void delete(ExitReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
 		//			String sql = "DELETE FROM sales_data"
 		//					+ " Where receipt_id = ?";
@@ -128,8 +128,8 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 
 	}
 
-	private ReceiptData mapToSalesData(ResultSet rs) throws Exception {
-		ReceiptData receiptData = new ReceiptData();
+	private ExitReceiptData mapToSalesData(ResultSet rs) throws Exception {
+		ExitReceiptData receiptData = new ExitReceiptData();
 		receiptData.setReceiptId((Integer) rs.getObject("receipt_id"));
 		receiptData.setShopId((Integer) rs.getObject("store_id"));
 		receiptData.setUserId((Integer) rs.getObject("user_id"));

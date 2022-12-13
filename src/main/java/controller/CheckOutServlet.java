@@ -13,17 +13,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.CustomerDao;
 import dao.DaoFactory;
 import dao.PricePlanDao;
 import dao.RoomDao;
+import dao.RoomStatusDao;
 import dao.ShoppingCartDao;
-import dao.TempReceiptDao;
-import domain.Customer;
 import domain.PricePlan;
 import domain.Room;
+import domain.RoomStatus;
 import domain.ShoppingCart;
-import domain.TempReceipt;
 
 @WebServlet("/checkOut")
 public class CheckOutServlet extends HttpServlet {
@@ -35,10 +33,6 @@ public class CheckOutServlet extends HttpServlet {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			RoomDao roomdao = DaoFactory.createRoomDao();
 			Room room = roomdao.findById(roomId);
-
-			Integer customerId = room.getCustomerId();
-			CustomerDao customerDao = DaoFactory.createCustomerDao();
-			Customer customer = customerDao.findById(customerId);
 			
 			ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
 			List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
@@ -60,33 +54,31 @@ public class CheckOutServlet extends HttpServlet {
 			//料金計算用
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
 			List<PricePlan> pricePlanList = pricePlanDao.findByNow(time);
-			TempReceipt tempReceipt=null;
+			RoomStatus roomStatus=null;
 			
 			for(PricePlan plisePlan:pricePlanList) {
-				TempReceipt calcReceipt = planToReciept(stayTime, plisePlan);
-				if (tempReceipt==null) {
-					tempReceipt=calcReceipt;
+				RoomStatus calcReceipt = planToReciept(stayTime, plisePlan);
+				if (roomStatus==null) {
+					roomStatus=calcReceipt;
 				}
-				if(tempReceipt.getRoomPrice()>calcReceipt.getRoomPrice()) {
-					tempReceipt = calcReceipt;
+				if(roomStatus.getRoomPrice()>calcReceipt.getRoomPrice()) {
+					roomStatus = calcReceipt;
 				}
 			}
 			
-			tempReceipt.setRoomId(roomId);
-			tempReceipt.setRoomName(room.getRoomName());
-			tempReceipt.setStartTime(startTime);
-			tempReceipt.setStayTime(stayTime.longValue());
-			tempReceipt.setCustomerId(customerId);
-			tempReceipt.setCustomerName(customer.getLastKana()+" "+customer.getFirstName());
-			tempReceipt.setStartTime(startTime);
-			tempReceipt.setSumPrice(tempReceipt.getRoomPrice()+shoppingPrice);
-			tempReceipt.setSumTax(tempReceipt.getRoomTax()+shoppingTax);
-			tempReceipt.setSumDiscount(null);
+			roomStatus.setRoomId(roomId);
+			roomStatus.setRoomName(room.getRoomName());
+			roomStatus.setStartTime(startTime);
+			roomStatus.setStayTime(stayTime.longValue());
+			roomStatus.setStartTime(startTime);
+			roomStatus.setSumPrice(roomStatus.getRoomPrice()+shoppingPrice);
+			roomStatus.setSumTax(roomStatus.getRoomTax()+shoppingTax);
+			roomStatus.setSumDiscount(null);
 			
-			TempReceiptDao tempReceiptDao = DaoFactory.creaTempReceiptDao();
-			tempReceiptDao.marge(tempReceipt);
+			RoomStatusDao roomStatusDao = DaoFactory.creaTempReceiptDao();
+			roomStatusDao.marge(roomStatus);
 
-			request.setAttribute("tempReceipt", tempReceipt);
+			request.setAttribute("roomStatus", roomStatus);
 			request.setAttribute("shoppingCartList", shoppingCartList);
 			request.setAttribute("shoppingPrice", shoppingPrice);
 			request.setAttribute("shoppingTax", shoppingTax);
@@ -211,7 +203,7 @@ public class CheckOutServlet extends HttpServlet {
 		return timeDisplay;
 	}
 	
-	private  TempReceipt planToReciept(BigDecimal stayTime,PricePlan pricePlan) {
+	private  RoomStatus planToReciept(BigDecimal stayTime,PricePlan pricePlan) {
 		//料金計算用
 		BigDecimal basicPrice = new BigDecimal(pricePlan.getBasicPrice());
 		BigDecimal basicMS = new BigDecimal(pricePlan.getBasicTime());
@@ -238,13 +230,13 @@ public class CheckOutServlet extends HttpServlet {
 		// 合計（＝小計＋内消費税）
 		BigDecimal sumPrice = subtotal.add(innerTax);
 		
-		TempReceipt tempReceipt = new TempReceipt();
-		tempReceipt.setPlanId(pricePlan.getPlanId());
-		tempReceipt.setPlanName(pricePlan.getPlanName());
-		tempReceipt.setRoomTax(innerTax.intValue());
-		tempReceipt.setRoomPrice(sumPrice.intValue());
+		RoomStatus roomStatus = new RoomStatus();
+		roomStatus.setPlanId(pricePlan.getPlanId());
+		roomStatus.setPlanName(pricePlan.getPlanName());
+		roomStatus.setRoomTax(innerTax.intValue());
+		roomStatus.setRoomPrice(sumPrice.intValue());
 		
-		return tempReceipt;
+		return roomStatus;
 	}
 
 }

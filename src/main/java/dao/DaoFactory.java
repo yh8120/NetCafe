@@ -71,8 +71,8 @@ public class DaoFactory {
 		return new ShoppingCartDaoImpl(getDataSource());
 	}
 	
-	public static TempReceiptDao creaTempReceiptDao() {
-		return new TempReceiptDaoImpl(getDataSource());
+	public static RoomStatusDao createRoomStatusDao() {
+		return new RoomStatusDaoImpl(getDataSource());
 	}
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;

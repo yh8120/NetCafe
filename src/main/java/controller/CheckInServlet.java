@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import dao.CustomerDao;
 import dao.DaoFactory;
-import dao.RoomDao;
+import dao.RoomStatusDao;
 import domain.Customer;
-import domain.Room;
+import domain.RoomStatus;
 
 @WebServlet("/checkIn")
 public class CheckInServlet extends HttpServlet {
@@ -76,8 +76,8 @@ public class CheckInServlet extends HttpServlet {
 			}
 
 			//会員の二重入室禁止
-			RoomDao roomDao = DaoFactory.createRoomDao();
-			Room checkCurrentUser = roomDao.checkCurrentUser(customerId);
+			RoomStatusDao roomStatusDao = DaoFactory.createRoomStatusDao();
+			RoomStatus checkCurrentUser = roomStatusDao.checkCurrentUser(customerId);
 			if(checkCurrentUser!=null) {
 				request.setAttribute("customerIdError", "すでに入室しています。");
 				isError = true;
@@ -89,11 +89,11 @@ public class CheckInServlet extends HttpServlet {
 				return;
 			}
 			
-			Room room = new Room();
-			room.setRoomId(roomId);
-			room.setCustomerId(customerId);
-			
-			roomDao.checkIn(room);
+			RoomStatus roomStatus = new RoomStatus();
+			roomStatus.setRoomId(roomId);
+			roomStatus.setCustomerId(customerId);
+			roomStatus.setCustomerName(customer.getLastName()+" "+customer.getFirstName());
+			roomStatusDao.checkIn(roomStatus);
 			
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect("manager");

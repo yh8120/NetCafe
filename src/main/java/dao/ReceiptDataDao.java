@@ -2,12 +2,12 @@ package dao;
 
 import java.util.List;
 
-import domain.ReceiptData;
+import domain.ExitReceiptData;
 
 public interface ReceiptDataDao {
-	List<ReceiptData> findAll() throws Exception;
-	ReceiptData findById(Integer receiptId) throws Exception;
-	Integer insert (ReceiptData salesData) throws Exception;
-	void update (ReceiptData salesData) throws Exception;
-	void delete (ReceiptData salesData) throws Exception;
+	List<ExitReceiptData> findAll() throws Exception;
+	ExitReceiptData findById(Integer receiptId) throws Exception;
+	Integer insert (ExitReceiptData salesData) throws Exception;
+	void update (ExitReceiptData salesData) throws Exception;
+	void delete (ExitReceiptData salesData) throws Exception;
 }

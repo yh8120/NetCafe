@@ -3,9 +3,8 @@ package domain;
 import java.util.Date;
 import java.util.List;
 
-public class ReceiptData {
+public class ExitReceiptData {
 	private Integer receiptId;
-	private Integer roomId;
 	private Integer shopId;
 	private Integer userId;
 	private Integer customerId;
