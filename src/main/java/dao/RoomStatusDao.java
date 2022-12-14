@@ -2,7 +2,11 @@ package dao;
 
 import java.util.List;
 
+import domain.ReceiptData;
+import domain.Room;
 import domain.RoomStatus;
+import domain.RoomUsedData;
+import domain.ShoppingCart;
 
 public interface RoomStatusDao {
 	List<RoomStatus> findAll() throws Exception;
@@ -12,8 +16,7 @@ public interface RoomStatusDao {
 	void marge(RoomStatus roomStatus) throws Exception;
 	void insert(RoomStatus roomStatus) throws Exception;
 	void update(RoomStatus roomStatus) throws Exception;
-	void cleaning(RoomStatus roomStatus) throws Exception;
 	void checkIn(RoomStatus roomStatus) throws Exception;
-	void checkOut(RoomStatus roomStatus) throws Exception;
+	void checkOut(Room room,RoomUsedData roomUsedData,ReceiptData receiptData,List<ShoppingCart> shoppingCartList) throws Exception;
 	void delete(RoomStatus roomStatus) throws Exception;
 }

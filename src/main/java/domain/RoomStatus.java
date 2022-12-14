@@ -3,38 +3,26 @@ package domain;
 import java.util.Date;
 
 public class RoomStatus {
-	private Integer roomId;
-	private String roomName;
-	private Integer customerId;
-	private String customerName;
-	private Date startTime;
-	private Date checkOutTime;
-	private Long stayTime;
-	private Integer losstTime;
-	private Integer planId;
-	private String planName;
-	private Integer roomPrice;
-	private Integer roomDiscount;
-	private Integer roomTotalPrice;
-	private Integer TaxType;
-	private String TaxName;
-	private Integer roomTax;
-	private Integer cleaningStatus;
-	private Boolean inUse;
-	private String roomUuid;
-	private String roomPass;
-	
+	private Integer roomUsageId;//1
+	private Integer roomId;//2
+	private Integer customerId;//3
+	private String customerName;//4
+	private Date startTime;//5
+	private Long losstTime;//6
+	private Integer roomDiscount;//7
+	private String roomUuid;//8
+	private Boolean inUse;//9
+	public Integer getRoomUsageId() {
+		return roomUsageId;
+	}
+	public void setRoomUsageId(Integer roomUsageId) {
+		this.roomUsageId = roomUsageId;
+	}
 	public Integer getRoomId() {
 		return roomId;
 	}
 	public void setRoomId(Integer roomId) {
 		this.roomId = roomId;
-	}
-	public String getRoomName() {
-		return roomName;
-	}
-	public void setRoomName(String roomName) {
-		this.roomName = roomName;
 	}
 	public Integer getCustomerId() {
 		return customerId;
@@ -54,41 +42,11 @@ public class RoomStatus {
 	public void setStartTime(Date startTime) {
 		this.startTime = startTime;
 	}
-	public Date getCheckOutTime() {
-		return checkOutTime;
-	}
-	public void setCheckOutTime(Date checkOutTime) {
-		this.checkOutTime = checkOutTime;
-	}
-	public Long getStayTime() {
-		return stayTime;
-	}
-	public void setStayTime(Long stayTime) {
-		this.stayTime = stayTime;
-	}
-	public Integer getLosstTime() {
+	public Long getLosstTime() {
 		return losstTime;
 	}
-	public void setLosstTime(Integer losstTime) {
+	public void setLosstTime(Long losstTime) {
 		this.losstTime = losstTime;
-	}
-	public Integer getPlanId() {
-		return planId;
-	}
-	public void setPlanId(Integer planId) {
-		this.planId = planId;
-	}
-	public String getPlanName() {
-		return planName;
-	}
-	public void setPlanName(String planName) {
-		this.planName = planName;
-	}
-	public Integer getRoomPrice() {
-		return roomPrice;
-	}
-	public void setRoomPrice(Integer roomPrice) {
-		this.roomPrice = roomPrice;
 	}
 	public Integer getRoomDiscount() {
 		return roomDiscount;
@@ -96,35 +54,11 @@ public class RoomStatus {
 	public void setRoomDiscount(Integer roomDiscount) {
 		this.roomDiscount = roomDiscount;
 	}
-	public Integer getRoomTotalPrice() {
-		return roomTotalPrice;
+	public String getRoomUuid() {
+		return roomUuid;
 	}
-	public void setRoomTotalPrice(Integer roomTotalPrice) {
-		this.roomTotalPrice = roomTotalPrice;
-	}
-	public Integer getTaxType() {
-		return TaxType;
-	}
-	public void setTaxType(Integer taxType) {
-		TaxType = taxType;
-	}
-	public String getTaxName() {
-		return TaxName;
-	}
-	public void setTaxName(String taxName) {
-		TaxName = taxName;
-	}
-	public Integer getRoomTax() {
-		return roomTax;
-	}
-	public void setRoomTax(Integer roomTax) {
-		this.roomTax = roomTax;
-	}
-	public Integer getCleaningStatus() {
-		return cleaningStatus;
-	}
-	public void setCleaningStatus(Integer cleaningStatus) {
-		this.cleaningStatus = cleaningStatus;
+	public void setRoomUuid(String roomUuid) {
+		this.roomUuid = roomUuid;
 	}
 	public Boolean getInUse() {
 		return inUse;
@@ -132,18 +66,7 @@ public class RoomStatus {
 	public void setInUse(Boolean inUse) {
 		this.inUse = inUse;
 	}
-	public String getRoomUuid() {
-		return roomUuid;
-	}
-	public void setRoomUuid(String roomUuid) {
-		this.roomUuid = roomUuid;
-	}
-	public String getRoomPass() {
-		return roomPass;
-	}
-	public void setRoomPass(String roomPass) {
-		this.roomPass = roomPass;
-	}
+	
 	
 
 }

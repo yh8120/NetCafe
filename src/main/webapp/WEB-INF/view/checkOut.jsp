@@ -17,18 +17,18 @@
 			<div class="col">
 				<form action="" method="post">
 					<table class="table table-bordered">
-						<c:if test="${not empty tempReceipt.roomId }">
+						<c:if test="${not empty roomUsedData.roomId }">
 							<tr>
 								<th>ルーム</th>
-								<td><c:out value="${tempReceipt.roomName }" /></td>
+								<td><c:out value="${roomUsedData.roomName }" /></td>
 							</tr>
 							<tr>
 								<th>会員番号</th>
-								<td><c:out value="${tempReceipt.customerId }" /></td>
+								<td><c:out value="${roomUsedData.customerId }" /></td>
 							</tr>
 							<tr>
 								<th>会員名</th>
-								<td><c:out value="${tempReceipt.customerName }" /></td>
+								<td><c:out value="${roomUsedData.customerName }" /></td>
 							</tr>
 						</c:if>
 						<c:if test="${not empty shoppingCartList}">
@@ -63,7 +63,7 @@
 								</td>
 							</tr>
 						</c:if>
-						<c:if test="${not empty tempReceipt.roomId }">
+						<c:if test="${not empty roomUsedData.roomId }">
 							<tr>
 								<th>ルーム料金</th>
 								<td>
@@ -77,12 +77,12 @@
 										<tbody>
 											<tr>
 												<td><c:out value="${timeDisplay}" /></td>
-												<td><c:out value="${tempReceipt.planName }" /></td>
+												<td><c:out value="${roomUsedData.planName }" /></td>
 											</tr>
 										</tbody>
 										<tr>
-											<td colspan="2"><fmt:formatNumber value="${tempReceipt.roomPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /><small class="text-muted"> (内税<fmt:formatNumber
-														value="${tempReceipt.roomTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />)
+											<td colspan="2"><fmt:formatNumber value="${roomUsedData.roomPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /><small class="text-muted"> (内税<fmt:formatNumber
+														value="${roomUsedData.roomTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />)
 											</small></td>
 										</tr>
 									</table>
@@ -91,11 +91,11 @@
 						</c:if>
 						<tr>
 							<th>お会計</th>
-							<td><fmt:formatNumber value="${tempReceipt.sumPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
+							<td><fmt:formatNumber value="${receiptData.sumPrice}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
 						</tr>
 						<tr>
 							<th>内税</th>
-							<td><fmt:formatNumber value="${tempReceipt.sumTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
+							<td><fmt:formatNumber value="${receiptData.sumTax}" type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" /></td>
 						</tr>
 					</table>
 					<div class="row">

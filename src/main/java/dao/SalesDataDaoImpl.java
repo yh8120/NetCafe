@@ -10,6 +10,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import domain.SalesData;
+import domain.ShoppingCart;
 
 public class SalesDataDaoImpl implements SalesDataDao {
 	private DataSource ds;
@@ -78,22 +79,32 @@ public class SalesDataDaoImpl implements SalesDataDao {
 	}
 
 	@Override
-	public void insert(SalesData salesData) throws Exception {
+	public void insert(ShoppingCart shoppingCart) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO sales_datas"
-					+ " (receipt_id,product_id,number_product)"
-					+ " VALUES (?,?,?)";
+			String sql = "INSERT INTO sales_data"
+					+ " (room_id,"
+					+ " sales_time,"
+					+ " product_id,"
+					+ " product_unit,"
+					+ " total_price,"
+					+ " discount,"
+					+ " inner_tax)"
+					+ " VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, salesData.getReceiptId(), Types.INTEGER);
-			stmt.setObject(2, salesData.getProductId(), Types.INTEGER);
-			stmt.setObject(3, salesData.getProductUnit(), Types.INTEGER);
+			stmt.setObject(1, shoppingCart.getRoomId(), Types.INTEGER);
+			stmt.setObject(2, shoppingCart.getSalesTime(),Types.TIMESTAMP);
+			stmt.setObject(3, shoppingCart.getProductId(), Types.INTEGER);
+			stmt.setObject(4, shoppingCart.getProductUnit(), Types.INTEGER);
+			stmt.setObject(5, shoppingCart.getTotalPrice(), Types.INTEGER);
+			stmt.setObject(6, shoppingCart.getDiscount(), Types.INTEGER);
+			stmt.setObject(7, shoppingCart.getInnerTax(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw e;
 		}
 
 	}
-
 	@Override
 	public void update(SalesData salesData) throws Exception {
 		
@@ -115,13 +126,14 @@ public class SalesDataDaoImpl implements SalesDataDao {
 
 	private SalesData mapToSalesData(ResultSet rs) throws Exception {
 		SalesData salesData = new SalesData();
-		salesData.setSalesDataId((Integer) rs.getObject("sales_data_id"));
-		salesData.setReceiptId((Integer) rs.getObject("receipt_id"));
+		salesData.setSalesDataId((Integer) rs.getObject("cart_id"));
+		salesData.setSalesTime(rs.getTimestamp("sales_time"));
+		salesData.setRoomId((Integer) rs.getObject("room_id"));
 		salesData.setProductId((Integer) rs.getObject("product_id"));
-		salesData.setProductName(rs.getString("product_name"));
-		salesData.setProductPrice((Integer) rs.getObject("product_price"));
-		salesData.setProductUnit((Integer) rs.getObject("number_product"));
+		salesData.setProductUnit((Integer) rs.getObject("product_unit"));
+		salesData.setTotalPrice((Integer)rs.getObject("total_price"));
 		salesData.setDiscount((Integer) rs.getObject("discount"));
+		salesData.setInnerTax((Integer) rs.getObject("inner_tax"));
 
 		return salesData;
 	}

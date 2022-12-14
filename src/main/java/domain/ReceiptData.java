@@ -2,7 +2,7 @@ package domain;
 
 import java.util.Date;
 
-public class ReceiptHedderData {
+public class ReceiptData {
 	private Integer receiptId;
 	private Integer shopId;
 	private String shopName;
@@ -10,8 +10,10 @@ public class ReceiptHedderData {
 	private String shopAddress;
 	private Integer userId;
 	private Date printedTime;
-	private Integer receiptType;
-	private String receiptTypeName;
+	private Integer sumPrice;
+	private Integer sumTax;
+	private Integer payment;
+	private Integer changeMoney;
 	
 	public Integer getReceiptId() {
 		return receiptId;
@@ -24,18 +26,6 @@ public class ReceiptHedderData {
 	}
 	public void setShopId(Integer shopId) {
 		this.shopId = shopId;
-	}
-	public Integer getUserId() {
-		return userId;
-	}
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-	public Date getPrintedTime() {
-		return printedTime;
-	}
-	public void setPrintedTime(Date printedTime) {
-		this.printedTime = printedTime;
 	}
 	public String getShopName() {
 		return shopName;
@@ -55,19 +45,44 @@ public class ReceiptHedderData {
 	public void setShopAddress(String shopAddress) {
 		this.shopAddress = shopAddress;
 	}
-	public Integer getReceiptType() {
-		return receiptType;
+	public Integer getUserId() {
+		return userId;
 	}
-	public void setReceiptType(Integer receiptType) {
-		this.receiptType = receiptType;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
-	public String getReceiptTypeName() {
-		return receiptTypeName;
+	public Date getPrintedTime() {
+		return printedTime;
 	}
-	public void setReceiptTypeName(String receiptTypeName) {
-		this.receiptTypeName = receiptTypeName;
+	public void setPrintedTime(Date printedTime) {
+		this.printedTime = printedTime;
+	}
+	public Integer getSumPrice() {
+		return sumPrice;
+	}
+	public void setSumPrice(Integer sumPrice) {
+		this.sumPrice = sumPrice;
+	}
+	public Integer getSumTax() {
+		return sumTax;
+	}
+	public void setSumTax(Integer sumTax) {
+		this.sumTax = sumTax;
+	}
+
+	public Integer getPayment() {
+		return payment;
+	}
+	public void setPayment(Integer payment) {
+		this.payment = payment;
+	}
+	public Integer getChangeMoney() {
+		return changeMoney;
+	}
+	public void setChangeMoney(Integer changeMoney) {
+		this.changeMoney = changeMoney;
 	}
 	
-	
+
 
 }

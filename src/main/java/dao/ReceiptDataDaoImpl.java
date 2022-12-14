@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import domain.ExitReceiptData;
+import domain.ReceiptData;
 
 public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	private DataSource ds;
@@ -19,8 +19,8 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public List<ExitReceiptData> findAll() throws Exception {
-		List<ExitReceiptData> salesDataList = new ArrayList<>();
+	public List<ReceiptData> findAll() throws Exception {
+		List<ReceiptData> salesDataList = new ArrayList<>();
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
@@ -37,8 +37,8 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public ExitReceiptData findById(Integer salesDataId) throws Exception {
-		ExitReceiptData salesData = null;
+	public ReceiptData findById(Integer salesDataId) throws Exception {
+		ReceiptData salesData = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
 					+ " FROM sales_data"
@@ -56,28 +56,26 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public Integer insert(ExitReceiptData receiptData) throws Exception {
+	public Integer insert(ReceiptData receiptData) throws Exception {
 		Integer autoIncrementKey = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO receipt_data"
 					+ "(shop_id,"
 					+ " user_id,"
-					+ " customer_id,"
-					+ " checkout_time,"
+					+ " printed_time,"
 					+ " sum_price,"
-					+ " inner_tax,"
+					+ " sum_tax,"
 					+ " payment,"
 					+ " change_money)"
-					+ " VALUES (?,?,?,?,?,?,?,?)";
+					+ " VALUES (?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql,java.sql.Statement.RETURN_GENERATED_KEYS);
 			stmt.setObject(1, receiptData.getShopId(), Types.INTEGER);
 			stmt.setObject(2, receiptData.getUserId(), Types.INTEGER);
-			stmt.setObject(3, receiptData.getCustomerId(), Types.INTEGER);
-			stmt.setObject(4, receiptData.getCheckOutTime(),Types.TIMESTAMP);
-			stmt.setObject(5, receiptData.getSumPrice(), Types.INTEGER);
-			stmt.setObject(6, receiptData.getInnerTax(), Types.INTEGER);
-			stmt.setObject(7, receiptData.getPayment(), Types.INTEGER);
-			stmt.setObject(8, receiptData.getChangeMoney(), Types.INTEGER);
+			stmt.setObject(3, receiptData.getPrintedTime(),Types.TIMESTAMP);
+			stmt.setObject(4, receiptData.getSumPrice(), Types.INTEGER);
+			stmt.setObject(5, receiptData.getSumTax(), Types.INTEGER);
+			stmt.setObject(6, receiptData.getPayment(), Types.INTEGER);
+			stmt.setObject(7, receiptData.getChangeMoney(), Types.INTEGER);
 			stmt.executeUpdate();
 			
 			ResultSet res = stmt.getGeneratedKeys();
@@ -96,7 +94,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public void update(ExitReceiptData salesData) throws Exception {
+	public void update(ReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
 		//			String sql = "UPDATE sales_data"
 		//					+ " (shop_id,user_id,customer_id,sales_date,sum_price,start_time,time_spent)"
@@ -115,7 +113,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	}
 
 	@Override
-	public void delete(ExitReceiptData salesData) throws Exception {
+	public void delete(ReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
 		//			String sql = "DELETE FROM sales_data"
 		//					+ " Where receipt_id = ?";
@@ -128,20 +126,19 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 
 	}
 
-	private ExitReceiptData mapToSalesData(ResultSet rs) throws Exception {
-		ExitReceiptData receiptData = new ExitReceiptData();
+	private ReceiptData mapToSalesData(ResultSet rs) throws Exception {
+		ReceiptData receiptData = new ReceiptData();
 		receiptData.setReceiptId((Integer) rs.getObject("receipt_id"));
-		receiptData.setShopId((Integer) rs.getObject("store_id"));
+		receiptData.setShopId((Integer) rs.getObject("shop_id"));
+		receiptData.setShopName(rs.getString("shop_name"));
+		receiptData.setShopPhoneNumber(rs.getString("shop_phone_number"));
+		receiptData.setShopAddress(rs.getString("shop_address"));
 		receiptData.setUserId((Integer) rs.getObject("user_id"));
-		receiptData.setCustomerId((Integer) rs.getObject("customer_id"));
-		receiptData.setCheckOutTime(rs.getTimestamp("checkout_time"));
+		receiptData.setPrintedTime(rs.getTimestamp("printed_time"));
 		receiptData.setSumPrice((Integer) rs.getObject("sum_price"));
-		receiptData.setInnerTax((Integer)rs.getObject("inner_tax"));
+		receiptData.setSumTax((Integer)rs.getObject("sum_tax"));
 		receiptData.setPayment((Integer)rs.getObject("payment"));
-		receiptData.setStartTime(rs.getTimestamp("start_time"));
-		receiptData.setTimeSpent((Long) rs.getObject("time_spent"));
-		SalesDataDao salesDataDao = DaoFactory.createSalesDataDao();
-		receiptData.setSalesData(salesDataDao.findByReceiptId(receiptData.getReceiptId()));
+		receiptData.setChangeMoney((Integer)rs.getObject("change_money"));
 
 		return receiptData;
 	}

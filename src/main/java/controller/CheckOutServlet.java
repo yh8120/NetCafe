@@ -12,16 +12,21 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import dao.DaoFactory;
 import dao.PricePlanDao;
 import dao.RoomDao;
 import dao.RoomStatusDao;
+import dao.ShopDao;
 import dao.ShoppingCartDao;
 import domain.PricePlan;
+import domain.ReceiptData;
 import domain.Room;
-import domain.RoomStatus;
+import domain.RoomUsedData;
+import domain.Shop;
 import domain.ShoppingCart;
+import domain.User;
 
 @WebServlet("/checkOut")
 public class CheckOutServlet extends HttpServlet {
@@ -34,51 +39,56 @@ public class CheckOutServlet extends HttpServlet {
 			RoomDao roomdao = DaoFactory.createRoomDao();
 			Room room = roomdao.findById(roomId);
 			
+			// 買い物関係
 			ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
 			List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
-			Integer shoppingPrice=0;
-			Integer shoppingTax=0;
-			for(ShoppingCart shoppingCart:shoppingCartList) {
-				shoppingPrice= shoppingPrice+shoppingCart.getTotalPrice();
-				shoppingTax=shoppingTax+shoppingCart.getInnerTax();
+			Integer shoppingPrice = 0;
+			Integer shoppingTax = 0;
+			for (ShoppingCart shoppingCart : shoppingCartList) {
+				shoppingPrice = shoppingPrice + shoppingCart.getTotalPrice();
+				shoppingTax = shoppingTax + shoppingCart.getInnerTax();
 			}
-			
-			Date startTime = room.getStarted();
-			Date now = new Date();
+
+			Date startTime = room.getStartTime();
+			Date checkOutTime = new Date();
 			Time time = new Time(startTime.getTime());
 
 			//時計表示用
-			BigDecimal stayTime = new BigDecimal(now.getTime() - startTime.getTime());
+			BigDecimal stayTime = new BigDecimal(checkOutTime.getTime() - startTime.getTime());
 			String timeDisplay = timeDisplay(stayTime);
 
 			//料金計算用
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
 			List<PricePlan> pricePlanList = pricePlanDao.findByNow(time);
-			RoomStatus roomStatus=null;
-			
-			for(PricePlan plisePlan:pricePlanList) {
-				RoomStatus calcReceipt = planToReciept(stayTime, plisePlan);
-				if (roomStatus==null) {
-					roomStatus=calcReceipt;
+			RoomUsedData roomUsedData = null;
+
+			for (PricePlan plisePlan : pricePlanList) {
+				RoomUsedData calcUsedData = planToUsedData(stayTime, plisePlan);
+				if (roomUsedData == null) {
+					roomUsedData = calcUsedData;
 				}
-				if(roomStatus.getRoomPrice()>calcReceipt.getRoomPrice()) {
-					roomStatus = calcReceipt;
+				if (roomUsedData.getRoomPrice() > calcUsedData.getRoomPrice()) {
+					roomUsedData = calcUsedData;
 				}
 			}
 			
-			roomStatus.setRoomId(roomId);
-			roomStatus.setRoomName(room.getRoomName());
-			roomStatus.setStartTime(startTime);
-			roomStatus.setStayTime(stayTime.longValue());
-			roomStatus.setStartTime(startTime);
-			roomStatus.setSumPrice(roomStatus.getRoomPrice()+shoppingPrice);
-			roomStatus.setSumTax(roomStatus.getRoomTax()+shoppingTax);
-			roomStatus.setSumDiscount(null);
+			Integer sumPrice = roomUsedData.getRoomPrice() + shoppingPrice;
+			Integer sumTax = roomUsedData.getRoomTax() + shoppingTax;
+			roomUsedData.setRoomId(roomId);
+			roomUsedData.setRoomName(room.getRoomName());
+			roomUsedData.setCustomerId(room.getCustomerId());
+			roomUsedData.setCustomerName(room.getCustomerName());
+			roomUsedData.setStartTime(startTime);
+			roomUsedData.setCheckOutTime(checkOutTime);
+			roomUsedData.setStayTime(stayTime.longValue());
+			roomUsedData.setStartTime(startTime);
 			
-			RoomStatusDao roomStatusDao = DaoFactory.creaTempReceiptDao();
-			roomStatusDao.marge(roomStatus);
-
-			request.setAttribute("roomStatus", roomStatus);
+			ReceiptData receiptData = new ReceiptData();
+			receiptData.setSumPrice(sumPrice);
+			receiptData.setSumTax(sumTax);
+			
+			request.getSession().setAttribute("roomUsedData", roomUsedData);
+			request.getSession().setAttribute("receiptData", receiptData);
 			request.setAttribute("shoppingCartList", shoppingCartList);
 			request.setAttribute("shoppingPrice", shoppingPrice);
 			request.setAttribute("shoppingTax", shoppingTax);
@@ -87,109 +97,100 @@ public class CheckOutServlet extends HttpServlet {
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new ServletException(e);
-			//			HttpServletResponse res = (HttpServletResponse) response;
-			//			res.sendRedirect("manager");
+			response.sendRedirect("manager");
 		}
 
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//		try {
-//
-//			String strPayment = request.getParameter("payment");
-//			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
-//
-//			RoomDao roomdao = DaoFactory.createRoomDao();
-//			Room room = roomdao.findById(roomId);
-//
-//			if (room.getInUse()) {
-//
-//				Integer customerId = room.getCustomerId();
-//				CustomerDao customerDao = DaoFactory.createCustomerDao();
-//				Customer customer = customerDao.findById(customerId);
-//
-//				BigDecimal stayingTime = new BigDecimal(room.getStayingTime());
-//				String timeDisplay = timeDisplay(stayingTime);
-//				
-//				
-//				
-//				
-//				request.setAttribute("payment", strPayment);
-//				request.setAttribute("room", room);
-//				request.setAttribute("customer", customer);
-//				request.setAttribute("timeDisplay", timeDisplay);
-//
-//				// バリデーション
-//				Integer sumPrice = room.getSumPrice();
-//				Integer payment = 0;
-//				boolean isError = false;
-//
-//				if (strPayment.isEmpty()) {
-//					request.setAttribute("paymentError", "預り金が未入力です");
-//					isError = true;
-//				} else {
-//					try {
-//						payment = Integer.parseInt(strPayment);
-//						if (payment <= 0) {
-//							request.setAttribute("paymentError", "預り金が不正です。");
-//							isError = true;
-//						}
-//					} catch (NumberFormatException e) {
-//						e.printStackTrace();
-//						request.setAttribute("paymentError", "預り金が不正です。");
-//						isError = true;
-//					}
-//				}
-//				if (sumPrice > payment) {
-//					request.setAttribute("paymentError", "預り金が足りません。");
-//					isError = true;
-//				}
-//
-//				if (isError) {
-//					request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp")
-//							.forward(request, response);
-//					return;
-//				}
-//
-//				//　レシートデータ作成
-//				HttpServletRequest req = (HttpServletRequest) request;
-//				HttpSession session = req.getSession();
-//				User user = (User) session.getAttribute("user");
-//				ReceiptData receiptData = new ReceiptData();
-//
-//				receiptData.setShopId(user.getShopId());
-//				receiptData.setUserId(user.getUserId());
-//				receiptData.setCustomerId(room.getCustomerId());
-//				receiptData.setCheckOutTime(room.getCheckOutTime());
-//				receiptData.setSumPrice(sumPrice);
-//				receiptData.setInnerTax(room.getInnerTax());
-//				receiptData.setPayment(payment);
-//				Integer changeMoney = payment - sumPrice;
-//				request.setAttribute("changeMoney", changeMoney);
-//				receiptData.setChangeMoney(changeMoney);
-//				receiptData.setTimeSpent(room.getStayingTime());
-//
-//				ReceiptDataDao receiptDataDao = DaoFactory.createRecieptDataDao();
-//
-//
-//				//DB処理１　レシートデータ作成
-//				Integer receiptId = receiptDataDao.insert(receiptData);
-//				//DB処理２　退室状態に変更
-//				roomdao.checkOut(room);
-//
-//				request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
-//			} else {
-//				response.sendRedirect("manager");
-//			}
-//
-//		} catch (Exception e) {
-//			throw new ServletException(e);
-//		}
+				try {
+					HttpServletRequest req = (HttpServletRequest) request;
+					HttpSession session = req.getSession();
+					RoomUsedData roomUsedData = (RoomUsedData) session.getAttribute("roomUsedData");
+					ReceiptData receiptData = (ReceiptData) session.getAttribute("receiptData");
+		
+					String strPayment = request.getParameter("payment");
+					Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+					
+		
+					RoomDao roomdao = DaoFactory.createRoomDao();
+					Room room = roomdao.findById(roomId);
+		
+						// バリデーション
+						Integer sumPrice = receiptData.getSumPrice();
+						Integer payment = 0;
+						boolean isError = false;
+		
+						if (strPayment.isEmpty()) {
+							request.setAttribute("paymentError", "預り金が未入力です");
+							isError = true;
+						} else {
+							try {
+								payment = Integer.parseInt(strPayment);
+								if (payment <= 0) {
+									request.setAttribute("paymentError", "預り金が不正です。");
+									isError = true;
+								}
+							} catch (NumberFormatException e) {
+								e.printStackTrace();
+								request.setAttribute("paymentError", "預り金が不正です。");
+								isError = true;
+							}
+						}
+						if (sumPrice > payment) {
+							request.setAttribute("paymentError", "預り金が足りません。");
+							isError = true;
+						}
+		
+						if (isError) {
+							request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp")
+									.forward(request, response);
+							return;
+						}
+						
+						
+						//　レシートデータ作成
+						User user = (User) session.getAttribute("user");
+						Integer shopId =user.getShopId();
+						ShopDao shopDao = DaoFactory.createShopDao();
+						Shop shop= shopDao.findById(user.getShopId());
+						Date printedTime = new Date();
+						
+						
+						receiptData.setShopId(shopId);
+						receiptData.setUserId(user.getUserId());
+						receiptData.setSumPrice(sumPrice);
+						receiptData.setPayment(payment);
+						receiptData.setPrintedTime(printedTime);
+						Integer changeMoney = payment - sumPrice;
+						receiptData.setChangeMoney(changeMoney);
+						
+						
+						//レシート登録諸々のトランザクション処理
+						ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
+						List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
+						
+						RoomStatusDao roomStatus =DaoFactory.createRoomStatusDao();
+						roomStatus.checkOut(room,roomUsedData,receiptData,shoppingCartList);
+						
+						BigDecimal staytime=new BigDecimal(roomUsedData.getStayTime());
+						String timeDisplay = timeDisplay(staytime);
+						
+						request.setAttribute("timeDisplay", timeDisplay);
+						request.setAttribute("roomUsedData", roomUsedData);
+						request.setAttribute("receiptData", receiptData);
+						request.setAttribute("shop", shop);
+						request.getSession().removeAttribute("roomUsedData");
+						request.getSession().removeAttribute("receiptData");
+							
+						request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
+		
+				} catch (Exception e) {
+					response.sendRedirect("manager");
+				}
 	}
-	
+
 	private String timeDisplay(BigDecimal stayingTime) {
 		BigDecimal currentHour = stayingTime.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
 		BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
@@ -198,12 +199,12 @@ public class CheckOutServlet extends HttpServlet {
 		BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
 		BigDecimal currentSec = (stayingTime.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
 				RoundingMode.DOWN);
-		
-		String timeDisplay = currentHour+"時間"+currentMin+"分"+currentSec+"秒";
+
+		String timeDisplay = currentHour + "時間" + currentMin + "分" + currentSec + "秒";
 		return timeDisplay;
 	}
-	
-	private  RoomStatus planToReciept(BigDecimal stayTime,PricePlan pricePlan) {
+
+	private RoomUsedData planToUsedData(BigDecimal stayTime, PricePlan pricePlan) {
 		//料金計算用
 		BigDecimal basicPrice = new BigDecimal(pricePlan.getBasicPrice());
 		BigDecimal basicMS = new BigDecimal(pricePlan.getBasicTime());
@@ -230,13 +231,15 @@ public class CheckOutServlet extends HttpServlet {
 		// 合計（＝小計＋内消費税）
 		BigDecimal sumPrice = subtotal.add(innerTax);
 		
-		RoomStatus roomStatus = new RoomStatus();
-		roomStatus.setPlanId(pricePlan.getPlanId());
-		roomStatus.setPlanName(pricePlan.getPlanName());
-		roomStatus.setRoomTax(innerTax.intValue());
-		roomStatus.setRoomPrice(sumPrice.intValue());
+		RoomUsedData roomUsedData = new RoomUsedData();
 		
-		return roomStatus;
+		roomUsedData.setTaxType(pricePlan.getTaxTypeId());
+		roomUsedData.setPlanId(pricePlan.getPlanId());
+		roomUsedData.setPlanName(pricePlan.getPlanName());
+		roomUsedData.setRoomTax(innerTax.intValue());
+		roomUsedData.setRoomPrice(sumPrice.intValue());
+
+		return roomUsedData;
 	}
 
 }

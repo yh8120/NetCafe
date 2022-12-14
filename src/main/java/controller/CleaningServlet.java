@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dao.DaoFactory;
-import dao.RoomStatusDao;
-import domain.RoomStatus;
+import dao.RoomDao;
+import domain.Room;
 
 @WebServlet("/cleaning")
 public class CleaningServlet extends HttpServlet {
@@ -22,13 +22,13 @@ public class CleaningServlet extends HttpServlet {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			Integer cleaningId = Integer.parseInt(request.getParameter("cleaningId"));
 			
-			RoomStatusDao roomStatusDao = DaoFactory.createRoomStatusDao();
-			RoomStatus roomStatus = new RoomStatus();
+			RoomDao roomDao = DaoFactory.createRoomDao();
+			Room room = new Room();
 			
-			roomStatus.setRoomId(roomId);
-			roomStatus.setCleaningStatus(cleaningId);
+			room.setRoomId(roomId);
+			room.setCleaningStatus(cleaningId);
 			
-			roomStatusDao.cleaning(roomStatus);
+			roomDao.cleaning(room);
 			
 			HttpServletResponse res = (HttpServletResponse) response;
 			res.sendRedirect("manager");

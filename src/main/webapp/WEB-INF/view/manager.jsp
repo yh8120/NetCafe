@@ -27,7 +27,7 @@
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                   data-bs-target="#flush-collapse${room.roomId }" aria-expanded="false"
                   aria-controls="flush-collapse${room.roomId }">
-                  <c:if test="${room.cleaningId != 1 && not empty room.cleaningId}">
+                  <c:if test="${room.cleaningStatus != 1}">
                     <c:out value="※${room.cleaningName }※" />
                   </c:if>
 
@@ -35,7 +35,7 @@
 
                   <c:if test="${room.inUse}">
                     <c:out value="　◆会員：${room.customerName }　◆入室：" />
-                    <fmt:formatDate value="${room.started }" pattern="d日HH時mm分" />
+                    <fmt:formatDate value="${room.startTime }" pattern="d日HH時mm分" />
                   </c:if>
 
                 </button>
@@ -57,28 +57,28 @@
                     </c:when>
                     <c:otherwise>
                       <div class="no-vacancy">
-                        <c:if test="${room.cleaningId == 1}">
+                        <c:if test="${room.cleaningStatus == 1}">
                           <a href="checkIn?roomId=<c:out value="${room.roomId }"/>"
                             class="btn btn-success col-auto mr-2">入室</a>
                           <a href="" class="btn btn-success col-auto mr-2">予約</a>
                         </c:if>
 
-                        <c:if test="${room.cleaningId == 2}">
+                        <c:if test="${room.cleaningStatus == 2}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=1"
                             class="btn btn-success col-auto mr-2">清掃完了</a>
                         </c:if>
 
-                        <c:if test="${room.cleaningId == 1}">
+                        <c:if test="${room.cleaningStatus == 1}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
                             class="btn btn-success col-auto mr-2">未清掃に戻す</a>
                         </c:if>
 
-                        <c:if test="${room.cleaningId == 3}">
+                        <c:if test="${room.cleaningStatus == 3}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
                             class="btn btn-success col-auto mr-2">点検解除</a>
                         </c:if>
 
-                        <c:if test="${room.cleaningId == 1}">
+                        <c:if test="${room.cleaningStatus == 1}">
                           <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=3"
                             class="btn btn-success col-auto mr-2">点検</a>
                         </c:if>

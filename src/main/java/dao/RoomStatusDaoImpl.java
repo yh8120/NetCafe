@@ -9,7 +9,11 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import domain.ReceiptData;
+import domain.Room;
 import domain.RoomStatus;
+import domain.RoomUsedData;
+import domain.ShoppingCart;
 
 public class RoomStatusDaoImpl implements RoomStatusDao {
 	private DataSource ds;
@@ -118,46 +122,23 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 		try (Connection con = ds.getConnection()) {
 			String sql = "INSERT INTO room_status"
 					+ "(room_id,"//1
-					+ " room_name,"//2
-					+ " customer_id,"//3
-					+ " customer_name,"//4
-					+ " start_time,"//5
-					+ " checkout_time,"
-					+ " stay_time,"//6
-					+ " losst_time,"//7
-					+ " plan_id,"//8
-					+ " plan_name,"//9
-					+ " room_price,"//10
-					+ " room_discount,"//11
-					+ " room_total_price,"//12
-					+ " tax_type,"//13
-					+ " tax_name,"//14
-					+ " room_tax,"//15
-					+ " cleaning_status,"//16
-					+ " in_use,"//17
-					+ " room_uuid,"//18
-					+ " room_pass)"//19
-					+ " VALUES (?,?,?,?,?,NOW(),?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ " customer_id,"//2
+					+ " customer_name,"//3
+					+ " start_time,"//4
+					+ " losst_time,"//5
+					+ " room_discount,"//6
+					+ " room_uuid,"//7
+					+ " in_use)"//8
+					+ " VALUES (?,?,?,?,?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, roomStatus.getRoomId(), Types.INTEGER);
-			stmt.setString(2, roomStatus.getRoomName());
-			stmt.setObject(3, roomStatus.getCustomerId(), Types.INTEGER);
-			stmt.setString(4, roomStatus.getCustomerName());
-			stmt.setObject(5, roomStatus.getStartTime(), Types.TIMESTAMP);
-			stmt.setObject(6, roomStatus.getStayTime(), Types.BIGINT);
-			stmt.setObject(7, roomStatus.getLosstTime(), Types.INTEGER);
-			stmt.setObject(8, roomStatus.getPlanId(), Types.INTEGER);
-			stmt.setString(9, roomStatus.getPlanName());
-			stmt.setObject(10, roomStatus.getRoomPrice(), Types.INTEGER);
-			stmt.setObject(11, roomStatus.getRoomDiscount(), Types.INTEGER);
-			stmt.setObject(12, roomStatus.getRoomTotalPrice(), Types.INTEGER);
-			stmt.setObject(13, roomStatus.getTaxType(), Types.INTEGER);
-			stmt.setString(14, roomStatus.getTaxName());
-			stmt.setObject(15, roomStatus.getRoomTax(), Types.INTEGER);
-			stmt.setObject(16, roomStatus.getCleaningStatus(), Types.INTEGER);
-			stmt.setBoolean(17, roomStatus.getInUse());
-			stmt.setString(18, roomStatus.getRoomUuid());
-			stmt.setString(19, roomStatus.getRoomPass());
+			stmt.setObject(2, roomStatus.getCustomerId(), Types.INTEGER);
+			stmt.setString(3, roomStatus.getCustomerName());
+			stmt.setObject(4, roomStatus.getStartTime(), Types.TIMESTAMP);
+			stmt.setObject(5, roomStatus.getLosstTime(), Types.INTEGER);
+			stmt.setObject(6, roomStatus.getRoomDiscount(), Types.INTEGER);
+			stmt.setString(7, roomStatus.getRoomUuid());
+			stmt.setBoolean(8, roomStatus.getInUse());
 			stmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -170,46 +151,23 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 	public void update(RoomStatus roomStatus) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE room_status"
-					+ " SET room_name,"//1
-					+ " customer_id,"//2
-					+ " customer_name,"//3
-					+ " start_time,"//4
-					+ " checkout_time,"
-					+ " stay_time,"//5
-					+ " losst_time,"//6
-					+ " plan_id,"//7
-					+ " plan_name,"//8
-					+ " room_price,"//9
-					+ " room_discount,"//10
-					+ " room_total_price,"//11
-					+ " tax_type,"//12
-					+ " tax_name,"//13
-					+ " room_tax,"//14
-					+ " cleaning_status,"//15
-					+ " in_use,"//16
-					+ " room_uuid,"//17
-					+ " room_pass)"//18
-					+ " WHERE room_id=?";//19
+					+ " customer_id,"//1
+					+ " customer_name,"//2
+					+ " start_time,"//3
+					+ " losst_time,"//4
+					+ " room_discount,"//5
+					+ " room_uuid,"//6
+					+ " in_use)"//7
+					+ " WHERE room_id=?";//8
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(1, roomStatus.getRoomName());
-			stmt.setObject(2, roomStatus.getCustomerId(), Types.INTEGER);
-			stmt.setString(3, roomStatus.getCustomerName());
-			stmt.setObject(4, roomStatus.getStartTime(), Types.TIMESTAMP);
-			stmt.setObject(5, roomStatus.getStayTime(), Types.BIGINT);
-			stmt.setObject(6, roomStatus.getLosstTime(), Types.INTEGER);
-			stmt.setObject(7, roomStatus.getPlanId(), Types.INTEGER);
-			stmt.setString(8, roomStatus.getPlanName());
-			stmt.setObject(9, roomStatus.getRoomPrice(), Types.INTEGER);
-			stmt.setObject(10, roomStatus.getRoomDiscount(), Types.INTEGER);
-			stmt.setObject(11, roomStatus.getRoomTotalPrice(), Types.INTEGER);
-			stmt.setObject(12, roomStatus.getTaxType(), Types.INTEGER);
-			stmt.setString(13, roomStatus.getTaxName());
-			stmt.setObject(14, roomStatus.getRoomTax(), Types.INTEGER);
-			stmt.setObject(15, roomStatus.getCleaningStatus(), Types.INTEGER);
-			stmt.setBoolean(16, roomStatus.getInUse());
-			stmt.setString(17, roomStatus.getRoomUuid());
-			stmt.setString(18, roomStatus.getRoomPass());
-			stmt.setObject(19, roomStatus.getRoomId(), Types.INTEGER);
+			stmt.setObject(1, roomStatus.getCustomerId(), Types.INTEGER);
+			stmt.setString(2, roomStatus.getCustomerName());
+			stmt.setObject(3, roomStatus.getStartTime(), Types.TIMESTAMP);
+			stmt.setObject(4, roomStatus.getLosstTime(), Types.BIGINT);
+			stmt.setString(5, roomStatus.getRoomUuid());
+			stmt.setObject(6, roomStatus.getRoomDiscount(), Types.INTEGER);
+			stmt.setBoolean(7, roomStatus.getInUse());
+			stmt.setObject(8, roomStatus.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 
 		} catch (Exception e) {
@@ -217,25 +175,6 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 		}
 	}
 
-	@Override
-	public void cleaning(RoomStatus roomStatus) throws Exception {
-		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO room_status"
-					+ " (room_id,cleaning_status)"
-					+ " VALUES(?,?)"
-					+ " ON DUPLICATE KEY UPDATE"
-					+ " room_id = VALUES (room_id),"
-					+ " cleaning_status = VALUES (cleaning_status)";
-			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, roomStatus.getRoomId(), Types.INTEGER);
-			stmt.setObject(2, roomStatus.getCleaningStatus(), Types.INTEGER);
-			stmt.executeUpdate();
-
-		} catch (Exception e) {
-			throw e;
-		}
-
-	}
 
 	@Override
 	public void checkIn(RoomStatus roomStatus) throws Exception {
@@ -262,18 +201,121 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 	}
 
 	@Override
-	public void checkOut(RoomStatus roomStatus) throws Exception {
-//		try (Connection con = ds.getConnection()) {
-//			String sql = "UPDATE rooms"
-//					+ " SET in_use = false,"
-//					+ " cleaning_id = 2"
-//					+ " WHERE room_id = ?";
-//			PreparedStatement stmt = con.prepareStatement(sql);
-//			stmt.setObject(1, room.getRoomId(), Types.INTEGER);
-//			stmt.executeUpdate();
-//		} catch (Exception e) {
-//			throw e;
-//		}
+	public void checkOut(Room room, RoomUsedData roomUsedData, ReceiptData receiptData,List<ShoppingCart> shoppingCartList)
+			throws Exception {
+		Integer autoIncrementKey = null;
+		try (Connection con = ds.getConnection()) {
+			con.setAutoCommit(false);
+			try {
+				String sql = "INSERT INTO receipt_data"
+						+ "(shop_id,"
+						+ " user_id,"
+						+ " printed_time,"
+						+ " sum_price,"
+						+ " sum_tax,"
+						+ " payment,"
+						+ " change_money)"
+						+ " VALUES (?,?,NOW(),?,?,?,?)";
+				PreparedStatement stmt = con.prepareStatement(sql, java.sql.Statement.RETURN_GENERATED_KEYS);
+				stmt.setObject(1, receiptData.getShopId(), Types.INTEGER);
+				stmt.setObject(2, receiptData.getUserId(), Types.INTEGER);
+				stmt.setObject(3, receiptData.getSumPrice(), Types.INTEGER);
+				stmt.setObject(4, receiptData.getSumTax(), Types.INTEGER);
+				stmt.setObject(5, receiptData.getPayment(), Types.INTEGER);
+				stmt.setObject(6, receiptData.getChangeMoney(), Types.INTEGER);
+				stmt.executeUpdate();
+
+				ResultSet res = stmt.getGeneratedKeys();
+
+				if (res.next()) {
+					autoIncrementKey = res.getInt(1);
+					System.out.println(autoIncrementKey);
+
+					sql = "INSERT INTO room_used_data"
+							+ "(receipt_id,"//1
+							+ " room_id,"//2
+							+ " customer_id,"//3
+							+ " start_time,"//4
+							+ " checkout_time,"//5
+							+ " stay_time,"//6
+							+ " losst_time,"//7
+							+ " plan_id,"//8
+							+ " room_price,"//9
+							+ " room_discount,"//10
+							+ " room_total_price,"//11
+							+ " room_tax)"//12
+							+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+					stmt = con.prepareStatement(sql);
+					stmt.setObject(1, autoIncrementKey);
+					stmt.setObject(2, roomUsedData.getRoomId(), Types.INTEGER);
+					stmt.setObject(3, roomUsedData.getCustomerId(), Types.INTEGER);
+					stmt.setObject(4, roomUsedData.getStartTime(), Types.TIMESTAMP);
+					stmt.setObject(5, roomUsedData.getCheckOutTime(), Types.TIMESTAMP);
+					stmt.setObject(6, roomUsedData.getStayTime(), Types.BIGINT);
+					stmt.setObject(7, roomUsedData.getLosstTime(), Types.INTEGER);
+					stmt.setObject(8, roomUsedData.getPlanId(), Types.INTEGER);
+					stmt.setObject(9, roomUsedData.getRoomPrice(), Types.INTEGER);
+					stmt.setObject(10, roomUsedData.getRoomDiscount(), Types.INTEGER);
+					stmt.setObject(11, roomUsedData.getRoomTotalPrice(), Types.INTEGER);
+					stmt.setObject(12, roomUsedData.getRoomTax(), Types.INTEGER);
+					stmt.executeUpdate();
+					
+					
+					
+					for (ShoppingCart shoppingCart : shoppingCartList) {
+						sql = "INSERT INTO sales_data"
+								+ " (receipt_id, "
+								+ " sales_time,"
+								+ " product_id,"
+								+ " product_unit,"
+								+ " total_price,"
+								+ " discount,"
+								+ " inner_tax)"
+								+ " VALUES (?,?,?,?,?,?,?)";
+						stmt = con.prepareStatement(sql);
+						stmt.setObject(1, autoIncrementKey);
+						stmt.setObject(2, shoppingCart.getSalesTime(),Types.TIMESTAMP);
+						stmt.setObject(3, shoppingCart.getProductId(), Types.INTEGER);
+						stmt.setObject(4, shoppingCart.getProductUnit(), Types.INTEGER);
+						stmt.setObject(5, shoppingCart.getTotalPrice(), Types.INTEGER);
+						stmt.setObject(6, shoppingCart.getDiscount(), Types.INTEGER);
+						stmt.setObject(7, shoppingCart.getInnerTax(), Types.INTEGER);
+						stmt.executeUpdate();
+					}
+					
+					sql = "DELETE FROM room_status"
+							+ " Where room_id = ?";
+					stmt = con.prepareStatement(sql);
+					stmt.setObject(1, room.getRoomId(), Types.INTEGER);
+					stmt.executeUpdate();
+					
+					sql = "DELETE FROM shopping_carts"
+							+ " Where room_id = ?";
+					stmt = con.prepareStatement(sql);
+					stmt.setObject(1, room.getRoomId(), Types.INTEGER);
+					stmt.executeUpdate();
+					
+					sql = "UPDATE rooms"
+							+ " SET cleaning_status = 2"
+							+ " WHERE room_id = ?";
+					stmt = con.prepareStatement(sql);
+					stmt.setObject(1, room.getRoomId(), Types.INTEGER);
+					stmt.executeUpdate();
+
+				} else {
+					con.rollback();
+					return;
+				}
+				
+				con.commit();
+			} catch (Exception e) {
+				con.rollback();
+				throw e;
+			}
+
+		} catch (Exception e) {
+			throw e;
+		}
 
 	}
 
@@ -294,26 +336,15 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 	private RoomStatus mapToRoomStatus(ResultSet rs) throws Exception {
 		RoomStatus roomStatus = new RoomStatus();
 
+		roomStatus.setRoomUsageId((Integer) rs.getObject("room_usage_id"));
 		roomStatus.setRoomId((Integer) rs.getObject("room_id"));
-		roomStatus.setRoomName(rs.getString("room_name"));
 		roomStatus.setCustomerId((Integer) rs.getObject("customer_id"));
 		roomStatus.setCustomerName(rs.getString("customer_name"));
 		roomStatus.setStartTime(rs.getTimestamp("start_time"));
-		roomStatus.setCheckOutTime(rs.getTimestamp("checkout_time"));
-		roomStatus.setStayTime((Long) rs.getObject("stay_time"));
-		roomStatus.setStayTime((Long) rs.getObject("losst_time"));
-		roomStatus.setPlanId((Integer) rs.getObject("plan_id"));
-		roomStatus.setPlanName(rs.getString("plan_name"));
-		roomStatus.setRoomPrice((Integer) rs.getObject("room_price"));
+		roomStatus.setLosstTime((Long)rs.getObject("losstTime"));
 		roomStatus.setRoomDiscount((Integer) rs.getObject("room_discount"));
-		roomStatus.setRoomTotalPrice((Integer) rs.getObject("room_total_price"));
-		roomStatus.setTaxType((Integer) rs.getObject("tax_type"));
-		roomStatus.setTaxName(rs.getString("tax_name"));
-		roomStatus.setRoomTax((Integer) rs.getObject("room_tax"));
-		roomStatus.setCleaningStatus((Integer) rs.getObject("cleaning_status"));
-		roomStatus.setInUse(rs.getBoolean("in_use"));
 		roomStatus.setRoomUuid(rs.getString("room_uuid"));
-		roomStatus.setRoomPass(rs.getString("room_pass"));
+		roomStatus.setInUse(rs.getBoolean("in_use"));
 
 		return roomStatus;
 	}

@@ -41,7 +41,7 @@ public class ShopDaoImpl implements ShopDao {
 		Shop shop = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM shopes"
+					+ " FROM master_shops"
 					+ " WHERE shop_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, id, Types.INTEGER);
@@ -58,7 +58,7 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public void insert(Shop shop) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO shopes"
+			String sql = "INSERT INTO master_shops"
 					+ " (shop_id,shop_name,shop_phone_number,shop_address)"
 					+ " VALUES (?,?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
@@ -76,7 +76,7 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public void update(Shop shop) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE shopes"
+			String sql = "UPDATE master_shops"
 					+ " SET"
 					+ " shop_name = ?,"
 					+ " shop_phone_number = ?,"
@@ -97,7 +97,7 @@ public class ShopDaoImpl implements ShopDao {
 	@Override
 	public void delete(Shop shop) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE FROM shopes"
+			String sql = "DELETE FROM master_shops"
 					+ " Where shop_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, shop.getShopId(),Types.INTEGER);

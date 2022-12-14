@@ -19,53 +19,45 @@
           <tr>
             <th>ルーム</th>
             <td>
-              <c:out value="${room.roomName }" />
+              <c:out value="${roomUsedData.roomName }" />
             </td>
           </tr>
           <tr>
             <th>会員番号</th>
             <td>
-              <c:out value="${customer.customerId }" />
+              <c:out value="${roomUsedData.customerId }" />
             </td>
           </tr>
           <tr>
             <th>名前</th>
             <td>
-              <c:out value="${customer.lastName } ${customer.firstName }" />
+              <c:out value="${roomUsedData.customerName }" />
             </td>
           </tr>
           <tr>
             <th>ご利用時間</th>
             <td>
-              <c:out value="${currentHour}時間　${currentMin}分　${currentSec}秒" />
+              <c:out value="${timeDisplay}" />
             </td>
-          </tr>
-          <tr>
-            <th>小計</th>
-            <td>
-              <fmt:formatNumber value="${room.subtotal}" type="CURRENCY" currencyCode="JPY"
-                maxFractionDigits="0" />
-            </td>
-
           </tr>
           <tr>
             <th>お会計</th>
             <td>
-              <fmt:formatNumber value="${room.sumPrice}" type="CURRENCY" currencyCode="JPY"
+              <fmt:formatNumber value="${receiptData.sumPrice}" type="CURRENCY" currencyCode="JPY"
                 maxFractionDigits="0" />
             </td>
           </tr>
           <tr>
             <th>お預り金</th>
             <td>
-              <fmt:formatNumber value="${payment}" type="CURRENCY" currencyCode="JPY"
+              <fmt:formatNumber value="${receiptData.payment}" type="CURRENCY" currencyCode="JPY"
                 maxFractionDigits="0" />
             </td>
           </tr>
           <tr>
             <th>お釣り</th>
             <td>
-              <fmt:formatNumber value="${changeMoney}" type="CURRENCY" currencyCode="JPY"
+              <fmt:formatNumber value="${receiptData.changeMoney}" type="CURRENCY" currencyCode="JPY"
                 maxFractionDigits="0" />
             </td>
           </tr>
