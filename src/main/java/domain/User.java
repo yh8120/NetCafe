@@ -9,6 +9,7 @@ public class User {
 	private Integer userClassId;
 	private String userClassName;
 	private Integer shopId;
+	private String shopName;
 	
 	public String getUserClassName() {
 		return userClassName;
@@ -29,8 +30,6 @@ public class User {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	
-
 	public Integer getUserId() {
 		return userid;
 	}
@@ -54,6 +53,18 @@ public class User {
 	}
 	public void setShopId(Integer shopId) {
 		this.shopId = shopId;
+	}
+	public Integer getUserid() {
+		return userid;
+	}
+	public String getShopName() {
+		return shopName;
+	}
+	public void setUserid(Integer userid) {
+		this.userid = userid;
+	}
+	public void setShopName(String shopName) {
+		this.shopName = shopName;
 	}
 	
 	

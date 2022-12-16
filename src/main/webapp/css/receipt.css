@@ -1,0 +1,56 @@
+@charset "UTF-8";
+
+#receipt * {
+  margin: 0;
+  padding: 0;
+  border:none;
+}
+
+#receipt {
+  width: 8cm;
+  font-size: 0.8rem;
+  line-height: 1.8;
+  text-align: center;
+  font-family: "メイリオ", sans-serif;
+}
+
+
+#receipt header img{
+  width: 2cm;
+  filter: grayscale(100%);
+  padding-bottom: 10px;
+}
+
+#receipt .tr{
+  text-align: right;
+}
+
+#receipt .tc{
+  text-align: center;
+}
+
+#receipt .bb{
+  border-bottom: 1px solid black;
+}
+
+#receipt .bt{
+  border-top: 1px solid black;
+}
+
+#receipt .bigt{
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+#receipt table{
+  width: 90%;
+  margin: 0 auto;
+  text-align: left
+}
+
+#receipt .print-hidden{
+  display:none;
+}
+#receipt .receipt-hidden{
+  display:block;
+}

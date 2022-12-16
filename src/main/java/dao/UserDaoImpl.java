@@ -27,8 +27,8 @@ public class UserDaoImpl implements UserDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT * FROM users"
-					+ " JOIN user_classes"
-					+ " ON users.user_class_id = user_classes.user_class_id";
+					+ " LEFT OUTER JOIN user_classes ON users.user_class_id = user_classes.user_class_id"
+					+ " LEFT OUTER JOIN master_shops ON users.shop_id = master_shops.shop_id";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -45,8 +45,8 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT * FROM users"
-					+ " JOIN user_classes"
-					+ " ON users.user_class_id = user_classes.user_class_id"
+					+ " LEFT OUTER JOIN user_classes ON users.user_class_id = user_classes.user_class_id"
+					+ " LEFT OUTER JOIN master_shops ON users.shop_id = master_shops.shop_id"
 					+ " WHERE user_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, userId, Types.INTEGER);
@@ -142,8 +142,8 @@ public class UserDaoImpl implements UserDao {
 		User user = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT * FROM users"
-					+ " JOIN user_classes"
-					+ " ON users.user_class_id = user_classes.user_class_id"
+					+ " LEFT OUTER JOIN user_classes ON users.user_class_id = user_classes.user_class_id"
+					+ " LEFT OUTER JOIN master_shops ON users.shop_id = master_shops.shop_id"
 					+ " WHERE login_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, loginId);
@@ -168,6 +168,7 @@ public class UserDaoImpl implements UserDao {
 		 user.setUserClassId((Integer)(rs.getObject("user_class_id")));
 		 user.setUserClassName(rs.getString("user_class_name"));
 		 user.setShopId((Integer)(rs.getObject("shop_id")));
+		 user.setShopName(rs.getString("shop_name"));
 		 return user; 
 		 
 	}

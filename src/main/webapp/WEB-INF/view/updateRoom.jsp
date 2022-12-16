@@ -34,6 +34,15 @@
             </select>
           </div>
           <div class="mb-3">
+            <label for="formRoomName">並び順</label>
+            <c:if test="${not empty roomOrderError }">
+              <div class="error-message">
+                <c:out value="${roomOrderError }"></c:out>
+              </div>
+            </c:if>
+            <input type="text" name="roomOrder" id="formRoomOrder" class="form-control" value=<c:out value="${roomOrder }"/>>
+          </div>
+          <div class="mb-3">
             <input type="submit" class="btn btn-success" value="登録">
             <a href="listRoom" class="btn btn-light">キャンセル</a>
           </div>

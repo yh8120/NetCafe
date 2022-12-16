@@ -55,7 +55,7 @@ public class CheckOutServlet extends HttpServlet {
 
 			//時計表示用
 			BigDecimal stayTime = new BigDecimal(checkOutTime.getTime() - startTime.getTime());
-			String timeDisplay = timeDisplay(stayTime);
+			String timeDisplay = timeDisplay(stayTime.longValue());
 
 			//料金計算用
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
@@ -89,15 +89,15 @@ public class CheckOutServlet extends HttpServlet {
 			
 			request.getSession().setAttribute("roomUsedData", roomUsedData);
 			request.getSession().setAttribute("receiptData", receiptData);
-			request.setAttribute("shoppingCartList", shoppingCartList);
-			request.setAttribute("shoppingPrice", shoppingPrice);
-			request.setAttribute("shoppingTax", shoppingTax);
-			request.setAttribute("timeDisplay", timeDisplay);
+			request.getSession().setAttribute("shoppingCartList", shoppingCartList);
+			request.getSession().setAttribute("shoppingPrice", shoppingPrice);
+			request.getSession().setAttribute("shoppingTax", shoppingTax);
+			request.getSession().setAttribute("timeDisplay", timeDisplay);
 
 			request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp").forward(request, response);
 
 		} catch (Exception e) {
-			response.sendRedirect("manager");
+			throw new ServletException(e);
 		}
 
 	}
@@ -113,6 +113,8 @@ public class CheckOutServlet extends HttpServlet {
 					String strPayment = request.getParameter("payment");
 					Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 					
+					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
+					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
 		
 					RoomDao roomdao = DaoFactory.createRoomDao();
 					Room room = roomdao.findById(roomId);
@@ -168,14 +170,13 @@ public class CheckOutServlet extends HttpServlet {
 						
 						
 						//レシート登録諸々のトランザクション処理
-						ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-						List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
 						
 						RoomStatusDao roomStatus =DaoFactory.createRoomStatusDao();
-						roomStatus.checkOut(room,roomUsedData,receiptData,shoppingCartList);
+						Integer receiptId=roomStatus.checkOut(room,roomUsedData,receiptData,shoppingCartList);
+						receiptData.setReceiptId(receiptId);
 						
 						BigDecimal staytime=new BigDecimal(roomUsedData.getStayTime());
-						String timeDisplay = timeDisplay(staytime);
+						String timeDisplay = timeDisplay(staytime.longValue());
 						
 						request.setAttribute("timeDisplay", timeDisplay);
 						request.setAttribute("roomUsedData", roomUsedData);
@@ -183,24 +184,27 @@ public class CheckOutServlet extends HttpServlet {
 						request.setAttribute("shop", shop);
 						request.getSession().removeAttribute("roomUsedData");
 						request.getSession().removeAttribute("receiptData");
+						request.getSession().removeAttribute("shoppingCartList");
+						request.getSession().removeAttribute("shoppingPrice");
+						request.getSession().removeAttribute("shoppingTax");
+						request.getSession().removeAttribute("timeDisplay");
+						
 							
 						request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
 		
 				} catch (Exception e) {
-					response.sendRedirect("manager");
+					throw new ServletException(e);
 				}
 	}
+	
+	
 
-	private String timeDisplay(BigDecimal stayingTime) {
-		BigDecimal currentHour = stayingTime.divide(BigDecimal.valueOf(3600000), RoundingMode.DOWN);
-		BigDecimal currentHourMS = currentHour.multiply(BigDecimal.valueOf(3600000));
-		BigDecimal currentMin = (stayingTime.subtract(currentHourMS)).divide(BigDecimal.valueOf(60000),
-				RoundingMode.DOWN);
-		BigDecimal currentHourMinMS = currentHourMS.add(currentMin.multiply(BigDecimal.valueOf(60000)));
-		BigDecimal currentSec = (stayingTime.subtract(currentHourMinMS)).divide(BigDecimal.valueOf(1000),
-				RoundingMode.DOWN);
+	private String timeDisplay(Long millisecond ){
+		Integer intHour = (int) (millisecond/3600000);
+		Integer intMinute =(int) ((millisecond%3600000)/60000);
+		Integer intSeccod = (int)(((millisecond%3600000)%60000)/1000);
 
-		String timeDisplay = currentHour + "時間" + currentMin + "分" + currentSec + "秒";
+		String timeDisplay = String.format("%02d:%02d:%02d", intHour,intMinute,intSeccod);
 		return timeDisplay;
 	}
 

@@ -14,9 +14,10 @@
     <header class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <h2 class="navbar-brand">商品販売</h2>
-            <button id="navbar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                aria-expanded="false" aria-label="Toggle navigation">
+            <button id="navbar-toggler" class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <img src="images/cart_icon.svg" alt="cart_icon" width="32" height="32">
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -102,7 +103,9 @@
     </div>
     <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
         <ul class="navbar-nav">
-            <li class="nav-item"><form action="" method="post"><button id="cartSubmit" class="btn btn-primary me-2">決定</button></form></li>
+            <li class="nav-item"><form action="" method="post">
+                    <button id="cartSubmit" class="btn btn-primary me-2">決定</button>
+                </form></li>
             <li class="nav-item"><a href="manager" class="btn btn-danger me-2">キャンセル</a></li>
         </ul>
     </footer>

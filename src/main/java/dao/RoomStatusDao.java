@@ -17,6 +17,6 @@ public interface RoomStatusDao {
 	void insert(RoomStatus roomStatus) throws Exception;
 	void update(RoomStatus roomStatus) throws Exception;
 	void checkIn(RoomStatus roomStatus) throws Exception;
-	void checkOut(Room room,RoomUsedData roomUsedData,ReceiptData receiptData,List<ShoppingCart> shoppingCartList) throws Exception;
+	Integer checkOut(Room room,RoomUsedData roomUsedData,ReceiptData receiptData,List<ShoppingCart> shoppingCartList) throws Exception;
 	void delete(RoomStatus roomStatus) throws Exception;
 }

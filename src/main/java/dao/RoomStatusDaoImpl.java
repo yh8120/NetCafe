@@ -201,7 +201,7 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 	}
 
 	@Override
-	public void checkOut(Room room, RoomUsedData roomUsedData, ReceiptData receiptData,List<ShoppingCart> shoppingCartList)
+	public Integer checkOut(Room room, RoomUsedData roomUsedData, ReceiptData receiptData,List<ShoppingCart> shoppingCartList)
 			throws Exception {
 		Integer autoIncrementKey = null;
 		try (Connection con = ds.getConnection()) {
@@ -304,7 +304,6 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 
 				} else {
 					con.rollback();
-					return;
 				}
 				
 				con.commit();
@@ -316,6 +315,7 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 		} catch (Exception e) {
 			throw e;
 		}
+		return autoIncrementKey;
 
 	}
 

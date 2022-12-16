@@ -11,20 +11,25 @@
 <title>設定画面</title>
 </head>
 <body>
-<div class="container">
-<h1>店舗設定</h1>
-<p>
-<a href="listRoom" class="btn btn-primary">ルーム管理</a>
-<a href="listUser" class="btn btn-primary">従業員管理</a>
-<a href="" class="btn btn-primary">料金管理</a>
-<a href="" class="btn btn-primary">商品管理</a>
-</p>
-<p>
-<a href="index" class="btn btn-light">戻る</a>
-</p>
-</div>
-<script src="js/jquery-3.6.1.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
+    <header class="navbar navbar-expand-lg navbar-light bg-light mb-2">
+        <div class="container-fluid">
+            <h1 class="navbar-brand">店舗設定</h1>
+
+        </div>
+    </header>
+    <div class="container"></div>
+    <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
+        <ul class="navbar-nav">
+            <li class="nav-item me-2"><a href="listRoom" class="btn btn-primary">ルーム管理</a></li>
+            <li class="nav-item me-2"><a href="listUser" class="btn btn-primary">従業員管理</a></li>
+            <li class="nav-item me-2"><a href="" class="btn btn-primary">料金管理</a></li>
+            <li class="nav-item me-2"><a href="" class="btn btn-primary">商品管理</a></li>
+            <li class="nav-item me-2"><a href="manager" class="btn btn-light">入室管理</a></li>
+            <li class="nav-item me-2"><a href="logout" id="logout" class="btn btn-danger">ログアウト</a></li>
+        </ul>
+    </footer>
+    <script src="js/jquery-3.6.1.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

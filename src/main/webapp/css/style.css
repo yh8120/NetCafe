@@ -21,3 +21,13 @@ label {
   color: #a00;
   font-weight: bold;
 }
+
+#receipt{
+  width:80vw;
+  margin: 0 auto;
+}
+#receipt .receipt-hidden{
+  display: none;
+}
+
+

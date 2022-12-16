@@ -51,17 +51,35 @@ public class UpdateRoomServlet extends HttpServlet {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 
 			String roomName = request.getParameter("roomName");
+			String strRoomOrder = request.getParameter("roomName");
 			Integer roomTypeId = Integer.parseInt(request.getParameter("roomTypeId"));
 
 			request.setAttribute("roomName", roomName);
 			request.setAttribute("roomTypeId", roomTypeId);
 
 			boolean isError = false;
+			Integer roomOrder = 0;
 
 			if (roomName.isEmpty()) {
 				request.setAttribute("roomNameError", "名前が未入力です。");
 				isError = true;
 			}
+			
+			if (!strRoomOrder.isEmpty()) {
+				try {
+					roomOrder = Integer.parseInt(strRoomOrder);
+					if (roomOrder <= 0) {
+						request.setAttribute("roomOrderError", "順序が不正です。");
+						isError = true;
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					request.setAttribute("roomOrderError", "順序が不正です。");
+					isError = true;
+				}
+			}
+			
+			
 			if (isError == true) {
 				request.getRequestDispatcher("/WEB-INF/view/updateRoom.jsp")
 						.forward(request, response);
