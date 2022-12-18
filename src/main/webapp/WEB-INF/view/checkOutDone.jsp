@@ -68,7 +68,7 @@
                     <th colspan="2">ロスタイム:</th>
                     <td colspan="2">00:00:00</td>
                 </tr>
-                <tr class="bb">
+                <tr>
                     <th colspan="2">24時間パック</th>
                     <td colspan="2" class="text-end">
                         <small>\</small>
@@ -77,13 +77,13 @@
                     </td>
                 </tr>
                 <tr class="bb">
-                    <th colspan="2" class="bb">一般値引</th>
-                    <td colspan="2" class="text-end bb">
+                    <th colspan="2">一般値引</th>
+                    <td colspan="2" class="text-end">
                         <small>\</small>【●●●】<small>込</small>
                     </td>
                 </tr>
                 <tr>
-                    <th colspan="2">フラット3</th>
+                    <th colspan="2"><c:out value="${roomUsedData.roomName}" /></th>
                     <td colspan="1">【●●●】</td>
                     <td colspan="1" class="text-end">
                         <small>\</small>【●●●】

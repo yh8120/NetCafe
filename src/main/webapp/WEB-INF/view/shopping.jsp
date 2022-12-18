@@ -11,7 +11,7 @@
 <title>ルーム販売</title>
 </head>
 <body style="padding: 0rem 0rem 5rem">
-    <header class="navbar navbar-expand-lg navbar-light bg-light">
+    <header class="navbar navbar-dark bg-secondary mb-2">
         <div class="container-fluid">
             <h2 class="navbar-brand">商品販売</h2>
             <button id="navbar-toggler" class="navbar-toggler" type="button"
@@ -24,7 +24,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <table class="table table-hover">
+                            <table class="table table-hover text-light">
                                 <thead>
                                     <tr>
                                         <th scope="col">商品ID</th>

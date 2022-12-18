@@ -109,12 +109,13 @@ public class CheckOutServlet extends HttpServlet {
 					HttpSession session = req.getSession();
 					RoomUsedData roomUsedData = (RoomUsedData) session.getAttribute("roomUsedData");
 					ReceiptData receiptData = (ReceiptData) session.getAttribute("receiptData");
+					List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) session.getAttribute("shoppingCartList");
 		
 					String strPayment = request.getParameter("payment");
 					Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 					
-					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
+//					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
+//					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
 		
 					RoomDao roomdao = DaoFactory.createRoomDao();
 					Room room = roomdao.findById(roomId);
@@ -181,6 +182,7 @@ public class CheckOutServlet extends HttpServlet {
 						request.setAttribute("timeDisplay", timeDisplay);
 						request.setAttribute("roomUsedData", roomUsedData);
 						request.setAttribute("receiptData", receiptData);
+						request.setAttribute("shoppingCartList", shoppingCartList);
 						request.setAttribute("shop", shop);
 						request.getSession().removeAttribute("roomUsedData");
 						request.getSession().removeAttribute("receiptData");
