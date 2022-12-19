@@ -25,8 +25,8 @@
                                 <c:out value="${customerIdError}"></c:out>
                             </div>
                         </c:if>
-                        <input type="number" name="customerId" id="formCustomerId"
-                            class="form-control" value=<c:out value="${customerId }"/>>
+                        <input type="number" name="customerId" id="formCustomerId" class="form-control"
+                            value=<c:out value="${customerId }"/>>
                     </div>
 
                     <div class="mb-3">
@@ -36,8 +36,7 @@
                                 <c:out value="${customerClassIdError}"></c:out>
                             </div>
                         </c:if>
-                        <select name="customerClassId" id="formCustomerClassId"
-                            class="customerData form-control">
+                        <select name="customerClassId" id="formCustomerClassId" class="customerData form-control">
                             <c:forEach items="${customerClassList}" var="customerClass">
                                 <option value="<c:out value="${customerClass.customerClassId}" />"
                                     <c:if test="${customerClass.customerClassId == customerClassId}">selected</c:if>>
@@ -55,8 +54,7 @@
                                     <c:out value="${lastNameError}"></c:out>
                                 </div>
                             </c:if>
-                            <input type="text" name="lastName" id="formLastName"
-                                class="customerData form-control"
+                            <input type="text" name="lastName" id="formLastName" class="customerData form-control"
                                 value=<c:out value="${lastName }"/>>
                         </div>
                         <div class=col>
@@ -66,8 +64,7 @@
                                     <c:out value="${firstNameError}"></c:out>
                                 </div>
                             </c:if>
-                            <input type="text" name="firstName" id="formFirstName"
-                                class="customerData form-control"
+                            <input type="text" name="firstName" id="formFirstName" class="customerData form-control"
                                 value=<c:out value="${firstName }"/>>
                         </div>
                     </div>
@@ -80,8 +77,7 @@
                                     <c:out value="${lastKanaError}"></c:out>
                                 </div>
                             </c:if>
-                            <input type="text" name="lastKana" id="formLastKana"
-                                class="customerData form-control"
+                            <input type="text" name="lastKana" id="formLastKana" class="customerData form-control"
                                 value=<c:out value="${lastKana }"/>>
                         </div>
                         <div class=col>
@@ -91,8 +87,7 @@
                                     <c:out value="${firstKanaError}"></c:out>
                                 </div>
                             </c:if>
-                            <input type="text" name="firstKana" id="formFirstKana"
-                                class="customerData form-control"
+                            <input type="text" name="firstKana" id="formFirstKana" class="customerData form-control"
                                 value=<c:out value="${firstKana }"/>>
                         </div>
                     </div>
@@ -140,8 +135,8 @@
                                 <c:out value="${cardNumberError}"></c:out>
                             </div>
                         </c:if>
-                        <input type="text" name="cardNumber" id="formCardNumber"
-                            class="customerData form-control" value=<c:out value="${cardNumber }"/>>
+                        <input type="text" name="cardNumber" id="formCardNumber" class="customerData form-control"
+                            value=<c:out value="${cardNumber }"/>>
                     </div>
 
                     <div class="mb-3">
@@ -152,8 +147,7 @@
                             </div>
                         </c:if>
                         <div class="col-auto">
-                            <input type="date" name="birthday" id="formBirthday"
-                                class="customerData form-control"
+                            <input type="date" name="birthday" id="formBirthday" class="customerData form-control"
                                 value=<c:out value="${birthday }"/>>
                         </div>
                     </div>
@@ -170,12 +164,19 @@
                                 <c:out value="${zipcodeCityError}"></c:out>
                             </div>
                         </c:if>
-                        <input type="number" name="zipcodePost" id="formZipcodePost"
-                            class="customerData form-control p-postal-code" size="3" maxlength="3"
-                            value=<c:out value="${zipcodePost }"/>> - <input type="number"
-                            name="zipcodeCity" id="formZipcodeCity"
-                            class="customerData form-control p-postal-code" size="4" maxlength="4"
-                            value=<c:out value="${zipcodeCity }"/>>
+                        <div class="row">
+                            <div class="col">
+                                <input type="number" name="zipcodePost" id="formZipcodePost"
+                                    class="customerData form-control p-postal-code" size="3" maxlength="3"
+                                    value=<c:out value="${zipcodePost }"/>>
+
+                            </div>
+                            <div class="col">
+                                <input type="number" name="zipcodeCity" id="formZipcodeCity"
+                                    class="customerData form-control p-postal-code" size="4" maxlength="4"
+                                    value=<c:out value="${zipcodeCity }"/>>
+                            </div>
+                        </div>
                     </div>
 
                     <div class=" row mb-3">
@@ -187,8 +188,7 @@
                                 </div>
                             </c:if>
                             <input type="text" name="addressState" id="formAddressState"
-                                class="customerData form-control p-region"
-                                value=<c:out value="${addressState }"/>>
+                                class="customerData form-control p-region" value=<c:out value="${addressState }"/>>
                         </div>
                         <div class="col">
                             <label for="formAddressCity">市区町村</label>
@@ -209,8 +209,7 @@
                                 </div>
                             </c:if>
                             <input type="text" name="addressStreet" id="formAddressStreet"
-                                class="customerData form-control"
-                                value=<c:out value="${addressStreet }"/>>
+                                class="customerData form-control" value=<c:out value="${addressStreet }"/>>
                         </div>
                         <div class="col">
                             <label for="formAddress">建物部屋</label>
@@ -219,15 +218,14 @@
                                     <c:out value="${addressRoomError}"></c:out>
                                 </div>
                             </c:if>
-                            <input type="text" name="addressRoom" id="formAddressRoom"
-                                class="customerData form-control"
+                            <input type="text" name="addressRoom" id="formAddressRoom" class="customerData form-control"
                                 value=<c:out value="${addressRoom }"/>>
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="formMemo">メモ</label> <input type="text" name="memo"
-                            id="formMemo" class="customerData form-control"
+                        <label for="formMemo">メモ</label>
+                        <input type="text" name="memo" id="formMemo" class="customerData form-control"
                             value=<c:out value="${memo }"/>>
                     </div>
                     <div class="mb-3">
@@ -240,18 +238,15 @@
                             </c:if>
                             <div class="col">
                                 <input type="text" name="phoneNumberA" id="formPhoneNumberA"
-                                    class="customerData form-control"
-                                    value=<c:out value="${phoneNumberA }"/>>
+                                    class="customerData form-control" value=<c:out value="${phoneNumberA }"/>>
                             </div>
                             <div class="col">
                                 <input type="text" name="phoneNumberB" id="formPhoneNumberB"
-                                    class="customerData form-control"
-                                    value=<c:out value="${phoneNumberB }"/>>
+                                    class="customerData form-control" value=<c:out value="${phoneNumberB }"/>>
                             </div>
                             <div class="col">
                                 <input type="text" name="phoneNumberC" id="formPhoneNumberC"
-                                    class="customerData form-control"
-                                    value=<c:out value="${phoneNumberC }"/>>
+                                    class="customerData form-control" value=<c:out value="${phoneNumberC }"/>>
                             </div>
                         </div>
                     </div>
@@ -265,13 +260,11 @@
                             </c:if>
                             <div class="col">
                                 <input type="text" name="eMailUserName" id="formEMailUserName"
-                                    class="customerData form-control"
-                                    value=<c:out value="${eMailUserName }"/>>
+                                    class="customerData form-control" value=<c:out value="${eMailUserName }"/>>
                             </div>
                             <div class="col">
                                 <input type="text" name="eMailDomain" id="formEMailDomain"
-                                    class="customerData form-control"
-                                    value=<c:out value="${eMailDomain }"/>>
+                                    class="customerData form-control" value=<c:out value="${eMailDomain }"/>>
                             </div>
                         </div>
                     </div>
@@ -291,11 +284,10 @@
                             </tr>
                         </table>
                     </div>
-                    <footer
-                        class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
+                    <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
                         <ul class="navbar-nav">
-                            <li class="nav-item me-2"><input type="submit" id="formSubmit"
-                                class="btn btn-success" value="登録"></li>
+                            <li class="nav-item me-2"><input type="submit" id="formSubmit" class="btn btn-success"
+                                    value="登録"></li>
                             <li class="nav-item me-2"><a href="manager" class="btn btn-light">キャンセル</a></li>
                         </ul>
                     </footer>

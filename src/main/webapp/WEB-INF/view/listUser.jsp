@@ -25,7 +25,6 @@
                         <th>ID</th>
                         <th>名前</th>
                         <th>ログインID</th>
-                        <th>ログインPASS</th>
                         <th>権限</th>
                         <th colspan="2">操作</th>
                     </tr>
@@ -62,7 +61,7 @@
         <ul class="navbar-nav">
             <li class="nav-item me-2"><a href="listRoom" class="btn btn-primary">ルーム管理</a></li>
             <li class="nav-item me-2"><button disabled class="btn btn-light">従業員管理</button></li>
-            <li class="nav-item me-2"><a href="" class="btn btn-primary">料金管理</a></li>
+            <li class="nav-item me-2"><a href="listPricePlan" class="btn btn-primary">料金管理</a></li>
             <li class="nav-item me-2"><a href="" class="btn btn-primary">商品管理</a></li>
             <li class="nav-item me-2"><a href="manager" class="btn btn-warning">入室管理</a></li>
             <li class="nav-item me-2"><a href="logout" id="logout" class="btn btn-danger">ログアウト</a></li>

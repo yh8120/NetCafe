@@ -3,7 +3,7 @@ package controller;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +38,7 @@ public class CheckOutServlet extends HttpServlet {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 			RoomDao roomdao = DaoFactory.createRoomDao();
 			Room room = roomdao.findById(roomId);
-			
+
 			// 買い物関係
 			ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
 			List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
@@ -50,16 +50,18 @@ public class CheckOutServlet extends HttpServlet {
 			}
 
 			Date startTime = room.getStartTime();
-			Date checkOutTime = new Date();
-			Time time = new Time(startTime.getTime());
+			SimpleDateFormat fmt = new SimpleDateFormat("Hmm");
+			String strStartTime = fmt.format(startTime);
+			Integer intStartTime = Integer.parseInt(strStartTime);
 
 			//時計表示用
+			Date checkOutTime = new Date();
 			BigDecimal stayTime = new BigDecimal(checkOutTime.getTime() - startTime.getTime());
 			String timeDisplay = timeDisplay(stayTime.longValue());
 
 			//料金計算用
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
-			List<PricePlan> pricePlanList = pricePlanDao.findByNow(time);
+			List<PricePlan> pricePlanList = pricePlanDao.findByStartTime(intStartTime);
 			RoomUsedData roomUsedData = null;
 
 			for (PricePlan plisePlan : pricePlanList) {
@@ -71,7 +73,7 @@ public class CheckOutServlet extends HttpServlet {
 					roomUsedData = calcUsedData;
 				}
 			}
-			
+
 			Integer sumPrice = roomUsedData.getRoomPrice() + shoppingPrice;
 			Integer sumTax = roomUsedData.getRoomTax() + shoppingTax;
 			roomUsedData.setRoomId(roomId);
@@ -82,11 +84,11 @@ public class CheckOutServlet extends HttpServlet {
 			roomUsedData.setCheckOutTime(checkOutTime);
 			roomUsedData.setStayTime(stayTime.longValue());
 			roomUsedData.setStartTime(startTime);
-			
+
 			ReceiptData receiptData = new ReceiptData();
 			receiptData.setSumPrice(sumPrice);
 			receiptData.setSumTax(sumTax);
-			
+
 			request.getSession().setAttribute("roomUsedData", roomUsedData);
 			request.getSession().setAttribute("receiptData", receiptData);
 			request.getSession().setAttribute("shoppingCartList", shoppingCartList);
@@ -102,111 +104,106 @@ public class CheckOutServlet extends HttpServlet {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		try {
+			HttpServletRequest req = (HttpServletRequest) request;
+			HttpSession session = req.getSession();
+			RoomUsedData roomUsedData = (RoomUsedData) session.getAttribute("roomUsedData");
+			ReceiptData receiptData = (ReceiptData) session.getAttribute("receiptData");
+			List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) session.getAttribute("shoppingCartList");
+
+			String strPayment = request.getParameter("payment");
+			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
+
+			//					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
+			//					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
+
+			RoomDao roomdao = DaoFactory.createRoomDao();
+			Room room = roomdao.findById(roomId);
+
+			// バリデーション
+			Integer sumPrice = receiptData.getSumPrice();
+			Integer payment = 0;
+			boolean isError = false;
+
+			if (strPayment.isEmpty()) {
+				request.setAttribute("paymentError", "預り金が未入力です");
+				isError = true;
+			} else {
 				try {
-					HttpServletRequest req = (HttpServletRequest) request;
-					HttpSession session = req.getSession();
-					RoomUsedData roomUsedData = (RoomUsedData) session.getAttribute("roomUsedData");
-					ReceiptData receiptData = (ReceiptData) session.getAttribute("receiptData");
-					List<ShoppingCart> shoppingCartList = (List<ShoppingCart>) session.getAttribute("shoppingCartList");
-		
-					String strPayment = request.getParameter("payment");
-					Integer roomId = Integer.parseInt(request.getParameter("roomId"));
-					
-//					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-//					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
-		
-					RoomDao roomdao = DaoFactory.createRoomDao();
-					Room room = roomdao.findById(roomId);
-		
-						// バリデーション
-						Integer sumPrice = receiptData.getSumPrice();
-						Integer payment = 0;
-						boolean isError = false;
-		
-						if (strPayment.isEmpty()) {
-							request.setAttribute("paymentError", "預り金が未入力です");
-							isError = true;
-						} else {
-							try {
-								payment = Integer.parseInt(strPayment);
-								if (payment <= 0) {
-									request.setAttribute("paymentError", "預り金が不正です。");
-									isError = true;
-								}
-							} catch (NumberFormatException e) {
-								e.printStackTrace();
-								request.setAttribute("paymentError", "預り金が不正です。");
-								isError = true;
-							}
-						}
-						if (sumPrice > payment) {
-							request.setAttribute("paymentError", "預り金が足りません。");
-							isError = true;
-						}
-		
-						if (isError) {
-							request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp")
-									.forward(request, response);
-							return;
-						}
-						
-						
-						//　レシートデータ作成
-						User user = (User) session.getAttribute("user");
-						Integer shopId =user.getShopId();
-						ShopDao shopDao = DaoFactory.createShopDao();
-						Shop shop= shopDao.findById(user.getShopId());
-						Date printedTime = new Date();
-						
-						
-						receiptData.setShopId(shopId);
-						receiptData.setUserId(user.getUserId());
-						receiptData.setSumPrice(sumPrice);
-						receiptData.setPayment(payment);
-						receiptData.setPrintedTime(printedTime);
-						Integer changeMoney = payment - sumPrice;
-						receiptData.setChangeMoney(changeMoney);
-						
-						
-						//レシート登録諸々のトランザクション処理
-						
-						RoomStatusDao roomStatus =DaoFactory.createRoomStatusDao();
-						Integer receiptId=roomStatus.checkOut(room,roomUsedData,receiptData,shoppingCartList);
-						receiptData.setReceiptId(receiptId);
-						
-						BigDecimal staytime=new BigDecimal(roomUsedData.getStayTime());
-						String timeDisplay = timeDisplay(staytime.longValue());
-						
-						request.setAttribute("timeDisplay", timeDisplay);
-						request.setAttribute("roomUsedData", roomUsedData);
-						request.setAttribute("receiptData", receiptData);
-						request.setAttribute("shoppingCartList", shoppingCartList);
-						request.setAttribute("shop", shop);
-						request.getSession().removeAttribute("roomUsedData");
-						request.getSession().removeAttribute("receiptData");
-						request.getSession().removeAttribute("shoppingCartList");
-						request.getSession().removeAttribute("shoppingPrice");
-						request.getSession().removeAttribute("shoppingTax");
-						request.getSession().removeAttribute("timeDisplay");
-						
-							
-						request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
-		
-				} catch (Exception e) {
-					throw new ServletException(e);
+					payment = Integer.parseInt(strPayment);
+					if (payment <= 0) {
+						request.setAttribute("paymentError", "預り金が不正です。");
+						isError = true;
+					}
+				} catch (NumberFormatException e) {
+					e.printStackTrace();
+					request.setAttribute("paymentError", "預り金が不正です。");
+					isError = true;
 				}
+			}
+			if (sumPrice > payment) {
+				request.setAttribute("paymentError", "預り金が足りません。");
+				isError = true;
+			}
+
+			if (isError) {
+				request.getRequestDispatcher("/WEB-INF/view/checkOut.jsp")
+						.forward(request, response);
+				return;
+			}
+
+			//　レシートデータ作成
+			User user = (User) session.getAttribute("user");
+			Integer shopId = user.getShopId();
+			ShopDao shopDao = DaoFactory.createShopDao();
+			Shop shop = shopDao.findById(user.getShopId());
+			Date printedTime = new Date();
+
+			receiptData.setShopId(shopId);
+			receiptData.setUserId(user.getUserId());
+			receiptData.setSumPrice(sumPrice);
+			receiptData.setPayment(payment);
+			receiptData.setPrintedTime(printedTime);
+			Integer changeMoney = payment - sumPrice;
+			receiptData.setChangeMoney(changeMoney);
+
+			//レシート登録諸々のトランザクション処理
+
+			RoomStatusDao roomStatus = DaoFactory.createRoomStatusDao();
+			Integer receiptId = roomStatus.checkOut(room, roomUsedData, receiptData, shoppingCartList);
+			receiptData.setReceiptId(receiptId);
+
+			BigDecimal staytime = new BigDecimal(roomUsedData.getStayTime());
+			String timeDisplay = timeDisplay(staytime.longValue());
+
+			request.setAttribute("timeDisplay", timeDisplay);
+			request.setAttribute("roomUsedData", roomUsedData);
+			request.setAttribute("receiptData", receiptData);
+			request.setAttribute("shoppingCartList", shoppingCartList);
+			request.setAttribute("shop", shop);
+			request.getSession().removeAttribute("roomUsedData");
+			request.getSession().removeAttribute("receiptData");
+			request.getSession().removeAttribute("shoppingCartList");
+			request.getSession().removeAttribute("shoppingPrice");
+			request.getSession().removeAttribute("shoppingTax");
+			request.getSession().removeAttribute("timeDisplay");
+
+			request.getRequestDispatcher("/WEB-INF/view/checkOutDone.jsp").forward(request, response);
+
+		} catch (Exception e) {
+			throw new ServletException(e);
+		}
 	}
-	
-	
 
-	private String timeDisplay(Long millisecond ){
-		Integer intHour = (int) (millisecond/3600000);
-		Integer intMinute =(int) ((millisecond%3600000)/60000);
-		Integer intSeccod = (int)(((millisecond%3600000)%60000)/1000);
+	private String timeDisplay(Long millisecond) {
+		Integer intHour = (int) (millisecond / 3600000);
+		Integer intMinute = (int) ((millisecond % 3600000) / 60000);
+		Integer intSeccod = (int) (((millisecond % 3600000) % 60000) / 1000);
 
-		String timeDisplay = String.format("%02d:%02d:%02d", intHour,intMinute,intSeccod);
+		String timeDisplay = String.format("%02d:%02d:%02d", intHour, intMinute, intSeccod);
 		return timeDisplay;
 	}
 
@@ -236,9 +233,9 @@ public class CheckOutServlet extends HttpServlet {
 		innerTax = innerTax.setScale(0, RoundingMode.HALF_UP);
 		// 合計（＝小計＋内消費税）
 		BigDecimal sumPrice = subtotal.add(innerTax);
-		
+
 		RoomUsedData roomUsedData = new RoomUsedData();
-		
+
 		roomUsedData.setTaxType(pricePlan.getTaxTypeId());
 		roomUsedData.setPlanId(pricePlan.getPlanId());
 		roomUsedData.setPlanName(pricePlan.getPlanName());
