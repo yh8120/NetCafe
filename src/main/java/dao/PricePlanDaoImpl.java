@@ -115,18 +115,18 @@ public class PricePlanDaoImpl implements PricePlanDao {
 	@Override
 	public void insert(PricePlan pricePlan) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO pricePlans"
-					+ " (plan_name,"
-					+ " plan_start,"
-					+ " plan_end,"
-					+ " start_time,"
-					+ " end_time,"
-					+ " basic_price,"
-					+ " basic_time,"
-					+ " add_price,"
-					+ " add_time,"
+			String sql = "INSERT INTO price_plans"
+					+ " (plan_name,"//1
+					+ " plan_start,"//2
+					+ " plan_end,"//3
+					+ " start_time,"//4
+					+ " end_time,"//5
+					+ " basic_price,"//6
+					+ " basic_time,"//7
+					+ " add_price,"//8
+					+ " add_time,"//9
 					+ " tax_type,"
-					+ " scope_all,"
+					+ " scope_setting,"//10
 					+ " scope_room_type,"
 					+ " scope_sex,"
 					+ " scope_customer_class,"
@@ -140,7 +140,11 @@ public class PricePlanDaoImpl implements PricePlanDao {
 					+ " for_friday,"
 					+ " for_saturday,"
 					+ " for_holidays)"
-					+ " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+					+ " VALUES (?,?,?,?,?,"
+					+ "?,?,?,?,1,?,"
+					+ "?,?,?,?,?,"
+					+ "?,?,?,?,?,"
+					+ "?,?,?)";
 			PreparedStatement stmt = con.prepareStatement(sql);
 
 			stmt.setString(1, pricePlan.getPlanName());
@@ -152,8 +156,8 @@ public class PricePlanDaoImpl implements PricePlanDao {
 			stmt.setObject(7, pricePlan.getBasicTime(), Types.INTEGER);
 			stmt.setObject(8, pricePlan.getAddPrice(), Types.INTEGER);
 			stmt.setObject(9, pricePlan.getAddTime(), Types.INTEGER);
-			stmt.setObject(10, pricePlan.getTaxTypeId(), Types.INTEGER);
-			stmt.setBoolean(11, pricePlan.getScopeSetting());
+			stmt.setBoolean(10, pricePlan.getScopeSetting());
+			stmt.setObject(11, pricePlan.getScopeRoomType(), Types.INTEGER);
 			stmt.setObject(12, pricePlan.getScopeSex(), Types.INTEGER);
 			stmt.setObject(13, pricePlan.getScopeCustomerClass(), Types.INTEGER);
 			stmt.setObject(14, pricePlan.getMinAge(), Types.INTEGER);

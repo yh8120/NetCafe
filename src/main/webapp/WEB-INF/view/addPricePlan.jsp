@@ -28,7 +28,7 @@
                         </div>
                         <div class="col-auto">
                             <input type="text" name="planName" id="formPlanName" class="form-control"
-                                value=<c:out value="${planName }"/>>
+                                placeholder="XXX時間パック" value=<c:out value="${planName }"/>>
                         </div>
                     </div>
 
@@ -37,27 +37,20 @@
                             <div class="error-message">
                                 <c:out value="${planStartError}"></c:out>
                             </div>
+
                         </c:if>
 
                         <div class="col-auto">
-                            <label for="formStartTime">開始日時</label>
+                            <label for="formStartTime">適用日時</label>
                         </div>
-                        <div class="col-auto">
-                            <input type="date" name="planStart" id="formPlanStart" class="form-control"
-                                value=<c:out value="${planStart }"/>>
-                        </div>
-                        <c:if test="${not empty planEndError }">
-                            <div class="error-message">
-                                <c:out value="${planEndError}"></c:out>
+                        <div class="col-5">
+                            <div class="input-group">
+                                <input type="date" name="planStart" id="formPlanStart" class="form-control"
+                                    value=<c:out value="${planStart }"/>>
+                                <span class="input-group-text">～</span>
+                                <input type="date" name="planEnd" id="formPlanEnd" class="form-control"
+                                    value=<c:out value="${planEnd }"/>>
                             </div>
-                        </c:if>
-
-                        <div class="col-auto">
-                            <label for="formPlanEnd">終了日時</label>
-                        </div>
-                        <div class="col-auto">
-                            <input type="date" name="planEnd" id="formPlanEnd" class="form-control"
-                                value=<c:out value="${planEnd }"/>>
                         </div>
                     </div>
 
@@ -67,35 +60,38 @@
                                 <c:out value="${startTimeError}"></c:out>
                             </div>
                         </c:if>
-                        <div class="col-auto">
-                            <label for="formStartTime">開始時間</label>
-                        </div>
-                        <div class="col-4">
-                            <div class="input-group">
-                                <input type="number" class="form-control" name="startTimeHour" id="formStartTimeHour"
-                                    placeholder="0-47" aria-label="時">
-                                <span class="input-group-text">時</span>
-                                <input type="number" class="form-control" name="startTimeHour" id="formStartTimeMinute"
-                                    placeholder="0-59" aria-label="分">
-                                <span class="input-group-text">分</span>
-                            </div>
-                        </div>
                         <c:if test="${not empty endTimeError }">
                             <div class="error-message">
                                 <c:out value="${endTimeError}"></c:out>
                             </div>
                         </c:if>
                         <div class="col-auto">
-                            <label for="formEndTime">終了時間</label>
+                            <label for="formStartTime">適用時間</label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
+                            <div class="input-group">
+                                <input type="number" class="form-control" name="startTimeHour" id="formStartTimeHour"
+                                    placeholder="23" aria-label="時" min="0" max="23"
+                                    value=<c:out value="${startTimeHour }"/>>
+                                <span class="input-group-text">：</span>
+                                <input type="number" class="form-control" name="startTimeMinute"
+                                    id="formStartTimeMinute" placeholder="59" aria-label="分" min="0" max="59"
+                                    value=<c:out value="${startTimeMinute }"/>>
+                            </div>
+                        </div>
+
+                        <div class="col-auto">
+                            <label for="formEndTime">～</label>
+                        </div>
+                        <div class="col-3">
                             <div class="input-group">
                                 <input type="number" class="form-control" name="endTimeHour" id="formEndTimeHour"
-                                    placeholder="0-47" aria-label="時" min="0" max="47">
-                                <span class="input-group-text">時</span>
-                                <input type="number" class="form-control" name="endTimeHour" id="formEndTimeMinute"
-                                    placeholder="0-59" aria-label="分" min="0" max="59">
-                                <span class="input-group-text">分</span>
+                                    placeholder="47" aria-label="時" min="0" max="47"
+                                    value=<c:out value="${endTimeHour }"/>>
+                                <span class="input-group-text">：</span>
+                                <input type="number" class="form-control" name="endTimeMinute" id="formEndTimeMinute"
+                                    placeholder="59" aria-label="分" min="0" max="59"
+                                    value=<c:out value="${endTimeMinute }"/>>
                             </div>
                         </div>
                     </div>
@@ -112,7 +108,8 @@
                         <div class="col-auto">
                             <div class="input-group">
                                 <input type="number" class="form-control" name="basicPrice" id="formBasicPrice"
-                                    placeholder="" aria-label="基本料金" min="0" max="999999">
+                                    placeholder="100" aria-label="基本料金" min="0" max="999999"
+                                    value=<c:out value="${basicPrice }"/>>
                                 <span class="input-group-text">円</span>
                             </div>
                         </div>
@@ -128,10 +125,12 @@
                         <div class="col-auto">
                             <div class="input-group">
                                 <input type="number" class="form-control" name="basicTimeHour" id="formBasicTimeHour"
-                                    placeholder="" aria-label="時" min="0" max="999999">
-                                <span class="input-group-text">時</span>
+                                    placeholder="00" aria-label="時" min="0" max="999999"
+                                    value=<c:out value="${basicTimeHour}"/>>
+                                <span class="input-group-text">時間</span>
                                 <input type="number" class="form-control" name="basicTimeMinute"
-                                    id="formBasicTimeMinute" placeholder="" aria-label="分" min="0" max="59">
+                                    id="formBasicTimeMinute" placeholder="30" aria-label="分" min="0" max="59"
+                                    value=<c:out value="${basicTimeMinute}"/>>
                                 <span class="input-group-text">分</span>
                             </div>
                         </div>
@@ -149,7 +148,8 @@
                         <div class="col-auto">
                             <div class="input-group">
                                 <input type="number" class="form-control" name="addPrice" id="formAddPrice"
-                                    placeholder="" aria-label="基本料金" min="0" max="999999">
+                                    placeholder="100" aria-label="基本料金" min="0" max="999999"
+                                    value=<c:out value="${addPrice}"/>>
                                 <span class="input-group-text">円</span>
                             </div>
                         </div>
@@ -165,86 +165,136 @@
                         <div class="col-auto">
                             <div class="input-group">
                                 <input type="number" class="form-control" name="addTimeHour" id="formAddTimeHour"
-                                    placeholder="" aria-label="時" min="0" max="999999">
-                                <span class="input-group-text">時</span>
+                                    placeholder="00" aria-label="時" min="0" max="999999"
+                                    value=<c:out value="${addTimeHour}"/>>
+                                <span class="input-group-text">時間</span>
                                 <input type="number" class="form-control" name="addTimeMinute" id="formAddTimeMinute"
-                                    placeholder="" aria-label="分" min="0" max="59">
+                                    placeholder="10" aria-label="分" min="0" max="59"
+                                    value=<c:out value="${addTimeMinute}"/>>
                                 <span class="input-group-text">分</span>
                             </div>
                         </div>
                     </div>
 
                     <div class="mb-3 form-check form-switch">
-                        <input class="form-check-input" name="scopeSetting" type="checkbox" id="formScopeSetting">
+                        <input class="form-check-input" name="scopeSetting" type="checkbox" id="formScopeSetting"
+                            <c:if test="${not empty scopeSetting}">checked</c:if>>
                         <label class="form-check-label" for="formScopeSetting">スコープ設定</label>
                     </div>
 
-                    <fieldset disabled>
+                    <fieldset id="fieldOfScopeSettingItems" disabled>
                         <div class="row ms-1">
                             <div id="scopeSettingItems" class="col">
 
-                                <div class="mb-3">
-                                    <label for="formScopeRoomType">部屋タイプ</label>
-                                    <select name="scopeRoomType" id="formScopeRoomType" class="form-control">
-                                        <option value="0">未設定</option>
-                                        <c:forEach items="${roomTypeList}" var="roomType">
-                                            <option value="<c:out value="${roomType.roomTypeId}" />"
-                                                <c:if test="${roomType.roomTypeId == roomTypeId}">selected</c:if>>
-                                                <c:out value="${roomType.roomTypeName}" />
-                                            </option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="formScopeRoomType">部屋タイプ</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <select name="scopeRoomType" id="formScopeRoomType" class="form-control">
+                                            <option value="0">未設定</option>
+                                            <c:forEach items="${roomTypeList}" var="roomType">
+                                                <option value="<c:out value="${roomType.roomTypeId}" />"
+                                                    <c:if test="${roomType.roomTypeId == roomTypeId}">selected</c:if>>
+                                                    <c:out value="${roomType.roomTypeName}" />
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="formScopeSex">性別</label>
-                                    <select name="scopeSex" id="formScopeSex" class="form-control">
-                                        <option value="0">未設定</option>
-                                        <c:forEach items="${sexList}" var="sex">
-                                            <option value="<c:out value="${sex.sexId}" />"
-                                                <c:if test="${sex.sexId == sexId}">selected</c:if>>
-                                                <c:out value="${sex.sexName}" />
-                                            </option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="formScopeSex">性別タイプ</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <select name="scopeSex" id="formScopeSex" class="form-control">
+                                            <option value="0">未設定</option>
+                                            <c:forEach items="${sexList}" var="sex">
+                                                <option value="<c:out value="${sex.sexId}" />"
+                                                    <c:if test="${sex.sexId == sexId}">selected</c:if>>
+                                                    <c:out value="${sex.sexName}" />
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="formScopeCustomerClass">会員クラス</label>
-                                    <select name="scopeCustomerClass" id="formScopeCustomerClass" class="form-control">
-                                        <option value="0">未設定</option>
-                                        <c:forEach items="${customerClassList}" var="customerClass">
-                                            <option value="<c:out value="${customerClass.customerClassId}" />"
-                                                <c:if test="${customerClass.customerClassId == customerClassId}">selected</c:if>>
-                                                <c:out value="${customerClass.customerClassName}" />
-                                            </option>
-                                        </c:forEach>
-                                    </select>
+                                <div class="row mb-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label for="formScopeCustomerClass">会員クラス</label>
+                                    </div>
+                                    <div class="col-5">
+                                        <select name="scopeCustomerClass" id="formScopeCustomerClass"
+                                            class="form-control">
+                                            <option value="0">未設定</option>
+                                            <c:forEach items="${customerClassList}" var="customerClass">
+                                                <option value="<c:out value="${customerClass.customerClassId}" />"
+                                                    <c:if test="${customerClass.customerClassId == customerClassId}">selected</c:if>>
+                                                    <c:out value="${customerClass.customerClassName}" />
+                                                </option>
+                                            </c:forEach>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3 align-items-center">
+                                    <c:if test="${not empty minAgeError }">
+                                        <div class="error-message">
+                                            <c:out value="${minAgeError}"></c:out>
+                                        </div>
+
+                                    </c:if>
+
+                                    <div class="col-auto">
+                                        <label for="formStartTime">適用年齢 </label>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="minAge" id="formMinAge"
+                                                placeholder="0" aria-label="最低年齢" min="0" max="200">
+                                            <span class="input-group-text">才</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-auto">
+                                        <label for="formEndTime">～</label>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" name="maxAge" id="formMaxAge"
+                                                placeholder="200" aria-label="最高年齢" min="0" max="200">
+                                            <span class="input-group-text">才</span>
+                                        </div>
+                                    </div>
                                 </div>
 
 
-                                <div class="mb-3">
-                                    <input type="checkbox" name="forMonday" class="form-check-input" id="formForMonDay">
-                                    <label class="form-check-label" for="formForSunday">月</label>
+                                <div id="scopeOfWeekDay" class="mb-3 align-items-center">
+                                    <input type="checkbox" name="forMonday" class="form-check-input" id="formForMonDay"
+                                        <c:if test="${not empty forMonday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForMonDay">月</label>
                                     <input type="checkbox" name="forTuesday" class="form-check-input"
-                                        id="formForTuesday">
-                                    <label class="form-check-label" for="formForSunday">火</label>
+                                        id="formForTuesday" <c:if test="${not empty forTuesday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForTuesday">火</label>
                                     <input type="checkbox" name="forWednesday" class="form-check-input"
-                                        id="formForWednesday">
-                                    <label class="form-check-label" for="formForSunday">水</label>
+                                        id="formForWednesday" <c:if test="${not empty forWednesday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForWednesday">水</label>
                                     <input type="checkbox" name="forThursday" class="form-check-input"
-                                        id="formForThursday">
-                                    <label class="form-check-label" for="formForSunday">木</label>
-                                    <input type="checkbox" name="forFriday" class="form-check-input" id="formForFriday">
-                                    <label class="form-check-label" for="formForSunday">金</label>
+                                        id="formForThursday" <c:if test="${not empty forThursday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForThursday">木</label>
+                                    <input type="checkbox" name="forFriday" class="form-check-input" id="formForFriday"
+                                        <c:if test="${not empty forFriday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForFriday">金</label>
                                     <input type="checkbox" name="forSaturday" class="form-check-input"
-                                        id="formForSaturday">
-                                    <label class="form-check-label" for="formForSunday">土</label>
-                                    <input type="checkbox" name="forSunday" class="form-check-input" id="formForSunday">
-                                    <label class="form-check-label" for="formForSunday">日</label>
+                                        id="formForSaturday" <c:if test="${not empty forSaturday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForSaturday">土</label>
+                                    <input type="checkbox" name="forSunday" class="form-check-input" id="formForSunday"
+                                        <c:if test="${not empty forSunday}">checked</c:if>>
+                                    <label class="form-check-label me-3" for="formForSunday">日</label>
                                     <input type="checkbox" name="forHolidays" class="form-check-input"
-                                        id="formForHlidays">
-                                    <label class="form-check-label" for="formForSunday">祝日</label>
+                                        id="formForHlidays" <c:if test="${not empty forHolidays}">checked</c:if>>
+                                    <label class="form-check-label" for="formForHlidays">祝日</label>
                                 </div>
                             </div>
                         </div>
@@ -262,5 +312,47 @@
     </div>
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+					$(document)
+							.ready(
+									function() {
+										$("#formScopeSetting")
+												.change(
+														function() {
+															if ($(this).prop(
+																	"checked")) {
+																$(
+																		"#fieldOfScopeSettingItems")
+																		.removeAttr(
+																				"disabled");
+															} else {
+																$(
+																		"#fieldOfScopeSettingItems")
+																		.attr(
+																				"disabled",
+																				"disabled");
+																$(
+																		"#formScopeRoomType")
+																		.val(0);
+																$(
+																		"#formScopeSex")
+																		.val(0);
+																$(
+																		"#formScopeCustomerClass")
+																		.val(0);
+																$(
+																		"#scopeOfWeekDay")
+																		.children(
+																				'input')
+																		.removeAttr(
+																				'checked')
+																		.prop(
+																				'checked',
+																				false)
+																		.change();
+															}
+														});
+									});
+				</script>
 </body>
 </html>
