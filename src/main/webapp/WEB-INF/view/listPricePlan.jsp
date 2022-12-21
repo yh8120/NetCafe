@@ -20,6 +20,11 @@
     <div class="container">
         <div class="row">
             <div class="col">
+                <c:if test="${not empty message }">
+                    <div class="error-message">
+                        <c:out value="${message}"></c:out>
+                    </div>
+                </c:if>
                 <table class="table table-bordered">
                     <tr>
                         <th>ID</th>

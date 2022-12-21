@@ -13,26 +13,21 @@ import dao.DaoFactory;
 import dao.PricePlanDao;
 import domain.PricePlan;
 
-
-
-
 @WebServlet("/listPricePlan")
 public class ListPricePlanServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	
-	
-	
-	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			String message = request.getParameter("message");
+			request.setAttribute("message", message);
+
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
 			List<PricePlan> planListAll = pricePlanDao.findAll();
 			request.setAttribute("planListAll", planListAll);
 			request.getRequestDispatcher("/WEB-INF/view/listPricePlan.jsp").forward(request, response);
-			
-			
+
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

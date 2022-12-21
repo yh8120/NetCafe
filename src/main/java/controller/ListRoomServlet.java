@@ -27,6 +27,9 @@ public class ListRoomServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			String message =request.getParameter("message");
+			request.setAttribute("message", message);
+			
 			RoomDao roomDao = DaoFactory.createRoomDao();
 			List<Room> roomList = roomDao.findAll();
 			request.setAttribute("roomList", roomList);

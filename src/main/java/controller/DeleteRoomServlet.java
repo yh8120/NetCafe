@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +49,8 @@ public class DeleteRoomServlet extends HttpServlet {
 			
 			request.getRequestDispatcher("/WEB-INF/view/deleteRoomDone.jsp")
 					.forward(request, response);
+		}catch (SQLIntegrityConstraintViolationException e) {
+			response.sendRedirect("listRoom?message=%E6%95%B4%E5%90%88%E6%80%A7%E7%A2%BA%E4%BF%9D%E3%81%AE%E3%81%9F%E3%82%81%E5%89%8A%E9%99%A4%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%9B%E3%82%93");
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}

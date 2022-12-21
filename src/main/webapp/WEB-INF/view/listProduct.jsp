@@ -14,17 +14,22 @@
     <header class="navbar navbar-expand-lg navbar-light bg-light mb-2">
         <div class="container-fluid">
             <h1 class="navbar-brand">商品管理</h1>
-
         </div>
     </header>
     <div class="container">
         <div class="row">
             <div class="col">
+            <c:if test="${not empty message }">
+                <div class="error-message">
+                    <c:out value="${message}"></c:out>
+                </div>
+            </c:if>
                 <table class="table table-bordered">
                     <tr>
                         <th>ID</th>
                         <th>名前</th>
-                        <th>価格<br>(￥)</th>
+                        <th>価格<br>(￥)
+                        </th>
                         <th>商品タイプ</th>
                         <th>内税<br>(％)
                         </th>
@@ -60,7 +65,8 @@
                                     <a href="updateProduct?productId=<c:out value="${product.productId }"/>">更新</a>
                                 </td>
                                 <td>
-                                    <a class="deleteProduct" href="deleteProduct?productId=<c:out value="${product.productId }"/>">削除</a>
+                                    <a class="deleteProduct"
+                                        href="deleteProduct?productId=<c:out value="${product.productId }"/>">削除</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -83,11 +89,11 @@
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-    $(document).ready(function() {
-		$(".deleteProduct").click(function() {
-			return confirm("本当に削除しますか？");
-		});
-	});
-    </script>
+					$(document).ready(function() {
+						$(".deleteProduct").click(function() {
+							return confirm("本当に削除しますか？");
+						});
+					});
+				</script>
 </body>
 </html>

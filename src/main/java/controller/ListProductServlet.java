@@ -24,6 +24,9 @@ public class ListProductServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			String message =request.getParameter("message");
+			request.setAttribute("message", message);
+			
 			ProductDao productDao = DaoFactory.createProductDao();
 			List<Product> productList = productDao.findAll();
 			request.setAttribute("productList", productList);
