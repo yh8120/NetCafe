@@ -118,9 +118,6 @@ public class CheckOutServlet extends HttpServlet {
 			String strPayment = request.getParameter("payment");
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 
-			//					ShoppingCartDao shoppingCartDao = DaoFactory.createShoppingCartDao();
-			//					List<ShoppingCart> shoppingCartList = shoppingCartDao.findByRoomId(roomId);
-
 			RoomDao roomdao = DaoFactory.createRoomDao();
 			Room room = roomdao.findById(roomId);
 

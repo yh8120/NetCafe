@@ -169,7 +169,7 @@
                             <small>担当者:<c:out value="${receiptData.userId}" /></small>
                         </td>
                         <td colspan="2" class="text-end bt">
-                            <small>レシートNO:<c:out value="${receiptDatareceiptId}" /></small>
+                            <small>レシートNO:<c:out value="${receiptData.receiptId}" /></small>
                         </td>
                     </tr>
                 </table>

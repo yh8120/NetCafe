@@ -28,12 +28,12 @@
                     <li class="nav-item dropdown text-end"><a class="nav-link dropdown-toggle" href="#"
                             id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             店舗設定</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
-                            <li><a class="dropdown-item text-end" href="listUser">ユーザー管理</a></li>
-                            <li><a class="dropdown-item text-end" href="listPricePlan">料金管理</a></li>
-                            <li><a class="dropdown-item text-end" href="listProduct">商品管理</a></li>
-                            <li><a class="dropdown-item text-end" href="logout">ログアウト</a></li>
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item text-center" href="listRoom">ルーム管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listUser">ユーザー管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listPricePlan">料金管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
+                            <li><a class="dropdown-item text-center" href="logout">ログアウト</a></li>
                         </ul></li>
                 </ul>
             </div>

@@ -27,7 +27,7 @@
                     <li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle" aria-current="page" href="#"
                             id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             店舗設定</a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
                             <li><a class="dropdown-item active text-end" aria-current="true" href="listUser">従業員管理</a></li>
                             <li><a class="dropdown-item text-end" href="listPricePlan">料金管理</a></li>
@@ -40,8 +40,12 @@
     </nav>
     <div class="container">
     <div class="row mb-1">
-        <div class="col-auto"><h2>従業員リスト</h2></div>
-        <div class="col-auto"><a href="addUser"><img src="images/add_button.svg" alt="" width="30" /></a></div>
+        <div class="col-auto d-flex align-items-center">
+				<span class="display-6 me-3">従業員リスト</span>
+				<a href="addUser">
+					<img src="images/add_button.svg" alt="" width="30" />
+				</a>
+			</div>
     </div>
         <div class="row">
             <div class="col">
