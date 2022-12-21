@@ -11,19 +11,43 @@
 <title>入室管理</title>
 </head>
 <body class="pb-5">
-    <header class="navbar navbar-expand-lg navbar-dark bg-secondary mb-2">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-2">
         <div class="container-fluid">
-            <h1 class="navbar-brand">入室管理</h1>
-            <ul class="navbar-nav">
-                <li class="nav-item me-2 text-light">★<c:out value="${user.shopName}" /></li>
-                <li class="nav-item me-2 text-light">★<c:out value="${user.userName}" /></li>
-                <li class="nav-item me-2 text-light" >【 <span id="degitalClockSample1"></span>】
-                </li>
-            </ul>
-
+            <a class="navbar-brand me-5" href="manager">
+                <img src="images/posh.jpg" alt="" width="72" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item text-end"><a class="nav-link active" aria-current="page" href="manager">店舗管理</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" href="addCustomer">会員登録</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" href="#">売上集計</a></li>
+                    <li class="nav-item dropdown text-end"><a class="nav-link dropdown-toggle" href="#"
+                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            店舗設定</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
+                            <li><a class="dropdown-item text-end" href="listUser">ユーザー管理</a></li>
+                            <li><a class="dropdown-item text-end" href="listPricePlan">料金管理</a></li>
+                            <li><a class="dropdown-item text-end" href="listProduct">商品管理</a></li>
+                            <li><a class="dropdown-item text-end" href="logout">ログアウト</a></li>
+                        </ul></li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
     <div class="container">
+        <div class="row">
+            <div class="col text-center bg-light pt-1 fw-bold">
+            <ul class="navbar-nav">
+                <li><span class="me-3"><c:out value="${user.shopName}" /></span><span>担当：<c:out value="${user.userName}" /></span></li>
+                <li><span id="degitalClockSample1"></span></li>
+            </ul>
+            </div>
+        </div>
 
 
         <div class="row">
@@ -35,10 +59,8 @@
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="flush-heading${room.roomId }">
-                                <button class="accordion-button collapsed" type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapse${room.roomId }"
-                                    aria-expanded="false"
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#flush-collapse${room.roomId }" aria-expanded="false"
                                     aria-controls="flush-collapse${room.roomId }">
                                     <c:if test="${room.cleaningStatus != 1}">
                                         <c:out value="※${room.cleaningName }※" />
@@ -46,24 +68,19 @@
                                     <c:out value="◆　${room.roomName }" />
                                     <c:if test="${room.inUse}">
                                         <c:out value="　◆会員：${room.customerName }　◆入室：" />
-                                        <fmt:formatDate value="${room.startTime }"
-                                            pattern="d日HH時mm分" />
+                                        <fmt:formatDate value="${room.startTime }" pattern="d日HH時mm分" />
                                     </c:if>
                                 </button>
                             </h2>
-                            <div id="flush-collapse${room.roomId }"
-                                class="accordion-collapse collapse"
-                                aria-labelledby="flush-heading${room.roomId }"
-                                data-bs-parent="#accordionFlushExample">
+                            <div id="flush-collapse${room.roomId }" class="accordion-collapse collapse"
+                                aria-labelledby="flush-heading${room.roomId }" data-bs-parent="#accordionFlushExample">
                                 <div class="accordion-body">
                                     <c:choose>
                                         <c:when test="${room.inUse }">
                                             <div class="vacancy">
-                                                <a
-                                                    href="checkOut?roomId=<c:out value="${room.roomId }"/>"
+                                                <a href="checkOut?roomId=<c:out value="${room.roomId }"/>"
                                                     class="btn btn-success col-auto mr-2">退室</a>
-                                                <a
-                                                    href="shopping?roomId=<c:out value="${room.roomId }"/>"
+                                                <a href="shopping?roomId=<c:out value="${room.roomId }"/>"
                                                     class="btn btn-success col-auto mr-2">販売</a>
                                                 <a href="" class="btn btn-success col-auto mr-2">ﾚﾝﾀﾙ</a>
                                                 <a href="" class="btn btn-success col-auto">ﾛｽﾀｲﾑ</a>
@@ -71,33 +88,28 @@
                                         </c:when>
                                         <c:otherwise>
                                             <c:if test="${room.cleaningStatus == 1}">
-                                                <a
-                                                    href="checkIn?roomId=<c:out value="${room.roomId }"/>"
+                                                <a href="checkIn?roomId=<c:out value="${room.roomId }"/>"
                                                     class="btn btn-success col-auto mr-2">入室</a>
                                                 <a href="" class="btn btn-success col-auto mr-2">予約</a>
                                             </c:if>
 
                                             <c:if test="${room.cleaningStatus == 2}">
-                                                <a
-                                                    href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=1"
+                                                <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=1"
                                                     class="btn btn-success col-auto mr-2">清掃完了</a>
                                             </c:if>
 
                                             <c:if test="${room.cleaningStatus == 1}">
-                                                <a
-                                                    href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
+                                                <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
                                                     class="btn btn-success col-auto mr-2">未清掃</a>
                                             </c:if>
 
                                             <c:if test="${room.cleaningStatus == 3}">
-                                                <a
-                                                    href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
+                                                <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=2"
                                                     class="btn btn-success col-auto mr-2">点検解除</a>
                                             </c:if>
 
                                             <c:if test="${room.cleaningStatus == 1}">
-                                                <a
-                                                    href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=3"
+                                                <a href="cleaning?roomId=<c:out value="${room.roomId }"/>&cleaningId=3"
                                                     class="btn btn-success col-auto mr-2">点検</a>
                                             </c:if>
                                         </c:otherwise>
@@ -109,14 +121,6 @@
                 </c:forEach>
             </div>
         </div>
-        <footer
-            class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
-            <ul class="navbar-nav">
-                <li class="nav-item me-2"><a href="addCustomer" class="btn btn-success">会員登録</a></li>
-                <li class="nav-item me-2"><a href="setting" class="btn btn-primary">店舗設定</a></li>
-                <li class="nav-item me-2"><a href="" class="btn btn-primary">売上集計</a></li>
-            </ul>
-        </footer>
     </div>
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>

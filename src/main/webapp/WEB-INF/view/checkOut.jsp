@@ -63,21 +63,19 @@
                                                     <c:out value="${cart.productUnit }" />
                                                 </td>
                                                 <td>
-                                                    <fmt:formatNumber value="${cart.totalPrice }"
-                                                        type="CURRENCY" currencyCode="JPY"
-                                                        maxFractionDigits="0" />
+                                                    <fmt:formatNumber value="${cart.totalPrice }" type="CURRENCY"
+                                                        currencyCode="JPY" maxFractionDigits="0" />
                                                 </td>
                                             </tr>
                                         </c:forEach>
                                     </tbody>
                                     <tr>
                                         <td colspan="2">
-                                            <fmt:formatNumber value="${shoppingPrice}"
-                                                type="CURRENCY" currencyCode="JPY"
-                                                maxFractionDigits="0" />
+                                            <fmt:formatNumber value="${shoppingPrice}" type="CURRENCY"
+                                                currencyCode="JPY" maxFractionDigits="0" />
                                             <small class="text-muted"> (内税<fmt:formatNumber
-                                                    value="${shoppingTax}" type="CURRENCY"
-                                                    currencyCode="JPY" maxFractionDigits="0" />)
+                                                    value="${shoppingTax}" type="CURRENCY" currencyCode="JPY"
+                                                    maxFractionDigits="0" />)
                                             </small>
                                         </td>
                                     </tr>
@@ -108,12 +106,11 @@
                                     </tbody>
                                     <tr>
                                         <td colspan="2">
-                                            <fmt:formatNumber value="${roomUsedData.roomPrice}"
-                                                type="CURRENCY" currencyCode="JPY"
-                                                maxFractionDigits="0" />
+                                            <fmt:formatNumber value="${roomUsedData.roomPrice}" type="CURRENCY"
+                                                currencyCode="JPY" maxFractionDigits="0" />
                                             <small class="text-muted"> (内税<fmt:formatNumber
-                                                    value="${roomUsedData.roomTax}" type="CURRENCY"
-                                                    currencyCode="JPY" maxFractionDigits="0" />)
+                                                    value="${roomUsedData.roomTax}" type="CURRENCY" currencyCode="JPY"
+                                                    maxFractionDigits="0" />)
                                             </small>
                                         </td>
                                     </tr>
@@ -124,15 +121,15 @@
                     <tr>
                         <th>お会計</th>
                         <td>
-                            <fmt:formatNumber value="${receiptData.sumPrice}" type="CURRENCY"
-                                currencyCode="JPY" maxFractionDigits="0" />
+                            <fmt:formatNumber value="${receiptData.sumPrice}" type="CURRENCY" currencyCode="JPY"
+                                maxFractionDigits="0" />
                         </td>
                     </tr>
                     <tr>
                         <th>内税</th>
                         <td>
-                            <fmt:formatNumber value="${receiptData.sumTax}" type="CURRENCY"
-                                currencyCode="JPY" maxFractionDigits="0" />
+                            <fmt:formatNumber value="${receiptData.sumTax}" type="CURRENCY" currencyCode="JPY"
+                                maxFractionDigits="0" />
                         </td>
                     </tr>
                 </table>
@@ -147,23 +144,16 @@
                 </div>
                 <form action="" method="post">
 
-                    <footer
-                        class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
-                        <ul class="navbar-nav">
-                            <li class="nav-item me-2">
-                                    <div class="input-group col-auto">
-                                        <span class="input-group-text">預り金</span> <input
-                                            type="number" pattern="\d*" name="payment"
-                                            id="formPayment" class="form-control" min="0"
-                                            max="999999" value=<c:out value="${payment}"/>>
-                                        <span class="input-group-text">円</span>
-                                    </div>
-                            </li>
-                            <li class="nav-item me-2"><input type="submit" value="清算"
-                                class="btn btn-primary"></li>
-                            <li class="nav-item me-2"><a href="manager" class="btn btn-light">キャンセル</a></li>
-                        </ul>
-                    </footer>
+
+                    <div class="input-group col-auto mb-3">
+                        <span class="input-group-text">預り金</span>
+                        <input type="number" pattern="\d*" name="payment" id="formPayment" class="form-control" min="0"
+                            max="999999" value=<c:out value="${payment}"/>>
+                        <span class="input-group-text">円</span>
+                    </div>
+                    <input type="submit" value="清算" class="btn btn-primary">
+                    <a href="manager" class="btn btn-light">キャンセル</a>
+
                 </form>
             </div>
         </div>

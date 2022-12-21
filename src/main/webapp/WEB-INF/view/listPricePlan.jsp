@@ -11,13 +11,39 @@
 <title>料金管理</title>
 </head>
 <body class="pb-5">
-    <header class="navbar navbar-expand-lg navbar-light bg-light mb-2">
+    <nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-4">
         <div class="container-fluid">
-            <h1 class="navbar-brand">料金管理</h1>
-
+            <a class="navbar-brand me-5" href="manager">
+                <img src="images/posh.jpg" alt="" width="72" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item text-end"><a class="nav-link" href="manager">店舗管理</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" href="addCustomer">会員登録</a></li>
+                    <li class="nav-item text-end"><a class="nav-link" href="#">売上集計</a></li>
+                    <li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle" aria-current="page" href="#"
+                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            店舗設定</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
+                            <li><a class="dropdown-item text-end" href="listUser">従業員管理</a></li>
+                            <li><a class="dropdown-item active text-end" aria-current="true" href="listPricePlan">料金管理</a></li>
+                            <li><a class="dropdown-item text-end" href="listProduct">商品管理</a></li>
+                            <li><a class="dropdown-item text-end" href="logout">ログアウト</a></li>
+                        </ul></li>
+                </ul>
+            </div>
         </div>
-    </header>
+    </nav>
     <div class="container">
+    <div class="row mb-1">
+        <div class="col-auto"><h2>料金リスト</h2></div>
+        <div class="col-auto"><a href="addPriceplan"><img src="images/add_button.svg" alt="" width="30" /></a></div>
+    </div>
         <div class="row">
             <div class="col">
                 <c:if test="${not empty message }">
@@ -88,20 +114,9 @@
                         </c:forEach>
                     </tr>
                 </table>
-                <a href="addPricePlan" class="btn btn-success">プラン作成</a>
             </div>
         </div>
     </div>
-    <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
-        <ul class="navbar-nav">
-            <li class="nav-item me-2"><a href="listRoom" class="btn btn-primary">ルーム管理</a></li>
-            <li class="nav-item me-2"><a href="listUser" class="btn btn-primary">従業員管理</a></li>
-            <li class="nav-item me-2"><button disabled class="btn btn-light">料金管理</button></li>
-            <li class="nav-item me-2"><a href="listProduct" class="btn btn-primary">商品管理</a></li>
-            <li class="nav-item me-2"><a href="manager" class="btn btn-warning">入室管理</a></li>
-            <li class="nav-item me-2"><a href="logout" id="logout" class="btn btn-danger">ログアウト</a></li>
-        </ul>
-    </footer>
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
 </body>
