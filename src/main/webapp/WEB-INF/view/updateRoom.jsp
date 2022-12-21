@@ -22,7 +22,7 @@
                 <c:out value="${roomNameError }"></c:out>
               </div>
             </c:if>
-            <input type="text" name="roomName" id="formRoomName" class="form-control" value=<c:out value="${roomName }"/>>
+            <input type="text" name="roomName" id="formRoomName" class="form-control" value=<c:out value="${room.roomName }"/>>
           </div>
           <div class="mb-3">
             <label for="formRoomTypeId">ルームタイプ</label> <select name="roomTypeId" id="formRoomTypeId" class="form-control">
@@ -40,7 +40,7 @@
                 <c:out value="${roomOrderError }"></c:out>
               </div>
             </c:if>
-            <input type="text" name="roomOrder" id="formRoomOrder" class="form-control" value=<c:out value="${roomOrder }"/>>
+            <input type="text" name="roomOrder" id="formRoomOrder" class="form-control" value=<c:out value="${room.roomOrder }"/>>
           </div>
           <div class="mb-3">
             <input type="submit" class="btn btn-success" value="登録">

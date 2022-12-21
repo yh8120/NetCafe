@@ -106,13 +106,14 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public void update(Product product) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE master_productes"
-					+ " SET product_name = ?,product_name = ?,updated = NOW()"
+			String sql = "UPDATE master_products"
+					+ " SET product_name = ?,product_price = ?,product_type = ?,updated = NOW()"
 					+ " WHERE product_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setString(2, product.getProductName());
+			stmt.setString(1, product.getProductName());
+			stmt.setObject(2, product.getProductPrice(), Types.INTEGER);
 			stmt.setObject(3, product.getProductTypeId(), Types.INTEGER);
-			stmt.setObject(1, product.getProductId(), Types.INTEGER);
+			stmt.setObject(4, product.getProductId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -123,7 +124,7 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public void delete(Product product) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "DELETE FROM productes"
+			String sql = "DELETE FROM master_products"
 					+ " Where product_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, product.getProductId(),Types.INTEGER);
@@ -139,7 +140,7 @@ public class ProductDaoImpl implements ProductDao {
 		product.setProductId((Integer) rs.getObject("product_id"));
 		product.setProductName(rs.getString("product_name"));
 		product.setProductPrice((Integer) rs.getObject("product_price"));
-		product.setProductTypeId((Integer) rs.getObject("product_type_id"));
+		product.setProductTypeId((Integer) rs.getObject("product_type"));
 		product.setProductTypeName(rs.getString("product_type_name"));
 		product.setTaxTypeId((Integer) rs.getObject("tax_type_id"));
 		product.setTaxTypeName(rs.getString("tax_type_name"));

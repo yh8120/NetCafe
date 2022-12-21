@@ -57,10 +57,10 @@
                                     <fmt:formatDate value="${product.updated}" pattern="y-M-d HH:MM" />
                                 </td>
                                 <td>
-                                    <a href="updateRoom?roomId=<c:out value="${product.productId }"/>">更新</a>
+                                    <a href="updateProduct?productId=<c:out value="${product.productId }"/>">更新</a>
                                 </td>
                                 <td>
-                                    <a href="deleteRoom?roomId=<c:out value="${product.productId }"/>">削除</a>
+                                    <a class="deleteProduct" href="deleteProduct?productId=<c:out value="${product.productId }"/>">削除</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -82,5 +82,12 @@
     </footer>
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(document).ready(function() {
+		$(".deleteProduct").click(function() {
+			return confirm("本当に削除しますか？");
+		});
+	});
+    </script>
 </body>
 </html>

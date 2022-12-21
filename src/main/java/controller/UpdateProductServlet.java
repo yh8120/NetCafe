@@ -15,41 +15,39 @@ import dao.ProductTypeDao;
 import domain.Product;
 import domain.ProductType;
 
-/**
- * Servlet implementation class AddItemServlet
- */
-@WebServlet("/addProduct")
-public class AddProductServlet extends HttpServlet {
+@WebServlet("/updateProduct")
+public class UpdateProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		Integer productId = Integer.parseInt(request.getParameter("productId"));
+
 		try {
 			ProductTypeDao productTypeDao = DaoFactory.createProductTypeDao();
 			List<ProductType> productTypeList = productTypeDao.findAll();
 			request.setAttribute("productTypeList", productTypeList);
 
-			request.getRequestDispatcher("/WEB-INF/view/addProduct.jsp").forward(request, response);
+			ProductDao productDao = DaoFactory.createProductDao();
+			Product product = productDao.findById(productId);
 
+			request.setAttribute("product", product);
+			request.getRequestDispatcher("/WEB-INF/view/updateProduct.jsp")
+					.forward(request, response);
 		} catch (Exception e) {
-			throw new ServletException();
+			throw new ServletException(e);
 		}
-
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
 		try {
 			ProductTypeDao productTypeDao = DaoFactory.createProductTypeDao();
 			List<ProductType> productTypeList = productTypeDao.findAll();
 			request.setAttribute("productTypeList", productTypeList);
+			
+			Integer productId = Integer.parseInt(request.getParameter("productId"));
 
 			String productName = request.getParameter("productName");
 			String strProductPrice = request.getParameter("productPrice");
@@ -105,23 +103,26 @@ public class AddProductServlet extends HttpServlet {
 					isError = true;
 				}
 			}
-
-			if (isError) {
-				response.sendRedirect("listProduct");
+			
+			
+			if (isError == true) {
+				request.getRequestDispatcher("/WEB-INF/view/updateProduct.jsp")
+						.forward(request, response);
 				return;
 			}
 
 			Product product = new Product();
+			product.setProductId(productId);
 			product.setProductName(productName);
 			product.setProductPrice(productPrice);
 			product.setProductTypeId(productTypeId);
 
 			ProductDao productDao = DaoFactory.createProductDao();
-			productDao.insert(product);
+			productDao.update(product);
+
 			response.sendRedirect("listProduct");
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
-
 }

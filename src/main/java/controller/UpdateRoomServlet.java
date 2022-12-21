@@ -32,8 +32,7 @@ public class UpdateRoomServlet extends HttpServlet {
 			RoomDao roomDao = DaoFactory.createRoomDao();
 			Room room = roomDao.findById(roomId);
 
-			request.setAttribute("roomName", room.getRoomName());
-			request.setAttribute("roomTypeId", room.getRoomTypeId());
+			request.setAttribute("room", room);
 			request.getRequestDispatcher("/WEB-INF/view/updateRoom.jsp")
 					.forward(request, response);
 		} catch (Exception e) {
