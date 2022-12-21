@@ -104,12 +104,13 @@ public class RoomDaoImpl implements RoomDao {
 	public void update(Room room) throws Exception {
 		try (Connection con = ds.getConnection()) {
 			String sql = "UPDATE rooms"
-					+ " SET room_name = ?,room_type_id = ?"
+					+ " SET room_name = ?,room_type_id = ?,room_order = ?"
 					+ " WHERE room_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setString(1, room.getRoomName());
 			stmt.setObject(2, room.getRoomTypeId(), Types.INTEGER);
-			stmt.setObject(3, room.getRoomId(), Types.INTEGER);
+			stmt.setObject(3, room.getRoomOrder(), Types.INTEGER);
+			stmt.setObject(4, room.getRoomId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;

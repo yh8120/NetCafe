@@ -89,13 +89,13 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public void insert(Product product) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "INSERT INTO products"
-					+ " (product_id,product_name,product_type)"
-					+ " VALUES (?,?,?)";
+			String sql = "INSERT INTO master_products"
+					+ " (product_name,product_price,product_type,registered,updated)"
+					+ " VALUES (?,?,?,NOW(),NOW())";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, product.getProductId(),Types.INTEGER);
-			stmt.setString(2, product.getProductName());
-			stmt.setObject(2, product.getProductTypeId(),Types.INTEGER);
+			stmt.setString(1, product.getProductName());
+			stmt.setObject(2, product.getProductPrice(),Types.INTEGER);
+			stmt.setObject(3, product.getProductTypeId(),Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -106,13 +106,13 @@ public class ProductDaoImpl implements ProductDao {
 	@Override
 	public void update(Product product) throws Exception {
 		try (Connection con = ds.getConnection()) {
-			String sql = "UPDATE productes"
-					+ " SET product_id = ?, product_name = ?,product_name = ?"
+			String sql = "UPDATE master_productes"
+					+ " SET product_name = ?,product_name = ?,updated = NOW()"
 					+ " WHERE product_id = ?";
 			PreparedStatement stmt = con.prepareStatement(sql);
-			stmt.setObject(1, product.getProductId(), Types.INTEGER);
 			stmt.setString(2, product.getProductName());
 			stmt.setObject(3, product.getProductTypeId(), Types.INTEGER);
+			stmt.setObject(1, product.getProductId(), Types.INTEGER);
 			stmt.executeUpdate();
 		} catch (Exception e) {
 			throw e;
@@ -144,6 +144,8 @@ public class ProductDaoImpl implements ProductDao {
 		product.setTaxTypeId((Integer) rs.getObject("tax_type_id"));
 		product.setTaxTypeName(rs.getString("tax_type_name"));
 		product.setTaxRate((Double) rs.getObject("tax_rate"));
+		product.setRegistered(rs.getTimestamp("registered"));
+		product.setUpdated(rs.getTimestamp("updated"));
 		
 		return product;
 

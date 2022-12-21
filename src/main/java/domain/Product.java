@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Date;
+
 public class Product {
 	private Integer productId;
 	private String productName;
@@ -9,6 +11,8 @@ public class Product {
 	private Integer taxTypeId;
 	private String taxTypeName;
 	private Double taxRate;
+	private Date registered;
+	private Date updated;
 	
 	public Integer getProductId() {
 		return productId;
@@ -57,6 +61,18 @@ public class Product {
 	}
 	public void setTaxRate(Double taxRate) {
 		this.taxRate = taxRate;
+	}
+	public Date getRegistered() {
+		return registered;
+	}
+	public void setRegistered(Date registered) {
+		this.registered = registered;
+	}
+	public Date getUpdated() {
+		return updated;
+	}
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 	
 	

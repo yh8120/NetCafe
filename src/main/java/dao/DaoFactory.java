@@ -74,6 +74,10 @@ public class DaoFactory {
 	public static RoomStatusDao createRoomStatusDao() {
 		return new RoomStatusDaoImpl(getDataSource());
 	}
+	
+	public static ProductTypeDao createProductTypeDao() {
+		return new ProductTypeDaoImpl(getDataSource());
+	}
 	private static DataSource getDataSource() {
 		InitialContext ctx = null;
 		DataSource ds = null;

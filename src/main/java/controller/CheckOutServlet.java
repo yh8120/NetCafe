@@ -26,6 +26,7 @@ import domain.Room;
 import domain.RoomUsedData;
 import domain.Shop;
 import domain.ShoppingCart;
+import domain.TimeDisplay;
 import domain.User;
 
 @WebServlet("/checkOut")
@@ -57,7 +58,7 @@ public class CheckOutServlet extends HttpServlet {
 			//時計表示用
 			Date checkOutTime = new Date();
 			BigDecimal stayTime = new BigDecimal(checkOutTime.getTime() - startTime.getTime());
-			String timeDisplay = timeDisplay(stayTime.longValue());
+			String timeDisplay = TimeDisplay.timeDisplay(stayTime.longValue());
 
 			//料金計算用
 			PricePlanDao pricePlanDao = DaoFactory.createPricePlanDao();
@@ -177,7 +178,7 @@ public class CheckOutServlet extends HttpServlet {
 			receiptData.setReceiptId(receiptId);
 
 			BigDecimal staytime = new BigDecimal(roomUsedData.getStayTime());
-			String timeDisplay = timeDisplay(staytime.longValue());
+			String timeDisplay = TimeDisplay.timeDisplay(staytime.longValue());
 
 			request.setAttribute("timeDisplay", timeDisplay);
 			request.setAttribute("roomUsedData", roomUsedData);
@@ -196,15 +197,6 @@ public class CheckOutServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
-	}
-
-	private String timeDisplay(Long millisecond) {
-		Integer intHour = (int) (millisecond / 3600000);
-		Integer intMinute = (int) ((millisecond % 3600000) / 60000);
-		Integer intSeccod = (int) (((millisecond % 3600000) % 60000) / 1000);
-
-		String timeDisplay = String.format("%02d:%02d:%02d", intHour, intMinute, intSeccod);
-		return timeDisplay;
 	}
 
 	private RoomUsedData planToUsedData(BigDecimal stayTime, PricePlan pricePlan) {

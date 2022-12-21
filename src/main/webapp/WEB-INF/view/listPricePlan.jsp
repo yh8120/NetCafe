@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -25,12 +26,18 @@
                         <th>名前</th>
                         <th>開始</th>
                         <th>終了</th>
-                        <th>開始時刻</th>
-                        <th>終了時刻</th>
-                        <th>基本料金</th>
-                        <th>基本時間</th>
-                        <th>追加料金</th>
-                        <th>追加時間</th>
+                        <th>開始<br>時刻
+                        </th>
+                        <th>終了<br>時刻
+                        </th>
+                        <th>基本<br>料金
+                        </th>
+                        <th>基本<br>時間
+                        </th>
+                        <th>追加<br>料金
+                        </th>
+                        <th>追加<br>時間
+                        </th>
                         <th colspan="2">操作</th>
                     </tr>
                     <tr>
@@ -43,10 +50,10 @@
                                     <c:out value="${plicePlan.planName }" />
                                 </td>
                                 <td>
-                                    <c:out value="${plicePlan.planStart }" />
+                                    <fmt:formatDate value="${plicePlan.planStart}" pattern="y-M-d" />
                                 </td>
                                 <td>
-                                    <c:out value="${plicePlan.planEnd }" />
+                                    <fmt:formatDate value="${plicePlan.planEnd}" pattern="y-M-d" />
                                 </td>
                                 <td>
                                     <c:out value="${plicePlan.startTime }" />
@@ -85,7 +92,7 @@
             <li class="nav-item me-2"><a href="listRoom" class="btn btn-primary">ルーム管理</a></li>
             <li class="nav-item me-2"><a href="listUser" class="btn btn-primary">従業員管理</a></li>
             <li class="nav-item me-2"><button disabled class="btn btn-light">料金管理</button></li>
-            <li class="nav-item me-2"><a href="" class="btn btn-primary">商品管理</a></li>
+            <li class="nav-item me-2"><a href="listProduct" class="btn btn-primary">商品管理</a></li>
             <li class="nav-item me-2"><a href="manager" class="btn btn-warning">入室管理</a></li>
             <li class="nav-item me-2"><a href="logout" id="logout" class="btn btn-danger">ログアウト</a></li>
         </ul>

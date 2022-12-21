@@ -51,7 +51,7 @@ public class UpdateRoomServlet extends HttpServlet {
 			Integer roomId = Integer.parseInt(request.getParameter("roomId"));
 
 			String roomName = request.getParameter("roomName");
-			String strRoomOrder = request.getParameter("roomName");
+			String strRoomOrder = request.getParameter("roomOrder");
 			Integer roomTypeId = Integer.parseInt(request.getParameter("roomTypeId"));
 
 			request.setAttribute("roomName", roomName);
@@ -68,7 +68,7 @@ public class UpdateRoomServlet extends HttpServlet {
 			if (!strRoomOrder.isEmpty()) {
 				try {
 					roomOrder = Integer.parseInt(strRoomOrder);
-					if (roomOrder <= 0) {
+					if (roomOrder < 0) {
 						request.setAttribute("roomOrderError", "順序が不正です。");
 						isError = true;
 					}
@@ -90,6 +90,7 @@ public class UpdateRoomServlet extends HttpServlet {
 			room.setRoomId(roomId);
 			room.setRoomName(roomName);
 			room.setRoomTypeId(roomTypeId);
+			room.setRoomOrder(roomOrder);
 
 			RoomDao roomDao = DaoFactory.createRoomDao();
 			roomDao.update(room);
