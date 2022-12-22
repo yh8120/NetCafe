@@ -341,7 +341,7 @@ public class RoomStatusDaoImpl implements RoomStatusDao {
 		roomStatus.setCustomerId((Integer) rs.getObject("customer_id"));
 		roomStatus.setCustomerName(rs.getString("customer_name"));
 		roomStatus.setStartTime(rs.getTimestamp("start_time"));
-		roomStatus.setLosstTime((Long)rs.getObject("losstTime"));
+		roomStatus.setLosstTime((Long)rs.getObject("losst_time"));
 		roomStatus.setRoomDiscount((Integer) rs.getObject("room_discount"));
 		roomStatus.setRoomUuid(rs.getString("room_uuid"));
 		roomStatus.setInUse(rs.getBoolean("in_use"));

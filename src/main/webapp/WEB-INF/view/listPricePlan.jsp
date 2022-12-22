@@ -34,7 +34,7 @@
 							<li><a class="dropdown-item text-end" href="listUser">従業員管理</a></li>
 							<li><a class="dropdown-item active text-end" aria-current="true" href="listPricePlan">料金管理</a></li>
 							<li><a class="dropdown-item text-end" href="listProduct">商品管理</a></li>
-							<li><a class="dropdown-item text-end" href="logout">ログアウト</a></li>
+							<li><a id="logout-button" class="dropdown-item text-end" href="logout">ログアウト</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -100,5 +100,15 @@
 	</div>
 	<script src="js/jquery-3.6.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
+    <script>
+    $(document).ready(function() {
+          
+          $("#logout-button").on("click",function() {
+                if(window.confirm("本当にログアウトしますか？")){
+                  return true;
+                  }else{
+                    return false}});
+        });
+    </script>
 </body>
 </html>

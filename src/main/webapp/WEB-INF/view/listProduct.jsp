@@ -31,7 +31,7 @@
 							data-bs-toggle="dropdown" aria-expanded="false"> 店舗設定</a>
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
 							<li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
-							<li><a class="dropdown-item text-end" href="listUser"> mb-4管理</a></li>
+							<li><a class="dropdown-item text-end" href="listUser"> 従業員管理</a></li>
 							<li><a class="dropdown-item text-end" href="listPricePlan">料金管理</a></li>
 							<li><a class="dropdown-item active text-end" aria-current="true" href="listProduct">商品管理</a></li>
 							<li><a id="logout-button" class="dropdown-item text-end" href="logout">ログアウト</a></li>
@@ -63,7 +63,7 @@
 						<th>価格<br>(￥)
 						</th>
 						<th>商品タイプ</th>
-						<th>内税<br>(％)
+						<th>税率<br>(％)
 						</th>
 						<th>登録</th>
 						<th>更新</th>
@@ -76,7 +76,7 @@
 								<td><c:out value="${product.productName }" /></td>
 								<td><c:out value="${product.productPrice}" /></td>
 								<td><c:out value="${product.productTypeName}" /></td>
-								<td><c:out value="${product.taxRate}" /></td>
+								<td><fmt:formatNumber value="${product.taxRate}"  pattern="###%"/></td>
 								<td><fmt:formatDate value="${product.registered}" pattern="y-M-d HH:MM" /></td>
 								<td><fmt:formatDate value="${product.updated}" pattern="y-M-d HH:MM" /></td>
 								<td><a href="updateProduct?productId=<c:out value="${product.productId }"/>">更新</a></td>
@@ -92,13 +92,19 @@
 	<script src="js/jquery-3.6.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
 	<script>
-					$(document).ready(function() {
-						$(".deleteProduct").on("click",function() {
-							if(window.confirm("本当に削除しますか？")){
-								return turue;
-								}else{
-									return false}
-					});
-				</script>
+	$(document).ready(function() {
+		  $(".deleteProduct").on("click",function() {
+		    if(window.confirm("本当に削除しますか？")){
+		      return true;
+		      }else{
+		        return false}});
+		  
+		  $("#logout-button").on("click",function() {
+			    if(window.confirm("本当にログアウトしますか？")){
+			      return true;
+			      }else{
+			        return false}});
+		});
+	</script>
 </body>
 </html>

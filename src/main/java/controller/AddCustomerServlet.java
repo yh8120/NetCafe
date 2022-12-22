@@ -60,7 +60,6 @@ public class AddCustomerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		BufferedReader buffer = new BufferedReader(request.getReader());
 		String reqJson = buffer.readLine();
-		System.out.println(reqJson);
 
 		ObjectMapper mapper = new ObjectMapper();
 		try {
@@ -118,7 +117,7 @@ public class AddCustomerServlet extends HttpServlet {
 			String phoneNumberC = request.getParameter("phoneNumberC");
 			String eMailUserName = request.getParameter("eMailUserName");
 			String eMailDomain = request.getParameter("eMailDomain");
-			System.out.println(strBirthday);
+			
 			request.setAttribute("customerId", strCustomerId);
 			request.setAttribute("strCustomerClassId", strCustomerClassId);
 			request.setAttribute("lastName", lastName);
@@ -273,7 +272,6 @@ public class AddCustomerServlet extends HttpServlet {
 				try {
 					SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd");
 					birthday = sdFormat.parse(strBirthday);
-					System.out.println(birthday);
 				} catch (ParseException e) {
 					e.printStackTrace();
 					request.setAttribute("birthdayError", "生年月日が不正です。");
@@ -284,7 +282,6 @@ public class AddCustomerServlet extends HttpServlet {
 				request.setAttribute("birthdayError", "生年月日が未入力です。");
 				isError = true;
 			}
-			System.out.println(birthday);
 
 			//			郵便番号
 			Pattern ptnZipPost = Pattern
@@ -352,7 +349,7 @@ public class AddCustomerServlet extends HttpServlet {
 			Matcher mtcEMailUser = ptnEMailUser.matcher(eMailUserName);
 
 			if (!mtcEMailUser.matches()) {
-				request.setAttribute("eMailUserNameError", "メールアドレスが不正です。");
+				request.setAttribute("eMailUserNameError", "アドレスが不正です。");
 				isError = true;
 			}
 
@@ -361,7 +358,7 @@ public class AddCustomerServlet extends HttpServlet {
 			Matcher mtcEMailDomain = ptnEMailDomain.matcher(eMailDomain);
 
 			if (!mtcEMailDomain.matches()) {
-				request.setAttribute("eMailDomainError", "ドメイン名が不正です。");
+				request.setAttribute("eMailDomainError", "ドメインが不正です。");
 				isError = true;
 			}
 

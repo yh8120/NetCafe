@@ -15,7 +15,7 @@
         <h1>会員登録</h1>
         <div class="row">
             <div class="col">
-                <form class="h-adr" action="" method="post">
+                <form class="h-adr" action="" method="post" onsubmit="return false">
                     <span class="p-country-name" style="display: none;">Japan</span>
 
                     <div class="mb-3">
@@ -252,9 +252,14 @@
                     <div class="mb-3">
                         <div class="row">
                             <label for="formEMail">メールアドレス</label>
-                            <c:if test="${not empty eMailAddressError }">
+                            <c:if test="${not empty eMailUserNameError }">
                                 <div class="error-message">
-                                    <c:out value="${eMailAddressError}"></c:out>
+                                    <c:out value="${eMailUserNameError}"></c:out>
+                                </div>
+                            </c:if>
+                            <c:if test="${not empty eMailDomainError }">
+                                <div class="error-message">
+                                    <c:out value="${eMailDomainError}"></c:out>
                                 </div>
                             </c:if>
                             <div class="col">
@@ -285,8 +290,8 @@
                     </div>
                     <footer class="navbar justify-content-end navbar-expand navbar-dark bg-secondary fixed-bottom">
                         <ul class="navbar-nav">
-                            <li class="nav-item me-2"><input type="submit" id="formSubmit" class="btn btn-success"
-                                    value="登録"></li>
+                            <li class="nav-item me-2"><input type="button" id="formSubmit" class="btn btn-success"
+                                    value="登録" onclick="submit()"></li>
                             <li class="nav-item me-2"><a href="manager" class="btn btn-light">キャンセル</a></li>
                         </ul>
                     </footer>

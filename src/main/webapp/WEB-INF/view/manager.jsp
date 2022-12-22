@@ -33,7 +33,7 @@
                             <li><a class="dropdown-item text-center" href="listUser">ユーザー管理</a></li>
                             <li><a class="dropdown-item text-center" href="listPricePlan">料金管理</a></li>
                             <li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
-                            <li><a class="dropdown-item text-center" href="logout">ログアウト</a></li>
+                            <li><a id="logout-button" class="dropdown-item text-center" href="logout">ログアウト</a></li>
                         </ul></li>
                 </ul>
             </div>
@@ -176,6 +176,16 @@
 						});
 
 					});
+					
+				    $(document).ready(function() {
+				          
+				          $("#logout-button").on("click",function() {
+				                if(window.confirm("本当にログアウトしますか？")){
+				                  return true;
+				                  }else{
+				                    return false}});
+				        });
+				    
 				</script>
 </body>
 </html>
