@@ -86,10 +86,10 @@
                                     <fmt:formatNumber value="${product.taxRate}" pattern="###%" />
                                 </td>
                                 <td>
-                                    <fmt:formatDate value="${product.registered}" pattern="y-M-d HH:MM" />
+                                    <fmt:formatDate value="${product.registered}" pattern="y-M-d HH:mm" />
                                 </td>
                                 <td>
-                                    <fmt:formatDate value="${product.updated}" pattern="y-M-d HH:MM" />
+                                    <fmt:formatDate value="${product.updated}" pattern="y-M-d HH:mm" />
                                 </td>
                                 <td>
                                     <a href="updateProduct?productId=<c:out value="${product.productId }"/>">更新</a>

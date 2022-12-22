@@ -53,55 +53,59 @@
                         <c:out value="${message}"></c:out>
                     </div>
                 </c:if>
-                <table class="table table-bordered">
-                    <tr>
-                        <th>ID</th>
-                        <th>店舗</th>
-                        <th>担当</th>
-                        <th>合計金額</th>
-                        <th>税合計</th>
-                        <th>預り金</th>
-                        <th>釣銭</th>
-                        <th>印刷日時</th>
-                    </tr>
-                    <tr>
-                        <c:forEach items="${receiptDataList}" var="receiptData">
+                <div class="table-frame">
+                    <table id="" class="table table-striped text-center text-nowrap table-hover">
+                        <thead>
                             <tr>
-                                <td>
-                                    <c:out value="${receiptData.receiptId }" />
-                                </td>
-                                <td>
-                                    <c:out value="${receiptData.shopName }" />
-                                </td>
-                                <td>
-                                    <c:out value="${receiptData.userName }" />
-                                </td>
-                                <td>
-                                    <fmt:formatNumber value="${receiptData.sumPrice }" type="CURRENCY"
-                                        currencyCode="JPY" maxFractionDigits="0" />
-
-                                </td>
-                                <td>
-                                    <fmt:formatNumber value="${receiptData.sumTax }" type="CURRENCY"
-                                        currencyCode="JPY" maxFractionDigits="0" />
-
-                                </td>
-                                <td>
-                                    <fmt:formatNumber value="${receiptData.payment }" type="CURRENCY"
-                                        currencyCode="JPY" maxFractionDigits="0" />
-
-                                </td>
-                                <td>
-                                    <fmt:formatNumber value="${receiptData.changeMoney }"
-                                        type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />
-                                </td>
-                                <td>
-                                    <fmt:formatDate value="${receiptData.printedTime }" pattern="y-M-d HH:MM" />
-                                </td>
+                                <th>ID</th>
+                                <th>店舗</th>
+                                <th>担当</th>
+                                <th>合計金額</th>
+                                <th>税合計</th>
+                                <th>預り金</th>
+                                <th>釣銭</th>
+                                <th>印刷日時</th>
                             </tr>
-                        </c:forEach>
-                    </tr>
-                </table>
+                        </thead>
+                        <tbody>
+                            <c:forEach items="${receiptDataList}" var="receiptData">
+                                <tr>
+                                    <td>
+                                        <c:out value="${receiptData.receiptId }" />
+                                    </td>
+                                    <td>
+                                        <c:out value="${receiptData.shopName }" />
+                                    </td>
+                                    <td>
+                                        <c:out value="${receiptData.userName }" />
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${receiptData.sumPrice }" type="CURRENCY"
+                                            currencyCode="JPY" maxFractionDigits="0" />
+
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${receiptData.sumTax }" type="CURRENCY"
+                                            currencyCode="JPY" maxFractionDigits="0" />
+
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${receiptData.payment }" type="CURRENCY"
+                                            currencyCode="JPY" maxFractionDigits="0" />
+
+                                    </td>
+                                    <td>
+                                        <fmt:formatNumber value="${receiptData.changeMoney }" type="CURRENCY"
+                                            currencyCode="JPY" maxFractionDigits="0" />
+                                    </td>
+                                    <td>
+                                        <fmt:formatDate value="${receiptData.printedTime }" pattern="y-M-d HH:mm" />
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
