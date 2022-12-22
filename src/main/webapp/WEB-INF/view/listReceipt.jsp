@@ -28,7 +28,7 @@
                     <li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle"
                             aria-current="page" href="#" id="navbarDropdownMenuLink" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false"> 店舗設定</a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink" style="z-index:1021;">
                             <li><a class="dropdown-item text-center" href="listRoom">ルーム管理</a></li>
                             <li><a class="dropdown-item text-center" href="listUser">従業員管理</a></li>
                             <li><a class="dropdown-item text-center" href="listPricePlan">料金管理</a></li>
@@ -54,8 +54,8 @@
                     </div>
                 </c:if>
                 <div class="table-frame">
-                    <table id="" class="table table-striped text-center text-nowrap table-hover">
-                        <thead>
+                    <table class="table table-striped text-center text-rap table-hover">
+                        <thead  class="sticky-top bg-light">
                             <tr>
                                 <th>ID</th>
                                 <th>店舗</th>

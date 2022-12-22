@@ -31,8 +31,7 @@ label {
 	display: none;
 }
 
-.table_frame {
-	width: 800px;
-	height: 300px;
+.table-frame {
+	height: 70vh;
 	overflow: auto;
 }

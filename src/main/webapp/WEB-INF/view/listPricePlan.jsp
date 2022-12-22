@@ -29,12 +29,13 @@
 					<li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle"
 							aria-current="page" href="#" id="navbarDropdownMenuLink" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false"> 店舗設定</a>
-						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
+						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink"
+							style="z-index: 1021;">
 							<li><a class="dropdown-item text-center" href="listRoom">ルーム管理</a></li>
 							<li><a class="dropdown-item text-center" href="listUser">従業員管理</a></li>
 							<li><a class="dropdown-item active text-center" aria-current="true" href="listPricePlan">料金管理</a></li>
 							<li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
-                            <li><a class="dropdown-item text-center" href="listReceipt">レシート表示</a></li>
+							<li><a class="dropdown-item text-center" href="listReceipt">レシート表示</a></li>
 							<li><a id="logout-button" class="dropdown-item text-center" href="logout">ログアウト</a></li>
 						</ul></li>
 				</ul>
@@ -57,59 +58,65 @@
 						<c:out value="${message}"></c:out>
 					</div>
 				</c:if>
-				<table class="table table-bordered">
-					<tr>
-						<th>ID</th>
-						<th>名前</th>
-						<th>開始</th>
-						<th>終了</th>
-						<th>開始<br>時刻
-						</th>
-						<th>終了<br>時刻
-						</th>
-						<th>基本<br>料金
-						</th>
-						<th>基本<br>時間
-						</th>
-						<th>追加<br>料金
-						</th>
-						<th>追加<br>時間
-						</th>
-						<th colspan="2">操作</th>
-					</tr>
-					<tr>
-						<c:forEach items="${planListAll}" var="plicePlan">
+				<div class="table-frame">
+					<table class="table table-striped text-center text-rap table-hover">
+						<thead class="sticky-top bg-light">
 							<tr>
-								<td><c:out value="${plicePlan.planId }" /></td>
-								<td><c:out value="${plicePlan.planName }" /></td>
-								<td><fmt:formatDate value="${plicePlan.planStart}" pattern="y-M-d" /></td>
-								<td><fmt:formatDate value="${plicePlan.planEnd}" pattern="y-M-d" /></td>
-								<td><c:out value="${plicePlan.startTime }" /></td>
-								<td><c:out value="${plicePlan.endTime }" /></td>
-								<td><c:out value="${plicePlan.basicPrice }" /></td>
-								<td><c:out value="${plicePlan.basicTime }" /></td>
-								<td><c:out value="${plicePlan.addPrice }" /></td>
-								<td><c:out value="${plicePlan.addTime }" /></td>
-								<td><a href="updateRoom?planId=<c:out value="${plicePlan.planId }"/>">更新</a></td>
-								<td><a href="deleteRoom?planId=<c:out value="${plicePlan.planId }"/>">削除</a></td>
+								<th>ID</th>
+								<th>名前</th>
+								<th>開始</th>
+								<th>終了</th>
+								<th>開始<br>時刻
+								</th>
+								<th>終了<br>時刻
+								</th>
+								<th>基本<br>料金
+								</th>
+								<th>基本<br>時間
+								</th>
+								<th>追加<br>料金
+								</th>
+								<th>追加<br>時間
+								</th>
+								<th colspan="2">操作</th>
 							</tr>
-						</c:forEach>
-					</tr>
-				</table>
+						</thead>
+						<tbody>
+							<c:forEach items="${planListAll}" var="plicePlan">
+								<tr>
+									<td><c:out value="${plicePlan.planId }" /></td>
+									<td><c:out value="${plicePlan.planName }" /></td>
+									<td><fmt:formatDate value="${plicePlan.planStart}" pattern="y-M-d" /></td>
+									<td><fmt:formatDate value="${plicePlan.planEnd}" pattern="y-M-d" /></td>
+									<td><c:out value="${plicePlan.startTime }" /></td>
+									<td><c:out value="${plicePlan.endTime }" /></td>
+									<td><c:out value="${plicePlan.basicPrice }" /></td>
+									<td><c:out value="${plicePlan.basicTime }" /></td>
+									<td><c:out value="${plicePlan.addPrice }" /></td>
+									<td><c:out value="${plicePlan.addTime }" /></td>
+									<td><a href="updateRoom?planId=<c:out value="${plicePlan.planId }"/>">更新</a></td>
+									<td><a href="deleteRoom?planId=<c:out value="${plicePlan.planId }"/>">削除</a></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
 	<script src="js/jquery-3.6.1.min.js"></script>
 	<script src="js/bootstrap.bundle.min.js"></script>
-    <script>
-    $(document).ready(function() {
-          
-          $("#logout-button").on("click",function() {
-                if(window.confirm("本当にログアウトしますか？")){
-                  return true;
-                  }else{
-                    return false}});
-        });
-    </script>
+	<script>
+		$(document).ready(function() {
+
+			$("#logout-button").on("click", function() {
+				if (window.confirm("本当にログアウトしますか？")) {
+					return true;
+				} else {
+					return false
+				}
+			});
+		});
+	</script>
 </body>
 </html>
