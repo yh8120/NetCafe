@@ -24,7 +24,9 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM sales_data";
+					+ " FROM receipt_data"
+					+ " LEFT OUTER JOIN users ON receipt_data.user_id = users.user_id"
+					+ " LEFT OUTER JOIN master_shops ON receipt_data.shop_id = master_shops.shop_id";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -41,7 +43,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 		ReceiptData salesData = null;
 		try (Connection con = ds.getConnection()) {
 			String sql = "SELECT *"
-					+ " FROM sales_data"
+					+ " FROM receipt_data"
 					+ " WHERE receipt_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, salesDataId, Types.INTEGER);
@@ -96,7 +98,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	@Override
 	public void update(ReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
-		//			String sql = "UPDATE sales_data"
+		//			String sql = "UPDATE receipt_data"
 		//					+ " (shop_id,user_id,customer_id,sales_date,sum_price,start_time,time_spent)"
 		//					+ " WHERE receipt_id = ?";
 		//			PreparedStatement stmt = con.prepareStatement(sql);
@@ -115,7 +117,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 	@Override
 	public void delete(ReceiptData salesData) throws Exception {
 		//		try (Connection con = ds.getConnection()) {
-		//			String sql = "DELETE FROM sales_data"
+		//			String sql = "DELETE FROM receipt_data"
 		//					+ " Where receipt_id = ?";
 		//			PreparedStatement stmt = con.prepareStatement(sql);
 		//			stmt.setObject(1, salesData.getReceiptId(), Types.INTEGER);
@@ -134,6 +136,7 @@ public class ReceiptDataDaoImpl implements ReceiptDataDao {
 		receiptData.setShopPhoneNumber(rs.getString("shop_phone_number"));
 		receiptData.setShopAddress(rs.getString("shop_address"));
 		receiptData.setUserId((Integer) rs.getObject("user_id"));
+		receiptData.setUserName(rs.getString("user_name"));
 		receiptData.setPrintedTime(rs.getTimestamp("printed_time"));
 		receiptData.setSumPrice((Integer) rs.getObject("sum_price"));
 		receiptData.setSumTax((Integer)rs.getObject("sum_tax"));

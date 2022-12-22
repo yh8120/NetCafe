@@ -15,7 +15,7 @@
         <h1>プラン登録</h1>
         <div class="row">
             <div class="col">
-                <form action="" method="post">
+                <form action="" method="post" onsubmit="return false">
 
                     <c:if test="${not empty planNameError }">
                         <div class="error-message">
@@ -41,7 +41,7 @@
                         </c:if>
 
                         <div class="col-auto">
-                            <label for="formStartTime">適用日時</label>
+                            <label for="formStartTime">適用期間</label>
                         </div>
                         <div class="col-5">
                             <div class="input-group">
@@ -66,7 +66,7 @@
                             </div>
                         </c:if>
                         <div class="col-auto">
-                            <label for="formStartTime">適用時間</label>
+                            <label for="formStartTime">入室時間</label>
                         </div>
                         <div class="col-3">
                             <div class="input-group">
@@ -302,7 +302,7 @@
                     </fieldset>
 
                     <div class="mb-3">
-                        <input type="submit" class="btn btn-success" value="登録">
+                        <input type="button" class="btn btn-success" value="登録" onclick="submit()">
                         <a href="listPricePlan" class="btn btn-light">キャンセル</a>
                     </div>
 

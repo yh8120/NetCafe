@@ -9,6 +9,7 @@ public class ReceiptData {
 	private String shopPhoneNumber;
 	private String shopAddress;
 	private Integer userId;
+	private String userName;
 	private Date printedTime;
 	private Integer sumPrice;
 	private Integer sumTax;
@@ -50,6 +51,12 @@ public class ReceiptData {
 	}
 	public void setUserId(Integer userId) {
 		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public Date getPrintedTime() {
 		return printedTime;

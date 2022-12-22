@@ -248,9 +248,9 @@ public class AddPricePlanServlet extends HttpServlet {
 			}
 			Integer endTime= endTimeHour*100+endTimeMinute;
 			
-			if((endTime-startTime)>=86400000) {
-				request.setAttribute("startTimeError", "24時間未満で設定してください");
-				request.setAttribute("endTimeError", "24時間未満で設定してください");
+			if((endTime-startTime)>2400) {
+				request.setAttribute("startTimeError", "24時間以下で");
+				request.setAttribute("endTimeError", "設定してください");
 				isError = true;
 			}
 			

@@ -12,7 +12,7 @@
 </head>
 <body class="pb-5">
 	<nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-4">
-		<div class="container-fluid">
+		<div class="container">
 			<a class="navbar-brand me-5" href="manager">
 				<img src="images/posh.jpg" alt="" width="72" />
 			</a>
@@ -30,11 +30,12 @@
 							aria-current="page" href="#" id="navbarDropdownMenuLink" role="button"
 							data-bs-toggle="dropdown" aria-expanded="false"> 店舗設定</a>
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
-							<li><a class="dropdown-item text-end" href="listRoom">ルーム管理</a></li>
-							<li><a class="dropdown-item text-end" href="listUser">従業員管理</a></li>
-							<li><a class="dropdown-item active text-end" aria-current="true" href="listPricePlan">料金管理</a></li>
-							<li><a class="dropdown-item text-end" href="listProduct">商品管理</a></li>
-							<li><a id="logout-button" class="dropdown-item text-end" href="logout">ログアウト</a></li>
+							<li><a class="dropdown-item text-center" href="listRoom">ルーム管理</a></li>
+							<li><a class="dropdown-item text-center" href="listUser">従業員管理</a></li>
+							<li><a class="dropdown-item active text-center" aria-current="true" href="listPricePlan">料金管理</a></li>
+							<li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listReceipt">レシート表示</a></li>
+							<li><a id="logout-button" class="dropdown-item text-center" href="logout">ログアウト</a></li>
 						</ul></li>
 				</ul>
 			</div>
@@ -44,7 +45,7 @@
 		<div class="row mb-1">
 			<div class="col-auto d-flex align-items-center">
 				<span class="display-6 me-3">料金リスト</span>
-				<a href="addPriceplan">
+				<a href="addPricePlan">
 					<img src="images/add_button.svg" alt="" width="30" />
 				</a>
 			</div>

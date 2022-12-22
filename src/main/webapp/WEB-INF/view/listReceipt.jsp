@@ -1,5 +1,6 @@
 <%@ page pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,7 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="css/bootstrap.min.css" rel="stylesheet">
 <link href="css/style.css" rel="stylesheet">
-<title>従業員管理</title>
+<title>レシート管理</title>
 </head>
 <body class="pb-5">
     <nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-4">
@@ -24,15 +25,15 @@
                     <li class="nav-item text-end"><a class="nav-link" href="manager">店舗管理</a></li>
                     <li class="nav-item text-end"><a class="nav-link" href="addCustomer">会員登録</a></li>
                     <li class="nav-item text-end"><a class="nav-link" href="#">売上集計</a></li>
-                    <li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle" aria-current="page" href="#"
-                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            店舗設定</a>
+                    <li class="nav-item dropdown text-end"><a class="nav-link active dropdown-toggle"
+                            aria-current="page" href="#" id="navbarDropdownMenuLink" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"> 店舗設定</a>
                         <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDropdownMenuLink">
                             <li><a class="dropdown-item text-center" href="listRoom">ルーム管理</a></li>
-                            <li><a class="dropdown-item active text-center" aria-current="true" href="listUser">従業員管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listUser">従業員管理</a></li>
                             <li><a class="dropdown-item text-center" href="listPricePlan">料金管理</a></li>
                             <li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
-                            <li><a class="dropdown-item text-center" href="listReceipt">レシート表示</a></li>
+                            <li><a class="dropdown-item active text-center" aria-current="true" href="listReceipt">レシート表示</a></li>
                             <li><a id="logout-button" class="dropdown-item text-center" href="logout">ログアウト</a></li>
                         </ul></li>
                 </ul>
@@ -40,14 +41,11 @@
         </div>
     </nav>
     <div class="container">
-    <div class="row mb-1">
-        <div class="col-auto d-flex align-items-center">
-				<span class="display-6 me-3">従業員リスト</span>
-				<a href="addUser">
-					<img src="images/add_button.svg" alt="" width="30" />
-				</a>
-			</div>
-    </div>
+        <div class="row mb-1">
+            <div class="col-auto d-flex align-items-center">
+                <span class="display-6 me-3">レシートリスト</span>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <c:if test="${not empty message }">
@@ -58,31 +56,47 @@
                 <table class="table table-bordered">
                     <tr>
                         <th>ID</th>
-                        <th>名前</th>
-                        <th>ログインID</th>
-                        <th>権限</th>
-                        <th colspan="2">操作</th>
+                        <th>店舗</th>
+                        <th>担当</th>
+                        <th>合計金額</th>
+                        <th>税合計</th>
+                        <th>預り金</th>
+                        <th>釣銭</th>
+                        <th>印刷日時</th>
                     </tr>
                     <tr>
-                        <c:forEach items="${userList}" var="user">
+                        <c:forEach items="${receiptDataList}" var="receiptData">
                             <tr>
                                 <td>
-                                    <c:out value="${user.userId }" />
+                                    <c:out value="${receiptData.receiptId }" />
                                 </td>
                                 <td>
-                                    <c:out value="${user.userName }" />
+                                    <c:out value="${receiptData.shopName }" />
                                 </td>
                                 <td>
-                                    <c:out value="${user.loginId }" />
+                                    <c:out value="${receiptData.userName }" />
                                 </td>
                                 <td>
-                                    <c:out value="${user.userClassName }" />
+                                    <fmt:formatNumber value="${receiptData.sumPrice }" type="CURRENCY"
+                                        currencyCode="JPY" maxFractionDigits="0" />
+
                                 </td>
                                 <td>
-                                    <a href="updateUser?userId=<c:out value="${user.userId }"/>">更新</a>
+                                    <fmt:formatNumber value="${receiptData.sumTax }" type="CURRENCY"
+                                        currencyCode="JPY" maxFractionDigits="0" />
+
                                 </td>
                                 <td>
-                                    <a href="deleteUser?userId=<c:out value="${user.userId }"/>">削除</a>
+                                    <fmt:formatNumber value="${receiptData.payment }" type="CURRENCY"
+                                        currencyCode="JPY" maxFractionDigits="0" />
+
+                                </td>
+                                <td>
+                                    <fmt:formatNumber value="${receiptData.changeMoney }"
+                                        type="CURRENCY" currencyCode="JPY" maxFractionDigits="0" />
+                                </td>
+                                <td>
+                                    <fmt:formatDate value="${receiptData.printedTime }" pattern="y-M-d HH:MM" />
                                 </td>
                             </tr>
                         </c:forEach>
@@ -94,14 +108,16 @@
     <script src="js/jquery-3.6.1.min.js"></script>
     <script src="js/bootstrap.bundle.min.js"></script>
     <script>
-    $(document).ready(function() {
-          
-          $("#logout-button").on("click",function() {
-                if(window.confirm("本当にログアウトしますか？")){
-                  return true;
-                  }else{
-                    return false}});
-        });
-    </script>
+					$(document).ready(function() {
+
+						$("#logout-button").on("click", function() {
+							if (window.confirm("本当にログアウトしますか？")) {
+								return true;
+							} else {
+								return false
+							}
+						});
+					});
+				</script>
 </body>
 </html>

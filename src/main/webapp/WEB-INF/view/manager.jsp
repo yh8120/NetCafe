@@ -12,7 +12,7 @@
 </head>
 <body class="pb-5">
     <nav class="navbar navbar-expand-sm navbar-dark bg-secondary mb-2">
-        <div class="container-fluid">
+        <div class="container">
             <a class="navbar-brand me-5" href="manager">
                 <img src="images/posh.jpg" alt="" width="72" />
             </a>
@@ -33,6 +33,7 @@
                             <li><a class="dropdown-item text-center" href="listUser">ユーザー管理</a></li>
                             <li><a class="dropdown-item text-center" href="listPricePlan">料金管理</a></li>
                             <li><a class="dropdown-item text-center" href="listProduct">商品管理</a></li>
+                            <li><a class="dropdown-item text-center" href="listReceipt">レシート表示</a></li>
                             <li><a id="logout-button" class="dropdown-item text-center" href="logout">ログアウト</a></li>
                         </ul></li>
                 </ul>

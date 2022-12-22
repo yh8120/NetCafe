@@ -24,7 +24,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col">
-                            <table class="table table-hover text-light">
+                            <table class="table table-dark table-hover">
                                 <thead>
                                     <tr>
                                         <th scope="col">商品ID</th>
