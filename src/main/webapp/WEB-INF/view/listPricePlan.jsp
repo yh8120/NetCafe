@@ -59,7 +59,7 @@
 					</div>
 				</c:if>
 				<div class="table-frame">
-					<table class="table table-striped text-center text-rap table-hover">
+					<table class="table table-striped text-center text-nowrap table-hover">
 						<thead class="sticky-top bg-light">
 							<tr>
 								<th>ID</th>
