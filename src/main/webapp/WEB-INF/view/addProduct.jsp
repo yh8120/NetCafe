@@ -22,7 +22,7 @@
                                 <tr>
                                     <th scope="col"><label for="formStartTime">商品名</label></th>
                                     <th scope="col"><label for="formProductPrice">価格</label></th>
-                                    <th scope="col"><label for="formProductType">商品タイプ</label></th>
+                                    <th scope="col"><label for="formProductType">カテゴリ</label></th>
                                 </tr>
                             </thead>
                             <tbody>
