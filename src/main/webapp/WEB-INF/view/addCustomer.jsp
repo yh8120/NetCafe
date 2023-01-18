@@ -237,15 +237,15 @@
                             </c:if>
                             <div class="col-auto">
                                 <input type="text" name="phoneNumberA" id="formPhoneNumberA"
-                                    class="customerData form-control" value=<c:out value="${phoneNumberA }"/>>
+                                    class="customerData form-control" value="<c:out value="${phoneNumberA }"/>">
                             </div>
                             <div class="col-auto">
                                 <input type="text" name="phoneNumberB" id="formPhoneNumberB"
-                                    class="customerData form-control" value=<c:out value="${phoneNumberB }"/>>
+                                    class="customerData form-control" value="<c:out value="${phoneNumberB }"/>">
                             </div>
                             <div class="col-auto">
                                 <input type="text" name="phoneNumberC" id="formPhoneNumberC"
-                                    class="customerData form-control" value=<c:out value="${phoneNumberC }"/>>
+                                    class="customerData form-control" value="<c:out value="${phoneNumberC }"/>">
                             </div>
                         </div>
                     </div>
