@@ -14,7 +14,7 @@
     <div class="container">
         <h1>会員登録</h1>
         <div class="row">
-            <div class="col">
+            <div class="col-auto">
                 <form class="h-adr" action="" method="post" onsubmit="return false">
                     <span class="p-country-name" style="display: none;">Japan</span>
 
@@ -101,7 +101,7 @@
                         <select name="sexId" id="formSexId" class="customerData form-control">
                             <c:forEach items="${sexList}" var="sex">
                                 <option value="<c:out value="${sex.sexId}" />"
-                                    <c:if test="${sex.sexId == SexId}">selected</c:if>>
+                                    <c:if test="${sex.sexId == sexId}">selected</c:if>>
                                     <c:out value="${sex.sexName}" />
                                 </option>
                             </c:forEach>
@@ -116,12 +116,12 @@
                             </div>
                         </c:if>
                         <select name="cardId" id="formCardId" class="customerData form-control">
-                            <c:forEach items="${idCardList}" var="idCard">
-                                <option value="<c:out value="${idCard.cardId}" />"
-                                    data-can="<c:out value="${idCard.canCopyNumber}"/>"
-                                    <c:if test="${idCard.cardId == cardId}">selected</c:if>>
+                            <c:forEach items="${idCardList}" var="varIdCard">
+                                <option value="<c:out value="${varIdCard.cardId}" />"
+                                    data-can="<c:out value="${varIdCard.canCopyNumber}"/>"
+                                    <c:if test="${varIdCard.cardId == idCard.cardId}">selected</c:if>>
 
-                                    <c:out value="${idCard.cardName}" />
+                                    <c:out value="${varIdCard.cardName}" />
                                 </option>
                             </c:forEach>
                         </select>
@@ -135,7 +135,7 @@
                             </div>
                         </c:if>
                         <input type="text" name="cardNumber" id="formCardNumber" class="customerData form-control"
-                            value=<c:out value="${cardNumber }"/>>
+                            value="<c:out value="${cardNumber }"/>" <c:if test="${!idCars.canCopyNumber}">disabled</c:if>>
                     </div>
 
                     <div class="mb-3">
@@ -164,13 +164,13 @@
                             </div>
                         </c:if>
                         <div class="row">
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="number" name="zipcodePost" id="formZipcodePost"
                                     class="customerData form-control p-postal-code" size="3" maxlength="3"
                                     value=<c:out value="${zipcodePost }"/>>
 
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="number" name="zipcodeCity" id="formZipcodeCity"
                                     class="customerData form-control p-postal-code" size="4" maxlength="4"
                                     value=<c:out value="${zipcodeCity }"/>>
@@ -179,7 +179,7 @@
                     </div>
 
                     <div class=" row mb-3">
-                        <div class="col">
+                        <div class="col-auto">
                             <label for="formAddressState">都道府県</label>
                             <c:if test="${not empty addressStateError }">
                                 <div class="error-message">
@@ -189,7 +189,7 @@
                             <input type="text" name="addressState" id="formAddressState"
                                 class="customerData form-control p-region" value=<c:out value="${addressState }"/>>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <label for="formAddressCity">市区町村</label>
                             <c:if test="${not empty addressCityError }">
                                 <div class="error-message">
@@ -200,7 +200,7 @@
                                 class="customerData form-control p-locality p-street-address p-extended-address"
                                 value=<c:out value="${addressCity }"/>>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <label for="formAddressStreet">番地</label>
                             <c:if test="${not empty addressStreetError }">
                                 <div class="error-message">
@@ -210,7 +210,7 @@
                             <input type="text" name="addressStreet" id="formAddressStreet"
                                 class="customerData form-control" value=<c:out value="${addressStreet }"/>>
                         </div>
-                        <div class="col">
+                        <div class="col-auto">
                             <label for="formAddress">建物部屋</label>
                             <c:if test="${not empty addressRoomError }">
                                 <div class="error-message">
@@ -235,15 +235,15 @@
                                     <c:out value="${phoneNumberError}"></c:out>
                                 </div>
                             </c:if>
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="text" name="phoneNumberA" id="formPhoneNumberA"
                                     class="customerData form-control" value=<c:out value="${phoneNumberA }"/>>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="text" name="phoneNumberB" id="formPhoneNumberB"
                                     class="customerData form-control" value=<c:out value="${phoneNumberB }"/>>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="text" name="phoneNumberC" id="formPhoneNumberC"
                                     class="customerData form-control" value=<c:out value="${phoneNumberC }"/>>
                             </div>
@@ -262,28 +262,31 @@
                                     <c:out value="${eMailDomainError}"></c:out>
                                 </div>
                             </c:if>
-                            <div class="col">
+                            <div class="col-auto">
                                 <input type="text" name="eMailUserName" id="formEMailUserName"
                                     class="customerData form-control" value=<c:out value="${eMailUserName }"/>>
                             </div>
-                            <div class="col">
+                            <div class="col-auto">@</div>
+                            <div class="col-auto">
                                 <input type="text" name="eMailDomain" id="formEMailDomain"
                                     class="customerData form-control" value=<c:out value="${eMailDomain }"/>>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-auto">
                         <table class="table table-bordered">
                             <tr>
                                 <th>登録日</th>
                                 <th>更新日</th>
                             </tr>
                             <tr>
-                                <td id="regestered">
-                                    <c:out value="${regestred }" />
+                                <td id="customerData regestered">
+                                    <input readonly type="text" name="regestered" id="formregestered"
+                                    class="customerData form-control" value="<c:out value="${regestred }" />">
                                 </td>
-                                <td id="updated">
-                                    <c:out value="${updated }" />
+                                <td id="customerData updated">
+                                     <input readonly type="text" name="updated" id="formupdated"
+                                    class="customerData form-control" value="<c:out value="${updated }" />">
                                 </td>
                             </tr>
                         </table>
@@ -349,8 +352,8 @@
 				$("#formPhoneNumberC").val(customer.phoneNumberC);
 				$("#formEMailUserName").val(customer.eMailUserName);
 				$("#formEMailDomain").val(customer.eMailDomain);
-				$("#regestered").text(customer.strRegestered);
-				$("#updated").text(customer.strUpdated);
+				$("#formregestered").val(customer.strRegestered);
+				$("#formupdated").val(customer.strUpdated);
 
 				if (customer.canCopyNumber) {
 					$("#formCardNumber").removeAttr("disabled");

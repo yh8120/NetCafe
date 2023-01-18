@@ -117,17 +117,19 @@ public class AddCustomerServlet extends HttpServlet {
 			String phoneNumberC = request.getParameter("phoneNumberC");
 			String eMailUserName = request.getParameter("eMailUserName");
 			String eMailDomain = request.getParameter("eMailDomain");
+			Integer cardId = Integer.parseInt(strCardId);
+			IdCard idCard = IdCardDao.findById(cardId);
 			
 			request.setAttribute("customerId", strCustomerId);
-			request.setAttribute("strCustomerClassId", strCustomerClassId);
+			request.setAttribute("customerClassId", strCustomerClassId);
 			request.setAttribute("lastName", lastName);
 			request.setAttribute("firstName", firstName);
 			request.setAttribute("lastName", lastName);
 			request.setAttribute("firstName", firstName);
 			request.setAttribute("lastKana", lastKana);
 			request.setAttribute("firstKana", firstKana);
-			request.setAttribute("strSexId", strSexId);
-			request.setAttribute("strCardId", strCardId);
+			request.setAttribute("sexId", strSexId);
+			request.setAttribute("idCard", idCard);
 			request.setAttribute("cardNumber", cardNumber);
 			request.setAttribute("birthday", strBirthday);
 			request.setAttribute("zipcodePost", zipcodePost);
@@ -145,9 +147,7 @@ public class AddCustomerServlet extends HttpServlet {
 			Integer customerId = 0;
 			Integer customerClassId = 0;
 			Integer sexId = 0;
-			Integer cardId = 0;
 			Date birthday = null;
-			IdCard idCard = null;
 
 			boolean isError = false;
 
@@ -199,7 +199,7 @@ public class AddCustomerServlet extends HttpServlet {
 				isError = true;
 			}
 			if (firstName.isEmpty()) {
-				request.setAttribute("firstNameError", "苗字が未入力です。");
+				request.setAttribute("firstNameError", "名前が未入力です。");
 				isError = true;
 			}
 			if (firstName.length() > 45) {
@@ -208,7 +208,7 @@ public class AddCustomerServlet extends HttpServlet {
 			}
 			//          会員かな
 			if (lastKana.isEmpty()) {
-				request.setAttribute("lastKanaError", "苗字が未入力です。");
+				request.setAttribute("lastKanaError", "かなが未入力です。");
 				isError = true;
 			}
 			if (lastKana.length() > 45) {
@@ -216,7 +216,7 @@ public class AddCustomerServlet extends HttpServlet {
 				isError = true;
 			}
 			if (firstKana.isEmpty()) {
-				request.setAttribute("firstKanaError", "苗字が未入力です。");
+				request.setAttribute("firstKanaError", "かなが未入力です。");
 				isError = true;
 			}
 			if (firstKana.length() > 45) {
@@ -248,14 +248,13 @@ public class AddCustomerServlet extends HttpServlet {
 				isError = true;
 			} else {
 				try {
-					cardId = Integer.parseInt(strCardId);
 					if (cardId < 0) {
 						request.setAttribute("cardIdError", "カード種別が不正です。");
 						isError = true;
-
+					}else {
 						//身分証番号の入力可否の判定のためにidCardインスタンスが必要なの
-						idCard = IdCardDao.findById(cardId);
-						if (!idCard.getCanCopyNumber() && cardNumber.isEmpty()) {
+						
+						if (idCard.getCanCopyNumber() && cardNumber.isEmpty()) {
 							request.setAttribute("cardNumberError", "身分証番号が未入力です");
 							isError = true;
 						}

@@ -44,7 +44,10 @@ public class CustomerDaoImpl implements CustomerDao {
 	public Customer findById(Integer customerId) throws Exception {
 		Customer customer = null;
 		try (Connection con = ds.getConnection()) {
-			String sql = "SELECT * FROM customers JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id JOIN id_cards ON customers.card_id = id_cards.card_id JOIN sexes ON customers.sex_id = sexes.sex_id WHERE customer_id=?";
+			String sql = "SELECT * FROM customers"
+					+ " JOIN customer_classes ON customers.customer_class_id = customer_classes.customer_class_id"
+					+ " JOIN id_cards ON customers.card_id = id_cards.card_id"
+					+ " JOIN sexes ON customers.sex_id = sexes.sex_id WHERE customer_id=?";
 			PreparedStatement stmt = con.prepareStatement(sql);
 			stmt.setObject(1, customerId, Types.INTEGER);
 			ResultSet rs = stmt.executeQuery();
